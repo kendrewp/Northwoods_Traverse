@@ -1,0 +1,159 @@
+{
+  "tracker_type": "pipeline_tracker",
+  "schema_version": "1.0",
+  "feature_id": "NT-000",
+  "feature_name": "Phase 0 — Scaffolding",
+  "feature_short": "phase0",
+  "docs_folder": "docs/NT-000/",
+  "created": "2026-04-26",
+  "last_updated": "2026-04-27",
+  "current_phase": "In Progress",
+  "status": "In Progress",
+  "feature_artefacts": {
+    "artefact_checksums": {
+      "architecture_phase0.md": {
+        "checksum": "sha256-ce620d0a47aaa4e3a69b505bc364b3f112f6232b53ba0cf6338ac0854178ab96",
+        "approved_by": "Kendrew Peacey (self — DevLead/PM/Stakeholder)",
+        "approved_date": "2026-04-27",
+        "prior_checksum": "sha256-485d3972c74a602068ee86637ce76d4b1b083fef7729b59643633894aa032911",
+        "updated_reason": "resume-pipeline review 2026-04-27: §8 Technology Decisions updated from .NET 9 to .NET 10 following ADR-004 (NT-001 PR #1 implementation revealed .NET 10 SDK is the only SDK on developer machine; Traverse.AI.Providers already requires 10.x extension packages). Change Log section added."
+      }
+    }
+  },
+  "steps": [
+    {
+      "id": "step_3a",
+      "name": "Calculate CU",
+      "skill": "calculate-cu",
+      "completed": "2026-04-26",
+      "checked": true
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "NT-001",
+      "short_name": "repo_structure",
+      "tracker_path": "docs/NT-000/NT-001/story_tracker_repo_structure.json",
+      "status": "Complete",
+      "created": "2026-04-26",
+      "completed": "2026-04-27",
+      "merged_pr": 1,
+      "merged_commit": "ed98ce87a86c858c53d9810617708cf64fec8676",
+      "summary": "Repository and solution structure scaffolded. Traverse.sln, 9 service dirs, 10 docker dirs, Angular workspace stubs, .editorconfig, global.json (SDK 10.0.103). dotnet build 0 errors. 78 integration tests passed. Code review APPROVED_WITH_NOTES (SF-1: *.scss/*.css .gitattributes — fix in NT-003; SG-2: .NET 9 vs .NET 10 TFM — decision required before NT-002).",
+      "cu_estimate": {
+        "adjusted_cu": 21.0,
+        "hours_estimate": 42.0,
+        "calculated_by": "design-architecture",
+        "calculated_date": "2026-04-26"
+      }
+    },
+    {
+      "story_id": "NT-002",
+      "short_name": "shared_libs",
+      "tracker_path": "docs/NT-000/NT-002/story_tracker_shared_libs.json",
+      "status": "Not Started",
+      "created": "2026-04-26",
+      "completed": null,
+      "merged_pr": null,
+      "merged_commit": null,
+      "summary": null,
+      "cu_estimate": {
+        "adjusted_cu": 57.75,
+        "hours_estimate": 115.5,
+        "calculated_by": "design-architecture",
+        "calculated_date": "2026-04-26",
+        "resume_pipeline_note": "2026-04-27: Estimate confirmed valid. The concern that NT-001 implemented Traverse.AI.Abstractions/Providers (scope of NT-002) was a false alarm — those are pre-existing projects adopted into the solution, not new NT-001 deliverables. NT-002 scope covers 6 entirely new library projects (Domain.Primitives, Infrastructure.Persistence, Messaging, Auth, Http, Observability) none of which exist yet. Estimate 6 new components × base CU formula = 57.75 CU remains accurate. Minor additional scope: NT-002 should also retarget existing AI projects from net9.0 to net10.0 per ADR-004; this is within the ±50–100% confidence bounds and does not warrant re-estimation."
+      }
+    },
+    {
+      "story_id": "NT-003",
+      "short_name": "angular_shell",
+      "tracker_path": "docs/NT-000/NT-003/story_tracker_angular_shell.json",
+      "status": "Not Started",
+      "created": "2026-04-26",
+      "completed": null,
+      "merged_pr": null,
+      "merged_commit": null,
+      "summary": null,
+      "cu_estimate": {
+        "adjusted_cu": 59.5,
+        "hours_estimate": 119.0,
+        "calculated_by": "design-architecture",
+        "calculated_date": "2026-04-26"
+      }
+    },
+    {
+      "story_id": "NT-004",
+      "short_name": "docker_env",
+      "tracker_path": "docs/NT-000/NT-004/story_tracker_docker_env.json",
+      "status": "Not Started",
+      "created": "2026-04-26",
+      "completed": null,
+      "merged_pr": null,
+      "merged_commit": null,
+      "summary": null,
+      "cu_estimate": {
+        "adjusted_cu": 31.5,
+        "hours_estimate": 63.0,
+        "calculated_by": "design-architecture",
+        "calculated_date": "2026-04-26"
+      }
+    },
+    {
+      "story_id": "NT-005",
+      "short_name": "api_stubs",
+      "tracker_path": "docs/NT-000/NT-005/story_tracker_api_stubs.json",
+      "status": "Not Started",
+      "created": "2026-04-26",
+      "completed": null,
+      "merged_pr": null,
+      "merged_commit": null,
+      "summary": null,
+      "cu_estimate": {
+        "adjusted_cu": 52.5,
+        "hours_estimate": 105.0,
+        "calculated_by": "design-architecture",
+        "calculated_date": "2026-04-26"
+      }
+    }
+  ],
+  "backlog": [],
+  "resume_pipeline_reviews": [
+    {
+      "review_date": "2026-04-27",
+      "trigger": "Feature start — begin NT-002 (first story after NT-001 completion)",
+      "reviewer": "resume-pipeline v2.6.0 (AutoMode)",
+      "artefacts_reviewed": 3,
+      "artefacts_updated": 1,
+      "artefacts_current": 2,
+      "drift_findings": [
+        {
+          "artefact": "architecture_phase0.md",
+          "section": "§8 Technology Decisions",
+          "drift_type": "stale — technology version mismatch",
+          "detail": "Architecture stated .NET 9.0; NT-001 implementation (PR #1) confirmed SDK is 10.0.103 and Traverse.AI.Providers requires 10.x extension packages. ADR-004 (2026-04-27) selected net10.0. Architecture updated to reflect correct version.",
+          "action": "Updated — Change Log entry added, new checksum computed"
+        }
+      ],
+      "false_alarm_investigated": {
+        "concern": "NT-001 implemented Traverse.AI.Abstractions and Traverse.AI.Providers — scope of NT-002",
+        "finding": "FALSE ALARM. These are pre-existing projects. NT-001 code review confirmed 'AI projects untouched — git diff src/shared/ returns empty'. NT-002 CU estimate (57.75) remains valid — all 6 new shared library projects are still unimplemented.",
+        "resolution": "No scope change to NT-002. Minor note added: NT-002 should retarget AI projects from net9.0 to net10.0 per ADR-004."
+      },
+      "pr_branch": "review/NT-000",
+      "pr_url": "PENDING",
+      "status": "blocked_on_questions"
+    }
+  ],
+  "decision_log": [
+    {
+      "date": "2026-04-27",
+      "id": "ADR-004",
+      "title": ".NET 10.0 selected as target framework for all projects",
+      "context": "Developer machine has only .NET 10 SDK (10.0.103). Traverse.AI.Providers already requires Microsoft.Extensions.*.Version=10.0.* packages to resolve OpenAI SDK 2.x transitive dependency. Building with net9.0 TFM on .NET 10 SDK caused NU1605 (Warning As Error).",
+      "decision": "Use net10.0 as target framework for all new projects created in NT-002 through NT-005. Retarget existing AI projects (currently net9.0) to net10.0 in NT-002.",
+      "rationale": "Single TFM across the solution prevents multi-targeting complexity. .NET 10 SDK is the available runtime. No functional difference for Phase 0 scaffolding work.",
+      "recorded_in": "NT-001 story tracker (SG-2 resolution), architecture_phase0.md Change Log"
+    }
+  ]
+}
