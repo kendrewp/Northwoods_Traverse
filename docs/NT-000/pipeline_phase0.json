@@ -33,18 +33,21 @@
       "name": "Resume Pipeline — Artefact Review",
       "skill": "resume-pipeline",
       "started": "2026-04-27",
-      "completed": null,
-      "status": "blocked_on_questions",
+      "completed": "2026-04-27",
+      "status": "complete",
       "questions_doc": {
         "path": "skill_docs/resume-pipeline_docs/questions_1.md",
-        "answered": false,
+        "answered": true,
         "created": "2026-04-27T00:00:00Z"
       },
       "pr": {
         "number": 2,
         "url": "https://github.com/kendrewp/Northwoods_Traverse/pull/2",
         "branch": "review/NT-000",
-        "target": "feature/NT-000"
+        "target": "feature/NT-000",
+        "merged": true,
+        "merged_date": "2026-04-27",
+        "approved_by": "Kendrew Peacey (DevLead + PM, self)"
       }
     }
   ],
@@ -161,10 +164,14 @@
       },
       "pr_branch": "review/NT-000",
       "pr_url": "https://github.com/kendrewp/Northwoods_Traverse/pull/2",
-      "status": "blocked_on_questions",
+      "pr_merged": true,
+      "pr_merged_date": "2026-04-27",
+      "pr_approved_by": "Kendrew Peacey (DevLead + PM, self)",
+      "status": "complete",
+      "review_worktree_removed": true,
       "questions_doc": {
         "path": "skill_docs/resume-pipeline_docs/questions_1.md",
-        "answered": false,
+        "answered": true,
         "created": "2026-04-27T00:00:00Z"
       }
     }

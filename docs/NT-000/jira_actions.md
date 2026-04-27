@@ -101,3 +101,27 @@
 - Purpose: resume-pipeline artefact review
 - Created by: resume-pipeline (CLI)
 
+### PR_CREATED — 2026-04-27
+- **PR:** #2
+- **Title:** resume-pipeline: NT-000 artefact review — .NET 10 technology update
+- **Branch:** review/NT-000 → feature/NT-000
+- **URL:** https://github.com/kendrewp/Northwoods_Traverse/pull/2
+- **Created by:** resume-pipeline
+
+### PR_MERGED — 2026-04-27
+- **PR:** #2
+- **Merged into:** feature/NT-000
+- **Approved by:** Kendrew Peacey (DevLead + PM, self — single operator, 2026-04-27)
+- **Artefacts reviewed:** 3 (architecture_phase0.md, requirements_phase0.md, NT-002–NT-005 not-started)
+- **Artefacts updated:** 1 (architecture_phase0.md — §8 Technology updated from .NET 9.0 to .NET 10.0 per ADR-004)
+- **Artefacts current:** 2 (requirements_phase0.md, NT-002–NT-005 not-started)
+- **New checksum:** sha256-ce620d0a47aaa4e3a69b505bc364b3f112f6232b53ba0cf6338ac0854178ab96
+- **Merged by:** Kendrew Peacey (kendrewp)
+
+### WORKTREE_REMOVED — 2026-04-27
+- **Worktree:** ../Northwoods_Traverse-review-NT-000
+- **Branch:** review/NT-000
+- **Reason:** resume-pipeline review complete — PR #2 merged into feature/NT-000; review worktree no longer needed
+- **Method:** `git worktree remove --force` (untracked artefact files present — preserved on feature branch)
+- **Removed by:** resume-pipeline
+
