@@ -1,0 +1,21 @@
+{
+  "story_id": "NT-001",
+  "issue_type": "Story",
+  "feature_id": "NT-000",
+  "adjusted_cu": 21.0,
+  "computed_date": "2026-04-27",
+  "source": "git_commits",
+  "confidence": "low",
+
+  "status_time": null,
+
+  "rollup": {
+    "active_hours": 6.0,
+    "idle_hours": null,
+    "total_hours": null,
+    "efficiency_pct": null,
+    "ratio": 0.29
+  },
+
+  "notes": "No structured TRANSITION_ISSUE entries found in jira_actions.md for NT-001. Fell back to git commit log. Unique business days with commits: 2026-04-27 (Monday) — 2026-04-25 is Saturday (excluded), 2026-04-26 is Sunday (excluded). Active hours = 1 day × 6 hrs = 6.0 hrs. Public holidays sourced from project-baseline.json. Company calendar not yet configured — update public_holidays to include company-specific closures. Ratio of 0.29 (actual/CU) reflects a single-day scaffolding task against a 21 CU estimate; estimate was generated during the warm-up phase with ±30–50% confidence and is expected to be high for infrastructure setup tasks."
+}
