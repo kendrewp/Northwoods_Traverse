@@ -27,6 +27,25 @@
       "skill": "calculate-cu",
       "completed": "2026-04-26",
       "checked": true
+    },
+    {
+      "id": "step_resume_pipeline",
+      "name": "Resume Pipeline — Artefact Review",
+      "skill": "resume-pipeline",
+      "started": "2026-04-27",
+      "completed": null,
+      "status": "blocked_on_questions",
+      "questions_doc": {
+        "path": "skill_docs/resume-pipeline_docs/questions_1.md",
+        "answered": false,
+        "created": "2026-04-27T00:00:00Z"
+      },
+      "pr": {
+        "number": 2,
+        "url": "https://github.com/kendrewp/Northwoods_Traverse/pull/2",
+        "branch": "review/NT-000",
+        "target": "feature/NT-000"
+      }
     }
   ],
   "stories": [
@@ -141,8 +160,13 @@
         "resolution": "No scope change to NT-002. Minor note added: NT-002 should retarget AI projects from net9.0 to net10.0 per ADR-004."
       },
       "pr_branch": "review/NT-000",
-      "pr_url": "PENDING",
-      "status": "blocked_on_questions"
+      "pr_url": "https://github.com/kendrewp/Northwoods_Traverse/pull/2",
+      "status": "blocked_on_questions",
+      "questions_doc": {
+        "path": "skill_docs/resume-pipeline_docs/questions_1.md",
+        "answered": false,
+        "created": "2026-04-27T00:00:00Z"
+      }
     }
   ],
   "decision_log": [
