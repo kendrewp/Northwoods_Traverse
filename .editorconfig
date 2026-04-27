@@ -1,0 +1,52 @@
+# EditorConfig — Northwoods Traverse
+# https://editorconfig.org
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# C# — 4 spaces, per .NET Coding Standards §2
+[*.cs]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_braces = true:warning
+
+# TypeScript, JavaScript
+[*.{ts,js,mjs,cjs}]
+indent_style = space
+indent_size = 2
+
+# HTML templates
+[*.html]
+indent_style = space
+indent_size = 2
+
+# Sass/CSS
+[*.{scss,css}]
+indent_style = space
+indent_size = 2
+
+# JSON (including angular.json, tsconfig.json, appsettings)
+[*.json]
+indent_style = space
+indent_size = 2
+
+# YAML (docker-compose, GitHub Actions)
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# Markdown — no trailing whitespace trim (trailing spaces are significant in MD)
+[*.md]
+trim_trailing_whitespace = false
+
+# XML project files
+[*.{csproj,props,targets}]
+indent_style = space
+indent_size = 2

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.AI.Abstractions</RootNamespace>
+    <AssemblyName>Traverse.AI.Abstractions</AssemblyName>
+    <Description>Provider-agnostic AI abstractions for the Traverse platform. Zero provider dependencies.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Cancellation token and logging without pulling in full framework stack -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+</Project>
