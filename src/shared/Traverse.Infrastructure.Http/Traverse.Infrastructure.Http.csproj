@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.Infrastructure.Http</RootNamespace>
+    <AssemblyName>Traverse.Infrastructure.Http</AssemblyName>
+    <Description>Shared HTTP middleware (correlation ID propagation, global exception handler, ProblemDetails mapping) for Traverse services. Maps DomainException and FluentValidation errors to RFC 7807 ProblemDetails responses.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- DomainException lives in Domain.Primitives — referenced so
+         GlobalExceptionHandler can pattern-match on it and map it to
+         the correct HTTP status code and error code. -->
+    <ProjectReference Include="..\Traverse.Domain.Primitives\Traverse.Domain.Primitives.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      IMiddleware, IExceptionHandler, IApplicationBuilder, HttpContext, and
+      ProblemDetails all live in the ASP.NET Core shared framework
+      (Microsoft.AspNetCore.App). Using a FrameworkReference rather than
+      individual NuGet packages avoids version conflicts and ensures all
+      framework types resolve from the same consistent set.
+
+      Note: Microsoft.AspNetCore.Http.Abstractions and
+      Microsoft.AspNetCore.Diagnostics are part of the shared framework
+      so they do NOT need separate NuGet packages here.
+    -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+    <!-- Microsoft.Extensions.Http.Resilience — Microsoft's official Polly v8 wrapper for
+         HttpClient. Referenced here as a Phase 0 package reservation per design §4.2
+         (Note on Http.Resilience). Actual typed HttpClient registrations with retry /
+         circuit-breaker pipelines are added by Phase 1 service stories; this reference
+         ensures the extension methods are available without requiring each service to
+         independently rediscover and pin the correct version. -->
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.*" />
+
+    <!-- FluentValidation 11.* — ValidationException mapping in GlobalExceptionHandler.
+         Not a framework type; must be an explicit NuGet reference. -->
+    <PackageReference Include="FluentValidation" Version="11.*" />
+
+    <!-- Serilog — LogContext.PushProperty for correlation ID enrichment.
+         Serilog.Context is not guaranteed to be pulled in transitively by
+         the framework reference, so it is declared explicitly. -->
+    <PackageReference Include="Serilog" Version="4.*" />
+    <!-- NOTE: Microsoft.Extensions.DependencyInjection.Abstractions is intentionally
+         omitted here because it is already provided by the FrameworkReference above
+         (Microsoft.AspNetCore.App). Adding it explicitly would trigger NU1510. -->
+  </ItemGroup>
+
+</Project>
