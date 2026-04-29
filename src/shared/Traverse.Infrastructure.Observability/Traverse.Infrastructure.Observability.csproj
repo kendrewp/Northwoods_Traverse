@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.Infrastructure.Observability</RootNamespace>
+    <AssemblyName>Traverse.Infrastructure.Observability</AssemblyName>
+    <Description>Shared observability infrastructure (Serilog structured logging, OpenTelemetry tracing and metrics, health checks) for Traverse services. Zero Traverse project dependencies — pure cross-cutting infrastructure (AC-6).</Description>
+  </PropertyGroup>
+
+  <!--
+    DESIGN DECISION (AC-6): This project has zero <ProjectReference> entries.
+    Observability is purely cross-cutting — it configures the logging, tracing,
+    and health check pipelines without any knowledge of domain types. Keeping it
+    dependency-free allows it to be referenced by any service regardless of its
+    own domain model.
+  -->
+
+  <ItemGroup>
+    <!-- WebApplication type (MapHealthChecks) and IEndpointRouteBuilder require
+         the ASP.NET Core shared framework. Using FrameworkReference avoids
+         NU1510 conflicts with individual NuGet packages for framework types. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Serilog structured logging with ASP.NET Core integration.
+         Serilog.AspNetCore 8.* transitively includes Serilog.Sinks.File
+         and Serilog core. -->
+    <PackageReference Include="Serilog.AspNetCore" Version="8.*" />
+
+    <!-- CompactJsonFormatter — machine-readable log output used by log
+         aggregators (Datadog, Seq, Grafana Loki). -->
+    <PackageReference Include="Serilog.Formatting.Compact" Version="3.*" />
+
+    <!-- OpenTelemetry SDK and instrumentation packages.
+         All pinned to 1.* which is the stable series for net10.0. -->
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.*" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.*" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.*" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.*" />
+  </ItemGroup>
+
+</Project>
