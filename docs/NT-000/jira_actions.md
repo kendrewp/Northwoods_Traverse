@@ -280,3 +280,26 @@
 - **Pipeline progress:** 2 of 5 Phase 0 stories complete
 - **Story status transition:** In Progress → Done (UpdateJira: false — manual action required when Jira configured)
 - **Feature tracker commit:** e65ed91 (chore: close out NT-002 — pipeline tracker updated (2/5 stories complete))
+
+---
+
+### WORKTREE_CREATED — 2026-04-30
+- Worktree: ../Northwoods_Traverse-story-NT-003
+- Branch: story/NT-003
+- From: feature/NT-000
+- Purpose: Story lifecycle — NT-003 Angular Frontend Shell (Phase 0c)
+- Created by: orchestrate-feature
+
+---
+
+### STORY_COMPLETE — 2026-04-30
+- Story:          NT-003 (angular_shell)
+- PR:             https://github.com/kendrewp/Northwoods_Traverse/pull/4 (MERGED)
+- Steps completed: Step 1 (Design), Step 1a (CU), Step 3 (Gherkin), Step 5 (Audit), Step 6 (Plan), Step 7 (Implementation), Step 8 (Integration Testing), Step 10 (Code Review)
+- Steps skipped:  Step 2 (Review Design), Step 4 (Review Gherkin), Step 9 (E2E), Step 11 (Validate Acceptance), Step 12 (Acceptance Sign-Off)
+- Actuals:        6.0 active hours | Adjusted CU: 119.0 | Ratio: 0.05 (accelerated Phase 0 execution)
+- Open finding:   SG-3 (suggestion — nav padding, deferred to Phase 1)
+- Tests:          79/79 passing
+- Pipeline progress: 3 of 5 Phase 0 stories complete
+- Story status transition: In Progress → Complete
+- Story worktree: removed (force — untracked V-Model runtime files only)
