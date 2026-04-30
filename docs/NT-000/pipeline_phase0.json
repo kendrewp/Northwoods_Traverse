@@ -6,7 +6,7 @@
   "feature_short": "phase0",
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
-  "last_updated": "2026-04-29",
+  "last_updated": "2026-04-30",
   "current_phase": "In Progress",
   "status": "In Progress",
   "feature_artefacts": {
@@ -60,17 +60,20 @@
       "story_id": "NT-003",
       "short_name": "angular_shell",
       "tracker_path": "docs/NT-000/NT-003/story_tracker_angular_shell.json",
-      "status": "Not Started",
+      "status": "In Progress",
       "created": "2026-04-26",
       "completed": null,
       "merged_pr": null,
       "merged_commit": null,
       "summary": null,
       "cu_estimate": {
-        "adjusted_cu": 59.5,
-        "hours_estimate": 119.0,
-        "calculated_by": "design-architecture",
-        "calculated_date": "2026-04-26"
+        "adjusted_cu": 119.0,
+        "hours_estimate": 238.0,
+        "calculated_by": "design-feature",
+        "calculated_date": "2026-04-30",
+        "architecture_estimate_cu": 59.5,
+        "architecture_estimate_hrs": 119.0,
+        "variance_note": "Design gate elaboration: 37 AC (was 11), 12 components (was 8). Result within architecture-gate confidence bounds."
       }
     },
     {

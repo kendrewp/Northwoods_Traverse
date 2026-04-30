@@ -280,3 +280,18 @@
 - **Pipeline progress:** 2 of 5 Phase 0 stories complete
 - **Story status transition:** In Progress → Done (UpdateJira: false — manual action required when Jira configured)
 - **Feature tracker commit:** e65ed91 (chore: close out NT-002 — pipeline tracker updated (2/5 stories complete))
+
+---
+
+### PIPELINE_START — 2026-04-30
+- **Story:** NT-003 — Angular Frontend Shell (Phase 0c)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **Story tracker:** docs/NT-000/NT-003/story_tracker_angular_shell.json
+- **Worktree:** ../Northwoods_Traverse-story-NT-003 (branch: story/NT-003)
+- **Active steps:** 1 (Design Feature), 1a (Calculate CU), 3 (Generate Gherkin), 5 (Audit Docs), 6 (Plan Implementation), 7 (Execute Implementation), 8 (Integration Testing), 10 (Code Review)
+- **Pre-skipped steps:** 2 (Review Design), 4 (Review Gherkin), 9 (E2E Testing), 11 (Validate Acceptance), 12 (Acceptance Sign-Off)
+- **Pipeline progress:** 2 of 5 Phase 0 stories complete; NT-003 now In Progress
+- **Architecture checksum validated:** sha256-ce620d0a47aaa4e3a69b505bc364b3f112f6232b53ba0cf6338ac0854178ab96 — MATCH
+- **Started by:** orchestrate-feature
+- **Note (NT-001 SF-1 carryover):** NT-001 code review finding SF-1 (add *.scss/*.css LF rules to .gitattributes) — address as part of this story's Angular project setup
+- **Story status transition:** Not Started → In Progress (UpdateJira: false — manual action required when Jira configured)
