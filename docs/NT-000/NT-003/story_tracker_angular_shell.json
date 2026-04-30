@@ -9,16 +9,6 @@
   "prd_reference": "docs/plans/implementation-order.md Phase 0c (Angular Frontend Shell)",
   "created": "2026-04-30",
   "last_updated": "2026-04-30",
-  "code_review_summary": {
-    "verdict": "APPROVED_WITH_NOTES",
-    "review_cycle": 1,
-    "must_fix": 0,
-    "should_fix": 2,
-    "suggestions": 3,
-    "all_auto_fixed_except": ["SG-3"],
-    "artefact": "docs/NT-000/NT-003/code_review_angular_shell.md",
-    "commit": "305c15d"
-  },
   "current_step": "Step 11: Validate Acceptance",
   "status": "In Progress",
   "steps": [
@@ -237,6 +227,7 @@
           "severity": "suggestion",
           "summary": "::ng-deep in app-shell.component.scss for mat-mdc-list-item padding — replace with Material CSS custom property --mat-list-item-leading-space",
           "resolved": false,
+          "resolved_date": null,
           "resolution_note": "deferred — cosmetic in Phase 0 (all nav items disabled). Address in Phase 1 when sidebar navigation is enabled."
         }
       ]
@@ -406,6 +397,25 @@
       "decision": "Step 8 Integration Testing complete: 76/76 tests pass across 8 boundaries; DFX-001 found and fixed (errorInterceptor inject context bug); suite is 79/79 total; ng lint and production build clean",
       "rationale": "integration-test skill verified all boundary contracts; DFX-001 patched in error.interceptor.ts, documented in ADR-007 and LL-009",
       "date": "2026-04-30"
+    },
+    {
+      "number": 12,
+      "step": "phase_7",
+      "decision": "Auto-approved PR creation (orchestrate-feature-13): disposition=auto_answer, AutoMode=true — all 13 steps checked, tests 79/79 passing, 0 must-fix open findings, SG-3 is a deferred cosmetic suggestion only",
+      "rationale": "orchestrate-feature-13 auto_answer decision logic satisfied: all steps complete, test suite green, no open blockers in tracker",
+      "date": "2026-04-30"
     }
-  ]
+  ],
+  "code_review_summary": {
+    "verdict": "APPROVED_WITH_NOTES",
+    "review_cycle": 1,
+    "must_fix": 0,
+    "should_fix": 2,
+    "suggestions": 3,
+    "all_auto_fixed_except": [
+      "SG-3"
+    ],
+    "artefact": "docs/NT-000/NT-003/code_review_angular_shell.md",
+    "commit": "305c15d"
+  }
 }
