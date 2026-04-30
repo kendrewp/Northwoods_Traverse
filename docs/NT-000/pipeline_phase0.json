@@ -6,7 +6,7 @@
   "feature_short": "phase0",
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
-  "last_updated": "2026-04-27",
+  "last_updated": "2026-04-29",
   "current_phase": "In Progress",
   "status": "In Progress",
   "feature_artefacts": {
@@ -20,37 +20,6 @@
       }
     }
   },
-  "steps": [
-    {
-      "id": "step_3a",
-      "name": "Calculate CU",
-      "skill": "calculate-cu",
-      "completed": "2026-04-26",
-      "checked": true
-    },
-    {
-      "id": "step_resume_pipeline",
-      "name": "Resume Pipeline — Artefact Review",
-      "skill": "resume-pipeline",
-      "started": "2026-04-27",
-      "completed": "2026-04-27",
-      "status": "complete",
-      "questions_doc": {
-        "path": "skill_docs/resume-pipeline_docs/questions_1.md",
-        "answered": true,
-        "created": "2026-04-27T00:00:00Z"
-      },
-      "pr": {
-        "number": 2,
-        "url": "https://github.com/kendrewp/Northwoods_Traverse/pull/2",
-        "branch": "review/NT-000",
-        "target": "feature/NT-000",
-        "merged": true,
-        "merged_date": "2026-04-27",
-        "approved_by": "Kendrew Peacey (DevLead + PM, self)"
-      }
-    }
-  ],
   "stories": [
     {
       "story_id": "NT-001",
@@ -73,12 +42,12 @@
       "story_id": "NT-002",
       "short_name": "shared_libs",
       "tracker_path": "docs/NT-000/NT-002/story_tracker_shared_libs.json",
-      "status": "Not Started",
+      "status": "Complete",
       "created": "2026-04-26",
-      "completed": null,
-      "merged_pr": null,
+      "completed": "2026-04-29",
+      "merged_pr": "https://github.com/kendrewp/Northwoods_Traverse/pull/3",
       "merged_commit": null,
-      "summary": null,
+      "summary": "6 new shared libraries + 2 AI project retargets. 60 files, 3110 additions. Build: 0 errors. Code review: APPROVED_WITH_NOTES (SF-002 doc debt open).",
       "cu_estimate": {
         "adjusted_cu": 57.75,
         "hours_estimate": 115.5,
@@ -178,13 +147,46 @@
   ],
   "decision_log": [
     {
+      "number": 0,
+      "step": "",
+      "decision": "Use net10.0 as target framework for all new projects created in NT-002 through NT-005. Retarget existing AI projects (currently net9.0) to net10.0 in NT-002.",
+      "rationale": "Single TFM across the solution prevents multi-targeting complexity. .NET 10 SDK is the available runtime. No functional difference for Phase 0 scaffolding work.",
       "date": "2026-04-27",
       "id": "ADR-004",
       "title": ".NET 10.0 selected as target framework for all projects",
       "context": "Developer machine has only .NET 10 SDK (10.0.103). Traverse.AI.Providers already requires Microsoft.Extensions.*.Version=10.0.* packages to resolve OpenAI SDK 2.x transitive dependency. Building with net9.0 TFM on .NET 10 SDK caused NU1605 (Warning As Error).",
-      "decision": "Use net10.0 as target framework for all new projects created in NT-002 through NT-005. Retarget existing AI projects (currently net9.0) to net10.0 in NT-002.",
-      "rationale": "Single TFM across the solution prevents multi-targeting complexity. .NET 10 SDK is the available runtime. No functional difference for Phase 0 scaffolding work.",
       "recorded_in": "NT-001 story tracker (SG-2 resolution), architecture_phase0.md Change Log"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step_3a",
+      "name": "Calculate CU",
+      "skill": "calculate-cu",
+      "completed": "2026-04-26",
+      "checked": true
+    },
+    {
+      "id": "step_resume_pipeline",
+      "name": "Resume Pipeline — Artefact Review",
+      "skill": "resume-pipeline",
+      "started": "2026-04-27",
+      "completed": "2026-04-27",
+      "status": "complete",
+      "questions_doc": {
+        "path": "skill_docs/resume-pipeline_docs/questions_1.md",
+        "answered": true,
+        "created": "2026-04-27T00:00:00Z"
+      },
+      "pr": {
+        "number": 2,
+        "url": "https://github.com/kendrewp/Northwoods_Traverse/pull/2",
+        "branch": "review/NT-000",
+        "target": "feature/NT-000",
+        "merged": true,
+        "merged_date": "2026-04-27",
+        "approved_by": "Kendrew Peacey (DevLead + PM, self)"
+      }
     }
   ]
 }

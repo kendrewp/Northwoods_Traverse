@@ -125,3 +125,137 @@
 - **Method:** `git worktree remove --force` (untracked artefact files present — preserved on feature branch)
 - **Removed by:** resume-pipeline
 
+### WORKTREE_CREATED — 2026-04-27
+- Worktree: ../Northwoods_Traverse-story-NT-002
+- Branch: story/NT-002
+- From: feature/NT-000
+- Purpose: Story lifecycle — NT-002 Shared Backend Libraries (Phase 0b)
+- Created by: orchestrate-feature
+
+---
+
+### DESIGN_BLOCKED_ON_QUESTIONS — 2026-04-27
+
+**Story Design Blocked — NT-002 (Shared Backend Libraries)**
+
+- **Story:** NT-002 — Shared Backend Libraries (Phase 0b)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **Gate:** design-feature-10 (Dev Lead + PM final approval)
+- **Design artefact (complete, pending approval):** `docs/NT-000/NT-002/design_shared_libs.md`
+- **Questions document:** `skill_docs/design-feature_docs/questions_2.md`
+- **Story status transition:** Ready for Design → In Design (blocked on approval)
+  (UpdateJira: false — manual action required when Jira configured)
+- **Skill:** design-feature v2.4.0
+
+---
+
+### DESIGN_APPROVED — 2026-04-27
+
+**Story Design Approved — NT-002 (Shared Backend Libraries)**
+
+- **Story:** NT-002 — Shared Backend Libraries (Phase 0b)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **Design artefact:** `docs/NT-000/NT-002/design_shared_libs.md`
+- **SHA-256 checksum:** `sha256-98e3d14030b904743c4726c3484eb295eed2c0fe11ea07cbcb88e6138a20b1a0`
+- **Approved by:** Kendrew Peacey (self — DevLead + PM, single operator, AutoMode)
+- **Approval date:** 2026-04-27
+- **CU estimate (design gate):** 70.0 CU / 140.0 hrs (revised from 57.75 CU at architecture gate — +1 integration boundary MediatR, +1 data entity OutboxMessage, +2 AC count)
+- **Story status transition:** In Design → Ready for Design Review
+  (UpdateJira: false — manual action required when Jira configured)
+- **Next step:** generate-gherkin — translate AC-1 through AC-8 into Gherkin `.feature` files
+- **Skill:** design-feature v2.4.0
+- **Key design decisions:**
+  - `DomainException` placed in `Traverse.Domain.Primitives` (respects DIP — domain exceptions are domain types)
+  - `ClearDomainEvents()` is `public` with `[EditorBrowsable(EditorBrowsableState.Never)]` (two projects involved, internal not applicable cross-assembly)
+  - `MediatR` added as NuGet dependency of `Traverse.Infrastructure.Persistence` (required for `IPublisher` in `TraverseDbContext`)
+  - `FluentValidation` added as NuGet dependency of `Traverse.Infrastructure.Http` (required for consistent `ValidationException` mapping in `GlobalExceptionHandler`)
+  - `OutboxProcessorBase` uses Template Method pattern (base handles scheduling/ordering/commit; concrete subclass handles type resolution)
+  - CU revised from 57.75 to 70.0 — within architecture gate confidence bounds (57.75–231.0 hrs); no stakeholder re-approval required
+
+---
+
+### INTEGRATION_TEST_STARTED — 2026-04-28
+
+**Story Transitioned to In Integration Test — NT-002 (Shared Backend Libraries)**
+
+- **Story:** NT-002 — Shared Backend Libraries (Phase 0b)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **From status:** Ready for Integration Test
+- **To status:** In Integration Test
+- **Skill:** integration-test v2.1.0
+- (UpdateJira: false — manual action required when Jira configured)
+
+---
+
+### PLAN_APPROVED — 2026-04-28
+
+**Implementation Plan Approved — NT-002 (Shared Backend Libraries)**
+
+- **Story:** NT-002 — Shared Backend Libraries (Phase 0b)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **Plan artefact:** `docs/NT-000/NT-002/plan_shared_libs.md`
+- **SHA-256 checksum (file, post-signature):** `sha256-b6d503af4f58d915f79d9d6cdf79c4ca9aaa9e4a02ecf28a776419f9336aa7ee`
+- **SHA-256 checksum (pre-signature, embedded in document):** `sha256-9d51db073bbb5c056aae4ca0dfe0bf102ff0d0565daae5bae3b9d0d64987901c`
+- **Approved by:** Kendrew Peacey (DevLead, self — single operator)
+- **Approval date:** 2026-04-28
+- **Phases planned:** 8 (Phase 1 net10 retarget → Phase 2 Domain.Primitives → Phase 3 Persistence → Phase 4 Messaging → Phase 5 Auth → Phase 6 Http → Phase 7 Observability → Phase 8 Solution integrity)
+- **Estimated effort (Checkpoint 3):** 140.0 hrs total (confidence range 98.0–182.0 hrs; warm-up period active — 0 of 6 actuals logged)
+- **Risks identified:** EF Core net10.0 compatibility (use latest stable with Npgsql); `WebApplication` type resolution may require `<FrameworkReference Include="Microsoft.AspNetCore.App" />`; Serilog rolling file sink may need explicit package reference
+- **Audit findings honoured:** AF-001 (`TraverseDbContext` — design-authoritative); AF-002 (`*Base` suffix on all aggregate base classes — design-authoritative)
+- **Story status transition:** In Planning → Ready for Development
+  (UpdateJira: false — manual action required when Jira configured)
+- **Next step:** execute-implementation — implement Phase 1 (retarget AI projects to net10.0) first
+- **Skill:** plan-implementation v3.4.0
+
+---
+
+### INTEGRATION_TEST_COMPLETE — 2026-04-28
+
+**Story Transitioned to Ready for E2E Test — NT-002 (Shared Backend Libraries)**
+
+- **Story:** NT-002 — Shared Backend Libraries (Phase 0b)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **From status:** In Integration Test
+- **To status:** Ready for E2E Test
+- **Result:** 14 boundaries tested. 14 passed. 0 findings.
+- **Report:** `docs/NT-000/NT-002/integration_tests_shared_libs.md`
+- **Skill:** integration-test v2.1.0
+- (UpdateJira: false — manual action required when Jira configured)
+
+---
+
+### CODE_REVIEW_COMPLETE — 2026-04-29
+- Story: NT-002 — Shared Backend Libraries
+- Reviewer: code-review v2.2.0 (AutoMode)
+- Verdict: APPROVED_WITH_NOTES
+- Review cycle: 1
+- Findings: 1 must-fix, 2 should-fix, 2 suggestions
+- Auto-fixed in this cycle: MF-001 (HasRoleAttribute role guard bug), SF-001 (missing Http.Resilience package reference)
+- Open findings: SF-002 (design_shared_libs.md AC-3/§4.5 documentation update — OutboxProcessorBase ProcessScopeAsync API deviation; documentation debt only, no code change required)
+- Story status transition: In Code Review → Ready for Acceptance (UpdateJira: false — manual action required)
+
+---
+
+### PR_CREATED — 2026-04-29
+- **PR:** #3
+- **Title:** NT-002: Shared backend libraries (Phase 0b)
+- **Branch:** story/NT-002 → feature/NT-000
+- **URL:** https://github.com/kendrewp/Northwoods_Traverse/pull/3
+- **Commits:** 3 (implementation `66a14c8`, auto-fix `8116f38`, base commits)
+- **Files changed:** 60 (58 new/modified source files + development_evolution.md)
+- **Build:** Release + Debug — 0 errors, 0 warnings
+- **Review verdict:** APPROVED_WITH_NOTES (SF-002 doc debt open)
+- **Created by:** orchestrate-feature
+
+### SLACK_TRANSPORT_DEGRADED — 2026-04-29
+- Error: mcp_externally_shared_channel_restricted
+- Impact: Slack notifications silently disabled for this run
+- Action required: Fix SlackChannelId or re-run install-token-hook, then re-invoke
+
+---
+
+### AUTO_WORKTREE_SWITCH — 2026-04-29
+- Switched from: /Users/kendrewpeacey/Projects/Northwoods_Traverse (main)
+- Switched to:   /Users/kendrewpeacey/Projects/Northwoods_Traverse-story-NT-002 (story/NT-002)
+- Reason:        AutoBranch — agent auto-navigated to correct worktree for NT-002 resume
+- Note:          PR #3 already merged; proceeding to Phase 7 completion sequence
