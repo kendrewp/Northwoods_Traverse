@@ -21,13 +21,11 @@
 // react automatically when state changes (e.g., logout sets _isAuthenticated to false,
 // which AppShellComponent's currentRole() computed signal re-evaluates).
 //
-// INJECT PATTERN: logout() calls inject(Router) inside the method body, not in a
-// constructor parameter. This is the correct Angular pattern for services that use
-// inject() in methods — inject() is only valid inside injection contexts (constructor,
-// factory, or field initialiser). logout() is called from a user action, not from a
-// construction context, so we use inject() here which is called during injection context
-// via the Angular runtime when the method executes within a reactive effect or provider.
-// Actually for safety in Angular 17+, we inject Router as a field initializer instead.
+// INJECT PATTERN: Router is injected as a class field initializer (not in a method body).
+// Angular's inject() is only valid in synchronous injection contexts: constructors,
+// field initializers, and factory functions. Since logout() is a user-action method,
+// the Router must be captured at construction time via a field initializer and then
+// accessed by reference in the method body.
 //
 // AC-016: isAuthenticated(), hasRole(), getToken(), getCurrentRole()
 

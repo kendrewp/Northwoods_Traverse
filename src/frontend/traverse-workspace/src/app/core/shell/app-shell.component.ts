@@ -57,7 +57,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { TitleCasePipe } from '@angular/common';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '@core/services/auth.service';
 import { AppRoutes } from '@core/routes/app-routes';
@@ -79,7 +79,7 @@ const BREAKPOINT_TABLET = '(max-width: 1024px)';
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterLinkWithHref,
+    RouterLink,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -94,7 +94,9 @@ const BREAKPOINT_TABLET = '(max-width: 1024px)';
 })
 export class AppShellComponent implements OnInit {
   // ─── Dependencies ─────────────────────────────────────────────────────────
-  protected readonly authService = inject(AuthService);
+  // authService is private — it is only accessed through the currentRole() computed signal.
+  // The template never references authService directly.
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly destroyRef = inject(DestroyRef);
