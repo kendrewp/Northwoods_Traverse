@@ -15,8 +15,10 @@
 // ensures screen readers announce when loading begins and ends. `polite` is correct
 // here — the announcement should not interrupt the user's current action.
 //
-// BACKGROUND: Semi-transparent white (rgba token via CSS) provides visual indication
+// BACKGROUND: Semi-transparent surface colour provides visual indication
 // that content is loading without completely hiding the stale content beneath.
+// Uses color-mix() with --mat-sys-surface to produce a 60% opaque overlay that
+// adapts to both light and dark themes without hardcoded hex values.
 // `z-index: 10` ensures the overlay renders above card content but below dialogs.
 //
 // AC-025: isLoading = input<boolean>(false)
@@ -59,7 +61,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.6);
+      /* color-mix produces a 60% opaque surface overlay without hardcoded colour values.
+         Adapts to light/dark mode via --mat-sys-surface Material Design system token. */
+      background: color-mix(in srgb, var(--mat-sys-surface) 60%, transparent);
       z-index: 10;
     }
   `],
