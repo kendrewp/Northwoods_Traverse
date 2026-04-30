@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.Infrastructure.Auth</RootNamespace>
+    <AssemblyName>Traverse.Infrastructure.Auth</AssemblyName>
+    <Description>Shared authentication and authorisation infrastructure (JWT Bearer, ICurrentUser abstraction, HasRoleAttribute) for Traverse services. Zero Traverse project dependencies — pure infrastructure by design (AC-4).</Description>
+  </PropertyGroup>
+
+  <!--
+    DESIGN DECISION (AC-4): This project has zero <ProjectReference> entries.
+    Auth is pure infrastructure — it reads JWT claims and configures ASP.NET
+    Core middleware. It has no need for domain types, which keeps the
+    dependency graph acyclic and lets Auth be upgraded independently of any
+    domain changes. If a domain type were ever needed here, that is a signal
+    that the domain type belongs in a separate contracts package instead.
+  -->
+
+  <ItemGroup>
+    <!-- JWT Bearer handler — framework package for net10.0. Transitively pulls
+         in Microsoft.AspNetCore.Authentication, Authorization, Http, and
+         Hosting abstractions. No separate packages needed for those types. -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.*" />
+
+    <!-- DI abstractions aligned with the rest of the platform. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.*" />
+  </ItemGroup>
+
+</Project>
