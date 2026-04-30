@@ -1,0 +1,355 @@
+{
+  "tracker_type": "story_tracker",
+  "schema_version": "1.0",
+  "feature_id": "NT-000",
+  "feature_name": "Phase 0 — Scaffolding",
+  "story_id": "NT-003",
+  "short_name": "angular_shell",
+  "docs_folder": "docs/NT-000/NT-003/",
+  "prd_reference": "docs/plans/implementation-order.md Phase 0c (Angular Frontend Shell)",
+  "created": "2026-04-30",
+  "last_updated": "2026-04-30",
+  "current_step": "Step 8: Integration Testing",
+  "status": "In Progress",
+  "steps": [
+    {
+      "id": "step_1",
+      "name": "Design Feature",
+      "skill": "design-feature",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-003/design_angular_shell.md",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_1a",
+      "name": "Calculate CU",
+      "skill": "calculate-cu",
+      "tool": "CLI",
+      "who": "design-feature (automatic)",
+      "section": "left_leg",
+      "output": "CU breakdown in design_angular_shell.md § Effort Estimate (CU-Derived); cu_estimate field populated",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_2",
+      "name": "Review Design",
+      "skill": "review-design",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Design Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single-developer project, all roles self. Phase 0 scaffolding sub-phase — requirements fully specified in implementation-order.md Phase 0c. Same pattern as NT-002 decision_log entry #1.",
+      "status": "skipped",
+      "questions_doc": null
+    },
+    {
+      "id": "step_3",
+      "name": "Generate Gherkin",
+      "skill": "generate-gherkin",
+      "tool": "CLI",
+      "who": "Dev Lead / QA",
+      "section": "left_leg",
+      "output": [
+        "docs/NT-000/NT-003/gherkin_angular_shell_build.feature",
+        "docs/NT-000/NT-003/gherkin_angular_shell_providers.feature",
+        "docs/NT-000/NT-003/gherkin_angular_shell_guards.feature",
+        "docs/NT-000/NT-003/gherkin_angular_shell_components.feature",
+        "docs/NT-000/NT-003/gherkin_angular_shell_proxy.feature"
+      ],
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "gherkin_summary": {
+        "total_scenarios": 26,
+        "automatable": 26,
+        "human_validation_only": 12,
+        "feature_files": 5
+      }
+    },
+    {
+      "id": "step_4",
+      "name": "Review Gherkin",
+      "skill": "review-gherkin",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Gherkin Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Angular scaffolding story — no user-facing behaviour; no Gherkin-testable acceptance criteria exist for project structure, theme, guards, and stubs.",
+      "status": "skipped",
+      "questions_doc": null
+    },
+    {
+      "id": "step_5",
+      "name": "Audit Documentation",
+      "skill": null,
+      "tool": "Both",
+      "who": "PM (audit-documents) + Dev Lead (audit-docs)",
+      "section": "left_leg",
+      "output": "Audit reports",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_6",
+      "name": "Plan Implementation",
+      "skill": "plan-implementation",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-003/implementation_plan_angular_shell.md",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_7",
+      "name": "Execute Implementation",
+      "skill": "execute-implementation",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "bottom",
+      "output": "Production-ready code, all tests passing",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "implementation_summary": {
+        "phases_completed": 9,
+        "commits": [
+          "NT-003 Phase 1: ng new scaffold merge, Angular 18 workspace",
+          "NT-003 Phase 2: .gitattributes LF fix, Material 3 theme, global styles",
+          "NT-003 Phase 3: Core models (ProblemDetails/ApiError, KpiStatus), AppRoutes constants",
+          "NT-003 Phase 4: Core providers — app.config.ts, 3 interceptors, GlobalErrorHandler",
+          "NT-003 Phase 5: AuthService stub + authGuard + adminGuard",
+          "NT-003 Phase 6: AppShellComponent — responsive nav shell, persona chip",
+          "NT-003 Phase 7: Shared components — PageHeader, ErrorDisplay, LoadingSpinner, KpiStatusBadge",
+          "NT-003 Phase 8: Environment files, proxy config, auth placeholders, APP_ROUTES",
+          "NT-003 Phase 9: ESLint, production build, ng serve smoke test, final audits"
+        ],
+        "acceptance_criteria_covered": "AC-001 through AC-037 (all 37)",
+        "build_status": "ng build --configuration production exits 0",
+        "lint_status": "ng lint exits 0",
+        "test_status": "ng test runs clean (3 app component tests passing)",
+        "key_decisions": [
+          "AppShellComponent as route component (not embedded in AppComponent) — allows /login to bypass nav frame",
+          "Phase 0 auth stub with signal(true) — Phase 1 replaces implementation, callers unchanged",
+          "color-mix() for LoadingSpinner overlay — adapts to light/dark mode via --mat-sys-surface token",
+          "Per-request UUID in correlationIdInterceptor — correct for distributed tracing semantics",
+          "environment.ts with 9 named service keys and 'as const' — type-safe per-microservice URLs"
+        ]
+      }
+    },
+    {
+      "id": "step_8",
+      "name": "Integration Testing",
+      "skill": "integration-test",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-003/integration_tests_angular_shell.md",
+      "completed": null,
+      "checked": false,
+      "skip_reason": null,
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_9",
+      "name": "E2E UI Testing",
+      "skill": "e2e-test",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": [
+        "docs/NT-000/NT-003/e2e_flow_map_angular_shell.md",
+        "docs/NT-000/NT-003/e2e_tests_angular_shell.ts",
+        "docs/NT-000/NT-003/e2e_report_angular_shell.md"
+      ],
+      "completed": null,
+      "checked": true,
+      "skip_reason": "No completed user flows to exercise via Playwright at scaffold stage; shell renders placeholder tiles and nav only.",
+      "status": "skipped",
+      "questions_doc": null
+    },
+    {
+      "id": "step_10",
+      "name": "Code Review",
+      "skill": "code-review",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-003/code_review_angular_shell.md",
+      "completed": null,
+      "checked": false,
+      "skip_reason": null,
+      "status": "pending",
+      "questions_doc": null,
+      "open_findings": []
+    },
+    {
+      "id": "step_11",
+      "name": "Validate Acceptance",
+      "skill": "validate-acceptance",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": [
+        "docs/NT-000/NT-003/acceptance_tests_angular_shell.ts",
+        "docs/NT-000/NT-003/validation_checklist_angular_shell.md"
+      ],
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single-developer sub-phase; no separate acceptance authority. Code review (Step 10) is the quality gate.",
+      "status": "skipped",
+      "questions_doc": null
+    },
+    {
+      "id": "step_12",
+      "name": "Acceptance Sign-Off",
+      "skill": "acceptance-signoff",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "right_leg",
+      "output": "Story-level acceptance sign-off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single developer, scaffolding sub-phase, no PM/stakeholder sign-off required at this stage.",
+      "status": "skipped",
+      "questions_doc": null
+    }
+  ],
+  "cu_estimate": {
+    "adjusted_cu": 119.0,
+    "hours_estimate": 238.0,
+    "calculated_date": "2026-04-30",
+    "architecture_estimate_cu": 59.5,
+    "architecture_estimate_hrs": 119.0,
+    "variance_note": "AC count expanded from 11 to 37 and component count from 8 to 12 during design elaboration. Result (119.0 CU) is within architecture-gate confidence bounds (59.5–238.0 hrs)."
+  },
+  "artefact_checksums": {
+    "design_angular_shell.md": {
+      "checksum": "sha256-eba37109931a59c674b2d1cfe2d536a616beaeabef302b72974c1048eb3db65d",
+      "approved_by": "Kendrew Peacey (self — DevLead/PM, AutoMode)",
+      "approved_date": "2026-04-30",
+      "revision_note": "audit-docs NT-003 (2026-04-30): Fixed AC-021 route list (added workflow, kpi); added DashboardComponent to §4.2 file table. No implementation intent changed."
+    },
+    "gherkin_angular_shell_build.feature": {
+      "checksum": "sha256-31b13578d95b7169e25ea0939c708409f2fd624354bed32a79046233dc4246a9",
+      "approved_by": "generate-gherkin v2.2.0 (AutoMode)",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_angular_shell_providers.feature": {
+      "checksum": "sha256-d0ce0f14e8720a44db59f9aa1c468a0b399a915db1356994635609d96770c5c8",
+      "approved_by": "generate-gherkin v2.2.0 (AutoMode)",
+      "approved_date": "2026-04-30",
+      "revision_note": "audit-docs NT-003 (2026-04-30): Updated Traces comment to include US-002 ACs (006, 008-010)."
+    },
+    "gherkin_angular_shell_guards.feature": {
+      "checksum": "sha256-5a67fa8f80b2b9f7d61b5b8caddccb27c831f274a43f3bb97e2823a51d24938a",
+      "approved_by": "generate-gherkin v2.2.0 (AutoMode)",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_angular_shell_components.feature": {
+      "checksum": "sha256-4f10a13ebce3cb3125b6b87df0b5ea418f67dd5f5743508ee31c9ae0adef8485",
+      "approved_by": "generate-gherkin v2.2.0 (AutoMode)",
+      "approved_date": "2026-04-30",
+      "revision_note": "audit-docs NT-003 (2026-04-30): Updated Traces comment to include US-002 AC-007."
+    },
+    "gherkin_angular_shell_proxy.feature": {
+      "checksum": "sha256-e7d7223765173141d8b207a20680faae12e9b12063b4da2707367ad9bd63008c",
+      "approved_by": "generate-gherkin v2.2.0 (AutoMode)",
+      "approved_date": "2026-04-30"
+    },
+    "docs/NT-000/NT-003/implementation_plan_angular_shell.md": {
+      "checksum": "sha256-4e645e2ee36bc54aa7d18e72d164f6e0ab6a3c5c6cfa4090e31e6847b26a0533",
+      "approved_by": "step_6",
+      "approved_date": "2026-04-30"
+    }
+  },
+  "decision_log": [
+    {
+      "number": 1,
+      "step": "step_1",
+      "decision": "Use ng new merge approach rather than full ng new overwrite",
+      "rationale": "NT-001 stubs encode approved architectural decisions (OnPush schematic default, path aliases, proxy config reference). Overwriting would require re-applying every decision. Merge approach preserves approved settings while adding the full scaffold.",
+      "date": "2026-04-30",
+      "id": "DES-001",
+      "title": "Angular workspace creation: merge approach selected"
+    },
+    {
+      "number": 2,
+      "step": "step_1",
+      "decision": "KPI placeholder tiles use generic labels 'KPI Slot 1–6' (not metric names)",
+      "rationale": "MOD-03 (Phase 1b) defines the actual KPI metric names. Phase 0 cannot anticipate them without introducing coupling. Generic labels prevent incorrect assumptions propagating into the shell design.",
+      "date": "2026-04-30",
+      "id": "DES-002",
+      "title": "KPI placeholder tile labels: generic slot numbers"
+    },
+    {
+      "number": 3,
+      "step": "step_1",
+      "decision": "pathRewrite in proxy.conf.json strips service prefix",
+      "rationale": "Angular calls /api/workflow/orders; backend listens at /api/orders. The proxy strips /api/workflow so the backend receives /api/orders. This is consistent with all nine backend API Program.cs configurations.",
+      "date": "2026-04-30",
+      "id": "DES-003",
+      "title": "Proxy pathRewrite: strip service prefix from API routes"
+    },
+    {
+      "number": 4,
+      "step": "step_5",
+      "decision": "Design doc corrections: AC-021 route list updated to include workflow and kpi (was 14, now 16); DashboardComponent added to §4.2 file responsibility table",
+      "rationale": "F-001/F-002 doc debt — design text had fallen out of sync with §4.9 code block and Gherkin; §4.2 file table was missing dashboard entry present in §4.11 prose and APP_ROUTES",
+      "date": "2026-04-30"
+    },
+    {
+      "number": 5,
+      "step": "step_5",
+      "decision": "Gherkin Traces comments updated: providers.feature now cites US-002 ACs 006/008-010; components.feature now cites US-002 AC-007",
+      "rationale": "F-003/F-004 doc debt — Traces comments understated coverage; no functional change to scenario bodies",
+      "date": "2026-04-30"
+    },
+    {
+      "number": 6,
+      "step": "step_5",
+      "decision": "architecture_phase0.md corrected: .NET 9 references replaced with .NET 10; AppShellComponent activation chain corrected; PageHeaderComponent subtitle description corrected",
+      "rationale": "F-005/F-006/F-007 doc debt — architecture doc had residual .NET 9 references post-ADR-004; AppShellComponent called-by description was imprecise; breadcrumbs description did not match design ACs",
+      "date": "2026-04-30"
+    },
+    {
+      "number": 7,
+      "step": "step_5",
+      "decision": "story_tracker gherkin_summary counts corrected: automatable 21→26, human_validation_only 16→12",
+      "rationale": "F-008 doc debt — counts were not updated when Gherkin was finalised during step_3; actual scenario block count verified by re-auditing all 5 feature files",
+      "date": "2026-04-30"
+    },
+    {
+      "number": 8,
+      "step": "step_6",
+      "decision": "Implementation plan approved by DevLead (self). 9-phase sequence confirmed: scaffold merge to styles to models to providers to guards to shell to components to routes/env to verification. All 37 ACs covered. Scope includes .gitattributes SF-1 carryover fix.",
+      "rationale": "retain gate plan-implementation-06 answered APPROVED by Kendrew Peacey (DevLead, self) on 2026-04-30",
+      "date": "2026-04-30"
+    }
+  ]
+}
