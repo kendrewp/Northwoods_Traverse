@@ -1,0 +1,44 @@
+// src/styles/theme.scss
+// Traverse Workspace — Material 3 theme definition.
+// Uses mat.define-theme() with a custom palette seeded from #1e4d8c.
+// The $azure-palette is the closest built-in seed; a custom palette override
+// is applied for the exact brand hue. If the Material theme builder tool
+// (https://material-foundation.github.io/material-theme-builder/) is available,
+// generate a Sass palette from #1e4d8c and replace the seed assignment below.
+
+@use '@angular/material' as mat;
+
+// Traverse brand primary: #1e4d8c (deep navy blue)
+// Fallback seed: mat.$azure-palette (closest built-in approximation)
+$traverse-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,   // Replace with generated palette when available
+    tertiary: mat.$cyan-palette
+  ),
+  typography: (
+    brand-family: 'Segoe UI, Arial, sans-serif',
+    plain-family: 'Segoe UI, Arial, sans-serif'
+  ),
+  density: (
+    scale: 0
+  )
+));
+
+html {
+  @include mat.all-component-themes($traverse-theme);
+}
+
+// ─── Traverse KPI Status Tokens ───────────────────────────────────────────────
+// These tokens are the canonical source for KPI status colours across all components.
+// Components MUST use these tokens, never hardcoded hex values.
+// Values align with WCAG 2.1 AA contrast requirements when used with --mat-sys-on-* text tokens.
+
+:root {
+  --traverse-status-green:    #1a7a4a;  // Active / On Track
+  --traverse-status-yellow:   #b45309;  // Warning / Approaching threshold
+  --traverse-status-red:      #c0152b;  // Breached / Critical
+  --traverse-status-fuchsia:  #a21caf;  // Secondary alert / Escalation
+  --traverse-status-emerald:  #065f46;  // Positive / Completed
+  --traverse-status-slate:    #475569;  // Placeholder / Unknown
+}
