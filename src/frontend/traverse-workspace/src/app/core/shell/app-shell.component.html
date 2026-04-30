@@ -1,0 +1,88 @@
+<!-- app-shell.component.html
+     Traverse Workspace — outer application layout frame.
+
+     Three-region layout via .traverse-shell-grid CSS Grid (defined in styles.scss):
+     - Row 1 (grid-row: 1, grid-column: 1/-1): top toolbar — full-width
+     - Row 2 Col 1 (grid-row: 2, grid-column: 1): sidebar nav
+     - Row 2 Col 2 (grid-row: 2, grid-column: 2): main content area
+
+     On mobile (<768px): sidebar hidden, MatSidenav overlay controlled by sidebarExpanded.
+     On tablet (768–1024px): inline sidebar, icon-only, 64px wide.
+     On desktop (>1024px): inline sidebar, icon+label, 220px wide.
+
+     AC-029: Top nav with app name and persona chip.
+     AC-030: Sidebar with role-filtered nav items.
+     AC-032: Mobile hamburger + MatSidenav overlay.
+     AC-033: Icon-only at tablet, icon+label at desktop.
+-->
+
+<mat-sidenav-container class="traverse-shell-container">
+
+  <!-- ─── Sidebar (Mobile: MatSidenav overlay; Desktop/Tablet: inline) ───────── -->
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="isMobile() ? sidebarExpanded() : true"
+    class="traverse-sidebar"
+    [class.traverse-sidebar--collapsed]="!sidebarExpanded() && !isMobile()"
+  >
+    <mat-nav-list>
+      @for (item of visibleNavItems(); track item.route + item.label) {
+        <a
+          mat-list-item
+          [routerLink]="item.disabled ? null : item.route"
+          [class.traverse-nav-item--active]="!item.disabled"
+          [class.traverse-nav-item--disabled]="item.disabled"
+          [attr.aria-disabled]="item.disabled ? 'true' : null"
+          [attr.tabindex]="item.disabled ? -1 : 0"
+          [title]="item.disabled ? item.label + ' (coming soon)' : item.label"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          @if (sidebarExpanded() || isMobile()) {
+            <span matListItemTitle>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- ─── Main Content Area ────────────────────────────────────────────────── -->
+  <mat-sidenav-content class="traverse-main">
+
+    <!-- ─── Top Toolbar ──────────────────────────────────────────────────────── -->
+    <mat-toolbar class="traverse-toolbar" color="primary">
+      <!-- Hamburger toggle — opens sidebar overlay on mobile; toggles expand on desktop -->
+      <button
+        mat-icon-button
+        (click)="isMobile() ? sidenav.toggle() : toggleSidebar()"
+        aria-label="Toggle sidebar"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <!-- Application name -->
+      <span class="app-title">Traverse Workspace</span>
+
+      <!-- Spacer — pushes persona chip to the right -->
+      <span class="toolbar-spacer"></span>
+
+      <!-- Persona chip — shows current active role; non-interactive in Phase 0
+           Phase 1 Auth story adds persona-switching functionality. -->
+      <mat-chip-set aria-label="Active persona">
+        <mat-chip
+          [class]="'persona-chip persona-chip--' + currentRole()"
+          disableRipple
+          aria-label="Active persona: {{ currentRole() | titlecase }}"
+        >
+          {{ currentRole() | titlecase }}
+        </mat-chip>
+      </mat-chip-set>
+    </mat-toolbar>
+
+    <!-- ─── Feature Page Content ─────────────────────────────────────────────── -->
+    <main class="content-area">
+      <router-outlet />
+    </main>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

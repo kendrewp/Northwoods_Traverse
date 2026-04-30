@@ -1,0 +1,93 @@
+// app-shell.component.scss
+// Styles for the Traverse application layout shell.
+//
+// NO hardcoded hex/rgb colours — all colours use --mat-sys-* or --traverse-status-* tokens.
+// NO layout values that duplicate the CSS Grid contract defined in styles.scss.
+// The .traverse-shell-grid class is on the host element (set in app-shell.component.html).
+
+// ─── Shell Container ──────────────────────────────────────────────────────────
+// MatSidenavContainer fills the full viewport
+.traverse-shell-container {
+  height: 100vh;
+  width: 100%;
+}
+
+// ─── Top Toolbar ──────────────────────────────────────────────────────────────
+.traverse-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--traverse-topnav-height);
+
+  .app-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  // Spacer — flex grow pushes persona chip to the right
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+.traverse-sidebar {
+  width: var(--traverse-sidebar-width);
+  transition: width 0.2s ease-in-out;
+
+  // Collapsed (icon-only) state — applied on tablet breakpoint
+  &.traverse-sidebar--collapsed {
+    width: var(--traverse-sidebar-collapsed);
+
+    // Ensure icon-only items still have correct padding
+    ::ng-deep .mat-mdc-list-item {
+      padding: 0 8px;
+    }
+  }
+}
+
+// ─── Nav Items ────────────────────────────────────────────────────────────────
+.traverse-nav-item {
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;  // Prevents click and hover on disabled Phase 0 items
+  }
+
+  &--active {
+    // Highlight active (enabled) nav items with primary container token
+    &.mdc-list-item--activated {
+      background-color: var(--mat-sys-primary-container);
+      color: var(--mat-sys-on-primary-container);
+    }
+  }
+}
+
+// ─── Main Content Area ────────────────────────────────────────────────────────
+.traverse-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  flex: 1;
+  padding: var(--traverse-content-padding);
+  overflow-y: auto;
+
+  // Reduce padding on smaller screens
+  @media (max-width: 1024px) {
+    padding: var(--traverse-content-padding-sm);
+  }
+}
+
+// ─── Persona Chip ──────────────────────────────────────────────────────────────
+// Role-specific chip colours using Material system tokens — no hardcoded values
+.persona-chip {
+  font-size: 12px;
+  font-weight: 500;
+
+  // Default chip appearance via Material tokens
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
