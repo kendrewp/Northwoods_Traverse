@@ -9,7 +9,7 @@
   "prd_reference": "docs/plans/implementation-order.md Phase 0c (Angular Frontend Shell)",
   "created": "2026-04-30",
   "last_updated": "2026-04-30",
-  "current_step": "Step 8: Integration Testing",
+  "current_step": "Step 10: Code Review",
   "status": "In Progress",
   "steps": [
     {
@@ -169,11 +169,24 @@
       "who": "Developer",
       "section": "right_leg",
       "output": "docs/NT-000/NT-003/integration_tests_angular_shell.md",
-      "completed": null,
-      "checked": false,
+      "completed": "2026-04-30",
+      "checked": true,
       "skip_reason": null,
-      "status": "pending",
-      "questions_doc": null
+      "status": "complete",
+      "questions_doc": null,
+      "integration_summary": {
+        "boundaries_tested": 8,
+        "tests_written": 76,
+        "tests_passed": 76,
+        "defects_found": 1,
+        "defects_fixed": 1,
+        "defect_ids": ["DFX-001"],
+        "defect_description": "errorInterceptor called inject(Router) inside catchError callback — outside injection context. Fixed by capturing router at function-body level via closure.",
+        "test_command": "npx ng test --watch=false --browsers=ChromeHeadless",
+        "total_test_suite": "79 passed (76 integration + 3 unit), 0 failed",
+        "lint_status": "ng lint exits 0",
+        "build_status": "ng build --configuration production exits 0"
+      }
     },
     {
       "id": "step_9",
@@ -349,6 +362,22 @@
       "step": "step_6",
       "decision": "Implementation plan approved by DevLead (self). 9-phase sequence confirmed: scaffold merge to styles to models to providers to guards to shell to components to routes/env to verification. All 37 ACs covered. Scope includes .gitattributes SF-1 carryover fix.",
       "rationale": "retain gate plan-implementation-06 answered APPROVED by Kendrew Peacey (DevLead, self) on 2026-04-30",
+      "date": "2026-04-30"
+    },
+    {
+      "number": 9,
+      "step": "step_8",
+      "decision": "DFX-001: errorInterceptor corrected — inject(Router) moved from catchError callback to interceptor function body",
+      "rationale": "Integration testing revealed that inject(Router) inside the catchError() callback throws NG0203 (inject called outside injection context) because RxJS operator callbacks run outside Angular's synchronous injection context. The fix captures router = inject(Router) at function-body level and accesses it via closure in the callback. This is the required pattern for all functional interceptors that need DI tokens in Observable pipelines. The Phase 9 smoke test did not trigger a 401 so the defect was not caught during execute-implementation.",
+      "date": "2026-04-30",
+      "id": "DFX-001",
+      "title": "errorInterceptor: inject() in RxJS callback — NG0203 injection context bug"
+    },
+    {
+      "number": 10,
+      "step": "step_8",
+      "decision": "Integration test infrastructure: Boundary 2 uses RouterTestingModule.withRoutes([]) rather than a mock Router spy",
+      "rationale": "A plain { provide: Router, useValue: spy } is insufficient for testing functional interceptors that call inject(Router). Angular's HTTP interceptor pipeline resolves tokens through its own injector scope. RouterTestingModule provides the complete Router infrastructure (LocationStrategy, ActivatedRoute, NavigationExtras) so that inject(Router) resolves correctly and router.navigate() can be spied on via TestBed.inject(Router).",
       "date": "2026-04-30"
     }
   ]

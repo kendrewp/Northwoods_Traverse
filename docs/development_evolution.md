@@ -469,3 +469,56 @@ Add `"pathRewrite": { "^/api/{service}": "" }` to each proxy entry, so the backe
 - This is the standard Angular proxy pathRewrite pattern and does not require changes to any backend project.
 
 ---
+
+## ADR-007 — Angular inject() Must Not Be Called Inside RxJS Operator Callbacks
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (discovered during NT-003 integration testing)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+During Step 8 integration testing of NT-003, a defect was found in `errorInterceptor`: the function called `inject(Router)` inside the `catchError()` callback, which executes asynchronously outside Angular's synchronous injection context. This throws NG0203 (`inject() must be called from an injection context`) at runtime on every 401 HTTP response, preventing the error from being mapped to an `ApiError` and silently blocking the `/login` redirect.
+
+The Phase 9 smoke test did not reveal the defect because no 401 response was triggered during manual testing. The integration test was the first exercise of that code path.
+
+### Options Considered
+
+**Option A (selected): Capture the token at function-body level, use via closure**
+
+```typescript
+export function errorInterceptor(req, next): Observable<HttpEvent<unknown>> {
+  const router = inject(Router);  // ← synchronous injection context: valid
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 401) router.navigate(['/login']);  // ← closure: valid
+      ...
+    })
+  );
+}
+```
+
+The injection context is valid during the synchronous body of the interceptor function. The captured `router` reference is held by closure and safe to use in any async callback.
+
+**Option B: Inject via constructor in a class-based interceptor**
+
+Convert to `@Injectable() class ErrorInterceptor implements HttpInterceptor`. Injection via constructor is always valid. Rejected: all other interceptors are functional (Angular 15+ standard); mixing patterns in the same file set creates inconsistency.
+
+**Option C: Use runInInjectionContext**
+
+Wrap the `inject(Router)` call in `runInInjectionContext(injector, () => inject(Router))`. Requires an `Injector` parameter to be passed through. Rejected: more complex than Option A with no benefit.
+
+### Decision
+
+**Option A — capture at function-body level.** This is the idiomatic Angular pattern for functional interceptors and applies universally:
+
+> Any DI token needed inside an RxJS operator callback in a functional interceptor, guard, or resolver must be captured via `inject()` at the function body level and accessed via closure inside the callback. Never call `inject()` inside `catchError`, `tap`, `map`, `switchMap`, or any other RxJS operator callback.
+
+### Consequences
+
+- `errorInterceptor` was corrected. `ng test` confirms 79/79 pass; `ng lint` and `ng build --configuration production` are clean.
+- The pattern is documented here and in the interceptor file's JSDoc to prevent recurrence.
+- All future interceptors, guards, and resolvers in this project must follow this pattern. Code review (Step 10) will check for violations.
+
+---
