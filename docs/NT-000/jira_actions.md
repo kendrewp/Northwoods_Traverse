@@ -259,3 +259,24 @@
 - Switched to:   /Users/kendrewpeacey/Projects/Northwoods_Traverse-story-NT-002 (story/NT-002)
 - Reason:        AutoBranch — agent auto-navigated to correct worktree for NT-002 resume
 - Note:          PR #3 already merged; proceeding to Phase 7 completion sequence
+
+---
+
+### WORKTREE_REMOVED — 2026-04-29
+- **Worktree:** ../Northwoods_Traverse-story-NT-002
+- **Branch:** story/NT-002
+- **Reason:** Story NT-002 complete — PR #3 merged into feature/NT-000
+- **Method:** Directory removed (worktree was already deregistered from git in a prior run; orphaned directory cleared)
+- **Removed by:** orchestrate-feature
+
+### STORY_COMPLETE — 2026-04-29
+- **Story:** NT-002 — Shared Backend Libraries (Phase 0b)
+- **Feature:** NT-000 — Phase 0 Scaffolding
+- **Merged PR:** #3 (https://github.com/kendrewp/Northwoods_Traverse/pull/3)
+- **Merge commit:** 315ab6d17497049b75218522f228a55340d5f563
+- **Files changed:** 60 (3110 additions, 4 deletions)
+- **Open findings carried forward:**
+  - SF-002 (should_fix): design_shared_libs.md AC-3/§4.5 documentation update — OutboxProcessorBase ProcessScopeAsync API deviation; doc debt only, no code change required
+- **Pipeline progress:** 2 of 5 Phase 0 stories complete
+- **Story status transition:** In Progress → Done (UpdateJira: false — manual action required when Jira configured)
+- **Feature tracker commit:** e65ed91 (chore: close out NT-002 — pipeline tracker updated (2/5 stories complete))
