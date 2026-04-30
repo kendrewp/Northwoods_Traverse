@@ -295,3 +295,14 @@
 - **Started by:** orchestrate-feature
 - **Note (NT-001 SF-1 carryover):** NT-001 code review finding SF-1 (add *.scss/*.css LF rules to .gitattributes) — address as part of this story's Angular project setup
 - **Story status transition:** Not Started → In Progress (UpdateJira: false — manual action required when Jira configured)
+
+---
+
+### PR_CREATED — 2026-04-30
+- **PR:** #4 — https://github.com/kendrewp/Northwoods_Traverse/pull/4
+- **Source branch:** story/NT-003
+- **Target branch:** feature/NT-000
+- **Story:** NT-003 — Angular Frontend Shell (Phase 0c)
+- **Auto-created:** orchestrate-feature-13, disposition=auto_answer, AutoMode=true
+- **Conditions met:** all steps checked, 79/79 tests passing, 0 must-fix findings
+- **Action required:** Merge PR #4 (story/NT-003 → feature/NT-000), then re-invoke orchestrate-feature to complete worktree cleanup
