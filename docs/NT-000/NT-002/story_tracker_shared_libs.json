@@ -1,0 +1,335 @@
+{
+  "tracker_type": "story_tracker",
+  "schema_version": "1.0",
+  "feature_id": "NT-000",
+  "feature_name": "Phase 0 — Scaffolding",
+  "story_id": "NT-002",
+  "short_name": "shared_libs",
+  "docs_folder": "docs/NT-000/NT-002/",
+  "prd_reference": "docs/plans/implementation-order.md",
+  "created": "2026-04-27",
+  "last_updated": "2026-04-29",
+  "current_step": "Step 11: Validate Acceptance",
+  "status": "Complete",
+  "steps": [
+    {
+      "id": "step_1",
+      "name": "Design Feature",
+      "skill": "design-feature",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-002/design_shared_libs.md",
+      "completed": "2026-04-27",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": {
+        "path": "skill_docs/design-feature_docs/questions_2.md",
+        "answered": true,
+        "created": "2026-04-27T00:00:00Z"
+      }
+    },
+    {
+      "id": "step_1a",
+      "name": "Calculate CU",
+      "skill": "calculate-cu",
+      "tool": "CLI",
+      "who": "design-feature (automatic)",
+      "section": "left_leg",
+      "output": "CU breakdown in design_shared_libs.md § Effort Estimate (CU-Derived); cu_estimate field populated",
+      "completed": "2026-04-27",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_2",
+      "name": "Review Design",
+      "skill": "review-design",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Design Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single developer, all roles self; PM review skipped for scaffolding sub-phases.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_3",
+      "name": "Generate Gherkin",
+      "skill": "generate-gherkin",
+      "tool": "CLI",
+      "who": "Dev Lead / QA",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-002/gherkin_shared_libs_*.feature",
+      "completed": "2026-04-27",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_4",
+      "name": "Review Gherkin",
+      "skill": "review-gherkin",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Gherkin Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single developer, all roles self; PM review skipped for scaffolding sub-phases.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_5",
+      "name": "Audit Documentation",
+      "skill": "audit-docs",
+      "tool": "Both",
+      "who": "PM (audit-documents) + Dev Lead (audit-docs)",
+      "section": "left_leg",
+      "output": "Audit reports",
+      "completed": "2026-04-27",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "audit_summary": {
+        "passes": 1,
+        "total_findings_resolved": 2,
+        "story_decomposition_findings": 0,
+        "architecture_conformance_findings": 2,
+        "codebase_findings": 0,
+        "disposition": "clean — documentation debt only; no implementation-blocking findings",
+        "findings": [
+          {
+            "id": "AF-001",
+            "phase": "0b",
+            "severity": "low",
+            "category": "architecture_naming",
+            "description": "architecture_phase0.md §5 Component Boundaries uses 'ApplicationDbContext' but design_shared_libs.md AC-2 and Gherkin specify 'TraverseDbContext'. Design name is approved and implementation-authoritative. Architecture doc requires a minor update to reflect the refined name.",
+            "resolution": "Documentation debt — architecture doc to be updated via feature worktree. Implementation follows design name 'TraverseDbContext'.",
+            "status": "resolved_auto"
+          },
+          {
+            "id": "AF-002",
+            "phase": "0b",
+            "severity": "low",
+            "category": "architecture_naming",
+            "description": "architecture_phase0.md §3 Data Model lists abstract base classes as 'Client', 'Case', 'WorkItem', 'User', 'Program'. design_shared_libs.md AC-1 and Gherkin specify 'ClientBase', 'CaseBase', 'WorkItemBase', 'UserBase', 'ProgramBase'. Design names are approved and implementation-authoritative.",
+            "resolution": "Documentation debt — architecture doc to be updated via feature worktree. Implementation follows design names with '*Base' suffix.",
+            "status": "resolved_auto"
+          }
+        ],
+        "artefact_validation": "all 9 checksums matched — design and Gherkin unchanged since approval",
+        "branch_validated": "story/NT-002 in worktree Northwoods_Traverse-story-NT-002",
+        "audited_by": "audit-docs v3.2.1 | 2026-04-27"
+      }
+    },
+    {
+      "id": "step_6",
+      "name": "Plan Implementation",
+      "skill": "plan-implementation",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-002/plan_shared_libs.md",
+      "completed": "2026-04-28",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": {
+        "path": "skill_docs/plan-implementation_docs/questions_1.md",
+        "answered": true,
+        "created": "2026-04-27T12:00:00Z"
+      }
+    },
+    {
+      "id": "step_7",
+      "name": "Execute Implementation",
+      "skill": "execute-implementation",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "bottom",
+      "output": "Production-ready shared library projects, all CI checks passing",
+      "completed": "2026-04-28",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "implementation_summary": "8 phases complete. 2 AI projects retargeted net9→net10. 6 new shared libraries created: Domain.Primitives (22 files), Infrastructure.Persistence (13 files), Infrastructure.Messaging (6 files), Infrastructure.Auth (6 files), Infrastructure.Http (5 files), Infrastructure.Observability (5 files). All 8 projects in Traverse.sln. dotnet build Release+Debug: 0 errors, 0 warnings. Deviations: MassTransit Host() overload includes VirtualHost param; Http/Observability use FrameworkReference include Microsoft.AspNetCore.App."
+    },
+    {
+      "id": "step_8",
+      "name": "Integration Testing",
+      "skill": "integration-test",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-002/integration_tests_shared_libs.md",
+      "completed": "2026-04-28",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "test_summary": "14 boundaries mapped, 14 passed, 0 findings. Pure library story — architectural boundary verification: dependency flow, interface contracts, build gates. Report: docs/NT-000/NT-002/integration_tests_shared_libs.md"
+    },
+    {
+      "id": "step_9",
+      "name": "E2E UI Testing",
+      "skill": "e2e-test",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": "E2E test artefacts",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Scaffolding sub-phase has no UI flows — no browser-driven tests applicable.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_10",
+      "name": "Code Review",
+      "skill": "code-review",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-002/code_review_shared_libs.md",
+      "completed": "2026-04-29",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "open_findings": [],
+      "review_summary": {
+        "verdict": "APPROVED_WITH_NOTES",
+        "review_cycle": 1,
+        "reviewer": "code-review v2.2.0 (AutoMode)",
+        "must_fix": 1,
+        "should_fix": 2,
+        "suggestions": 2,
+        "auto_fixed": 2,
+        "open": 1,
+        "auto_fixed_ids": [
+          "MF-001",
+          "SF-001"
+        ],
+        "open_finding_ids": [
+          "SF-002"
+        ],
+        "open_finding_summary": "SF-002: design_shared_libs.md AC-3/§4.5 needs updating to reflect OutboxProcessorBase ProcessScopeAsync API (documentation debt only — no code change)"
+      }
+    },
+    {
+      "id": "step_11",
+      "name": "Validate Acceptance",
+      "skill": "validate-acceptance",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": "Acceptance validation artefacts",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Scaffolding has no formal acceptance criteria; correctness verified by integration tests and code review.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_12",
+      "name": "Acceptance Sign-Off",
+      "skill": "acceptance-signoff",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "right_leg",
+      "output": "Story-level acceptance sign-off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single developer, all roles self; scaffolding sign-off via code review.",
+      "status": "pending",
+      "questions_doc": null
+    }
+  ],
+  "cu_estimate": {
+    "adjusted_cu": 70.0,
+    "hours_estimate": 140.0,
+    "calculated_date": "2026-04-27",
+    "calculated_by": "design-feature",
+    "resume_pipeline_note": "2026-04-27: Estimate confirmed valid. NT-002 CU covers 6 new library projects (Traverse.Domain.Primitives, Traverse.Infrastructure.Persistence, Traverse.Infrastructure.Messaging, Traverse.Infrastructure.Auth, Traverse.Infrastructure.Http, Traverse.Infrastructure.Observability). Minor additional scope: retarget existing Traverse.AI.Abstractions and Traverse.AI.Providers from net9.0 to net10.0 per ADR-004."
+  },
+  "artefact_checksums": {
+    "design_shared_libs.md": {
+      "checksum": "sha256-98e3d14030b904743c4726c3484eb295eed2c0fe11ea07cbcb88e6138a20b1a0",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_domain_primitives.feature": {
+      "checksum": "sha256-fb42d9bb15cf0407aeed6b618772923b9ddd43386e75256022370453cb0fe5b1",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_persistence.feature": {
+      "checksum": "sha256-83dfcbb822d46d07466a7f6ea78eb73754078cf58e4207bd7206ad71a3d2b003",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_messaging.feature": {
+      "checksum": "sha256-537991ef79df80899ef2b75f6ce66189572c7ccf05d328dbd8658b396fc627d0",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_auth.feature": {
+      "checksum": "sha256-3144acd4ab5083ef37d13e32d9a67dbc6ce99fc248853c222420414e59f6dd3e",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_http.feature": {
+      "checksum": "sha256-af2900a2389f9fb982b48acf47c6172ae76696b13794baa10577d6f8994dd2fb",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_observability.feature": {
+      "checksum": "sha256-3b3bcc457f49a00f3190f27b420c6f499967472747337e5864884b93d9c855de",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_ai_retarget.feature": {
+      "checksum": "sha256-15d5cdab29cda55073259fd3cd390d2f3d0720d6939002bc48954ac409c731b7",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "gherkin_shared_libs_solution_integrity.feature": {
+      "checksum": "sha256-91189f4192f9884e37b2f3c1a0ae27beabfeec9b2950e0381d9eeaf5d78db6e6",
+      "approved_by": "Kendrew Peacey (DevLead + PM, self — single operator, AutoMode)",
+      "approved_date": "2026-04-27"
+    },
+    "plan_shared_libs.md": {
+      "checksum": "sha256-b6d503af4f58d915f79d9d6cdf79c4ca9aaa9e4a02ecf28a776419f9336aa7ee",
+      "approved_by": "Kendrew Peacey (DevLead, self — single operator)",
+      "approved_date": "2026-04-28",
+      "checksum_pre_signature": "sha256-9d51db073bbb5c056aae4ca0dfe0bf102ff0d0565daae5bae3b9d0d64987901c"
+    }
+  },
+  "decision_log": [
+    {
+      "number": 1,
+      "step": "Initialise",
+      "decision": "Skip steps 2, 4, 9, 11, 12 for all Phase 0 sub-phases",
+      "rationale": "All roles are 'self' (single developer). PM reviews are instant. Phase 0 is infrastructure scaffolding with no UI flows and no formal acceptance criteria — E2E testing and acceptance validation do not apply.",
+      "date": "2026-04-26"
+    },
+    {
+      "number": 2,
+      "step": "Initialise",
+      "decision": "Minor scope addition: retarget Traverse.AI.Abstractions and Traverse.AI.Providers from net9.0 to net10.0",
+      "rationale": "Per ADR-004 (2026-04-27) all projects target net10.0. These pre-existing projects were scaffolded at net9.0 before the TFM decision. Retargeting is within the 57.75 CU estimate's ±50–100% confidence bounds.",
+      "date": "2026-04-27"
+    }
+  ],
+  "last_updated_by": "code-review v2.2.0 (AutoMode)"
+}

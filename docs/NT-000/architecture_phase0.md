@@ -27,7 +27,7 @@
 
 Phase 0 is pure infrastructure scaffolding — it creates the compilable, runnable skeleton that every Phase 1+ feature story builds on. No business logic is introduced. The deliverable is a monorepo containing:
 
-- A .NET 9 solution (`Traverse.sln`) with eleven class library projects (six shared infrastructure libs plus the two pre-existing AI projects) and nine empty ASP.NET Core Web API stubs.
+- A .NET 10 solution (`Traverse.sln`) with eleven class library projects (six shared infrastructure libs plus the two pre-existing AI projects) and nine empty ASP.NET Core Web API stubs.
 - An Angular workspace (`traverse-workspace`) with Material 3 theming, an app shell, persona navigation, auth stubs, and shared presentational components.
 - A Docker Compose environment that brings up PostgreSQL, RabbitMQ, and n8n locally with a single `docker compose up`.
 
@@ -293,7 +293,7 @@ Port map:
 - Responsibility: Render the top navigation bar and left sidebar (220px). Apply responsive breakpoints. Host the `<router-outlet>`.
 - Layer: Presentation
 - Calls: `AuthService` (to determine nav item visibility by role)
-- Called by: `bootstrapApplication` root
+- Called by: Angular router (loaded as the layout component for the authenticated root route; `bootstrapApplication` boots `AppComponent`, which renders `<router-outlet>` that activates `AppShellComponent`)
 
 ---
 
@@ -322,7 +322,7 @@ Port map:
 ---
 
 **Component: Shared Presentational Components** (`app/shared/components/`)
-- `PageHeaderComponent` — displays page title and optional breadcrumbs. No logic.
+- `PageHeaderComponent` — displays page title and optional subtitle. No logic.
 - `ErrorDisplayComponent` — renders an error message card. Accepts `error` input.
 - `LoadingSpinnerComponent` — centred Material spinner overlay. Accepts `isLoading` input.
 - `KpiStatusBadgeComponent` — coloured status chip using M3 paired tokens. Accepts `status` input.
@@ -377,7 +377,7 @@ NT-001
 ### Integration with `Traverse.AI.Abstractions` and `Traverse.AI.Providers`
 
 - How we connect: Project reference from `Traverse.sln`. No API call — compile-time reference.
-- What we depend on: These projects exist at `src/shared/Traverse.AI.Abstractions/` and `src/shared/Traverse.AI.Providers/`. They target `net9.0` with nullable enabled and TreatWarningsAsErrors.
+- What we depend on: These projects exist at `src/shared/Traverse.AI.Abstractions/` and `src/shared/Traverse.AI.Providers/`. They currently target `net9.0` with nullable enabled and TreatWarningsAsErrors; they will be retargeted to `net10.0` in NT-002 (see §8 Technology — .NET 10.0).
 - Impact on existing components: None. We adopt their patterns (file-scoped namespaces, primary constructors, records for value objects) as the convention baseline. No modifications to either project in Phase 0.
 
 ---
@@ -417,7 +417,7 @@ NT-001
 ### Integration with CI / Build
 
 - How we connect: `Traverse.sln` is the single build target. `dotnet build Traverse.sln` must succeed with zero warnings (TreatWarningsAsErrors). Angular builds via `ng build --configuration production`.
-- What we depend on: .NET 9 SDK (pinned in `global.json`); Node/Angular CLI.
+- What we depend on: .NET 10 SDK 10.0.103 (pinned in `global.json`); Node/Angular CLI.
 - Impact on existing components: The existing AI projects are already CI-clean — adopting them into the solution must not break this.
 
 ---
@@ -677,7 +677,7 @@ NT-001
 
 **Risk Factors That Could Increase Effort:**
 - Angular Material 3 palette customisation — captured in Risk Assessment §9 Risk 2.
-- Serilog / OpenTelemetry NuGet package compatibility with .NET 9 at time of implementation.
+- Serilog / OpenTelemetry NuGet package compatibility with .NET 10 at time of implementation.
 - Warm-up period: calibration factor defaults to 1.4; actual project velocity unknown until first actuals are logged.
 
 ---
@@ -723,6 +723,8 @@ NT-001
 | Date | Author | Section(s) Changed | Reason |
 |---|---|---|---|
 | 2026-04-27 | Kendrew Peacey | §8 Technology Decisions — .NET Runtime, EF Core, MassTransit constraints | resume-pipeline review — NT-001 implementation (PR #1, commit ed98ce87) confirmed developer machine has .NET 10 SDK (10.0.103) only. `Traverse.AI.Providers` already required `Microsoft.Extensions.*.Version="10.0.*"` packages due to OpenAI SDK 2.x transitive dependency (NU1605 with net9.0 SDK). ADR-004 (2026-04-27) explicitly selected net10.0 for all new projects. Architecture technology section updated from ".NET 9.0" to ".NET 10.0" with full rationale and constraint on retargeting existing AI projects in NT-002. |
+| 2026-04-30 | audit-docs skill (NT-003) | §1 Solution Overview, §7 Integration Points (AI libs), §7 Integration with CI/Build, §5 AppShellComponent, §5 Shared Presentational Components, §10 Risk Factors | NT-003 audit-docs pass found five residual documentation-debt issues: (1) §1 line 30 still said ".NET 9" — updated to ".NET 10"; (2) §7 AI libs still said `net9.0` as current TFM — clarified they target net9.0 now, retargeted to net10.0 in NT-002; (3) §7 CI/Build still said ".NET 9 SDK" — corrected to ".NET 10 SDK 10.0.103"; (4) §5 AppShellComponent `Called by: bootstrapApplication root` was imprecise — updated to reflect router-based activation; (5) §5 PageHeaderComponent described "optional breadcrumbs" — corrected to "optional subtitle" per NT-003 design AC-023. Also corrected §10 risk factor mentioning ".NET 9" to ".NET 10". All are doc-debt fixes; no architectural intent changed. |
 
 <!-- Generated by skill: design-architecture v1.5.0 | 2026-04-26 09:00 -->
 <!-- Updated by skill: resume-pipeline v2.6.0 | 2026-04-27 -->
+<!-- Updated by skill: audit-docs (NT-003) | 2026-04-30 -->

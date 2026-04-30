@@ -55,3 +55,8 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Angular frontend workspace
+src/frontend/traverse-workspace/node_modules/
+src/frontend/traverse-workspace/dist/
+src/frontend/traverse-workspace/.angular/
