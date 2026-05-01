@@ -1,0 +1,47 @@
+{
+  "/api/workflow": {
+    "target": "http://localhost:5001",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/workflow": "" }
+  },
+  "/api/kpi": {
+    "target": "http://localhost:5002",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/kpi": "" }
+  },
+  "/api/admin": {
+    "target": "http://localhost:5003",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/admin": "" }
+  },
+  "/api/notifications": {
+    "target": "http://localhost:5004",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/notifications": "" }
+  },
+  "/api/reporting": {
+    "target": "http://localhost:5005",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/reporting": "" }
+  },
+  "/api/ai-copilot": {
+    "target": "http://localhost:5006",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/ai-copilot": "" }
+  },
+  "/api/compliance": {
+    "target": "http://localhost:5007",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/compliance": "" }
+  },
+  "/api/search": {
+    "target": "http://localhost:5008",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/search": "" }
+  },
+  "/api/calendar": {
+    "target": "http://localhost:5009",
+    "changeOrigin": true,
+    "pathRewrite": { "^/api/calendar": "" }
+  }
+}

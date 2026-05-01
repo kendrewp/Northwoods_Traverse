@@ -362,7 +362,168 @@ Parameterise on the DbContext type to allow the base to resolve it.
 
 ---
 
-## ADR-007 — Docker Compose Local Development Environment (NT-004)
+## DES-001 — NT-003 Angular Workspace Creation: Merge Approach
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (self, AutoMode)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+NT-001 created stub files in `src/frontend/traverse-workspace/`: `angular.json` (with OnPush schematic default, standalone true, scss style, proxy.conf.json reference) and `tsconfig.json` (with strict TypeScript flags, path aliases `@core/*`, `@shared/*`, `@features/*`). The actual `ng new` scaffold — `package.json`, `src/`, `tsconfig.app.json`, `tsconfig.spec.json` — has not been run. NT-003 must produce a compilable Angular workspace. The question is whether to run `ng new` verbatim (overwriting the stubs) or to merge generated output into the existing stubs.
+
+### Decision
+
+Use a **merge approach**: run `ng new traverse --standalone --strict --routing --style=scss --skip-git` in a temporary location, then copy the generated boilerplate (`src/`, `package.json`, `tsconfig.app.json`, `tsconfig.spec.json`) into `src/frontend/traverse-workspace/` while preserving the NT-001 `angular.json` (project name "traverse", OnPush default, proxy reference) and `tsconfig.json` (path aliases).
+
+### Options Considered
+
+#### Option A — Full `ng new` overwrite (rejected)
+
+Run `ng new traverse ...` directly in `src/frontend/traverse-workspace/`, accepting all defaults.
+
+- **Pro:** Simplest command; canonical Angular CLI output.
+- **Con:** Overwrites the NT-001 stubs that encode approved architectural decisions (OnPush schematic default, path aliases, proxy config reference). Would require re-applying every decision after the fact, with risk of omission. The `_stub_notice` in `tsconfig.json` explicitly flags this risk.
+
+#### Option B — Manual scaffold merge (selected)
+
+Generate in a temp directory; merge into the worktree.
+
+- **Pro:** Preserves NT-001 stub settings exactly; produces correct result without post-generation fixup; honours the `_stub_notice` instruction.
+- **Con:** More steps in the implementation plan; slightly more error-prone if the merge is not done carefully.
+
+### SOLID Analysis
+
+No direct SOLID impact — this is a workspace creation workflow decision. The resulting structure is identical to a correctly configured `ng new` output.
+
+### Consequences
+
+- Implementation plan step must specify: (1) run `ng new traverse` in `/tmp/`, (2) copy `package.json`, `src/`, `tsconfig.app.json`, `tsconfig.spec.json` to worktree, (3) verify `angular.json` retains OnPush, proxy, and project name "traverse", (4) verify `tsconfig.json` retains path aliases.
+- AC-007 (verify `tsconfig.json` path aliases post-merge) added to acceptance criteria.
+
+---
+
+## DES-002 — NT-003 KPI Placeholder Tile Naming: Generic Slot Numbers
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead / PM (self, AutoMode)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+The app shell DashboardComponent (Phase 0 placeholder) must render 6 KPI tiles. The actual KPI metric names are defined by MOD-03 (Phase 1b — KPI/SLA Policy Engine). Two options exist for labelling the tiles in Phase 0.
+
+### Decision
+
+Use **generic slot labels** ("KPI Slot 1" through "KPI Slot 6") with subtitle "Available in Phase 1". Do not attempt to name the slots with anticipated metric names.
+
+### Options Considered
+
+#### Option A — Anticipated metric names (rejected)
+
+Label tiles with expected metric names from the KPI PRD (e.g., "Cases Due Today", "Cases At Risk", etc.).
+
+- **Pro:** Gives developers a preview of the final UI.
+- **Con:** Introduces coupling between Phase 0 and Phase 1b design decisions that have not been finalised. If MOD-03 changes the KPI taxonomy, Phase 0 tiles become incorrect. Violates YAGNI — the tile names are speculative at this stage.
+
+#### Option B — Generic slot labels (selected)
+
+Label tiles "KPI Slot 1–6".
+
+- **Pro:** Zero coupling to Phase 1b; no speculative design. Phase 1 replaces the slot labels with real metric names without touching Phase 0 infrastructure.
+- **Con:** Less visually descriptive during Phase 0.
+
+### SOLID Analysis
+
+Open/Closed Principle: generic labels allow MOD-01 (Phase 2) to extend the tile content without modifying the Phase 0 shell structure.
+
+### Consequences
+
+- DashboardComponent renders 6 tiles from a static `kpiSlots = signal([...])` array of 6 generic slot objects.
+- MOD-01 Phase 2 replaces the placeholder array with real KPI data from `OrderStore` / `KpiStore`.
+
+---
+
+## DES-003 — NT-003 Proxy pathRewrite: Strip Service Prefix
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (self, AutoMode)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+The Angular dev proxy routes `/api/{service}/*` calls to the correct backend. The nine backend API projects mount their routes at `/api/*` — not `/api/{service}/*`. A request from Angular to `/api/workflow/cases` would arrive at the Workflow API as `/api/workflow/cases` unless the proxy strips the service segment.
+
+### Decision
+
+Add `"pathRewrite": { "^/api/{service}": "" }` to each proxy entry, so the backend receives the request without the service prefix (e.g., `/api/cases` instead of `/api/workflow/cases`).
+
+### Consequences
+
+- All nine proxy.conf.json entries include the `pathRewrite` key.
+- Angular service calls are structured as `/api/{service}/{resource}` (e.g., `/api/workflow/cases`).
+- Backend controllers are structured as `[Route("api/[controller]")]` — they see `/api/cases` after the proxy strips `/api/workflow`.
+- This is the standard Angular proxy pathRewrite pattern and does not require changes to any backend project.
+
+---
+
+## ADR-007 — Angular inject() Must Not Be Called Inside RxJS Operator Callbacks
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (discovered during NT-003 integration testing)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+During Step 8 integration testing of NT-003, a defect was found in `errorInterceptor`: the function called `inject(Router)` inside the `catchError()` callback, which executes asynchronously outside Angular's synchronous injection context. This throws NG0203 (`inject() must be called from an injection context`) at runtime on every 401 HTTP response, preventing the error from being mapped to an `ApiError` and silently blocking the `/login` redirect.
+
+The Phase 9 smoke test did not reveal the defect because no 401 response was triggered during manual testing. The integration test was the first exercise of that code path.
+
+### Options Considered
+
+**Option A (selected): Capture the token at function-body level, use via closure**
+
+```typescript
+export function errorInterceptor(req, next): Observable<HttpEvent<unknown>> {
+  const router = inject(Router);  // ← synchronous injection context: valid
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 401) router.navigate(['/login']);  // ← closure: valid
+      ...
+    })
+  );
+}
+```
+
+The injection context is valid during the synchronous body of the interceptor function. The captured `router` reference is held by closure and safe to use in any async callback.
+
+**Option B: Inject via constructor in a class-based interceptor**
+
+Convert to `@Injectable() class ErrorInterceptor implements HttpInterceptor`. Injection via constructor is always valid. Rejected: all other interceptors are functional (Angular 15+ standard); mixing patterns in the same file set creates inconsistency.
+
+**Option C: Use runInInjectionContext**
+
+Wrap the `inject(Router)` call in `runInInjectionContext(injector, () => inject(Router))`. Requires an `Injector` parameter to be passed through. Rejected: more complex than Option A with no benefit.
+
+### Decision
+
+**Option A — capture at function-body level.** This is the idiomatic Angular pattern for functional interceptors and applies universally:
+
+> Any DI token needed inside an RxJS operator callback in a functional interceptor, guard, or resolver must be captured via `inject()` at the function body level and accessed via closure inside the callback. Never call `inject()` inside `catchError`, `tap`, `map`, `switchMap`, or any other RxJS operator callback.
+
+### Consequences
+
+- `errorInterceptor` was corrected. `ng test` confirms 79/79 pass; `ng lint` and `ng build --configuration production` are clean.
+- The pattern is documented here and in the interceptor file's JSDoc to prevent recurrence.
+- All future interceptors, guards, and resolvers in this project must follow this pattern. Code review (Step 10) will check for violations.
+
+---
+
+## ADR-008 — Docker Compose Local Development Environment (NT-004)
 
 **Date:** 2026-05-01
 **Status:** Decided

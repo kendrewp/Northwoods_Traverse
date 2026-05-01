@@ -56,7 +56,7 @@ _None._
 
 - **README is a genuine quickstart.** All 17 checks against the design §4.10 requirements passed. Commands are copy-pasteable, the `down` vs `down -v` distinction is clearly explained, the troubleshooting table covers all 6 design-specified scenarios, and the Security Note is prominent. The Project Layout section accurately reflects the current state of the `docker/` tree.
 
-- **development_evolution.md entry is complete and accurate.** ADR-007 documents the selected option, all four alternatives considered, all 8 key decisions from the story, SOLID conformance, and consequences including known cross-story gaps (NT-005 dependency, `init.sql` one-time run, Linux UID note). This satisfies CLAUDE.md rule #12.
+- **development_evolution.md entry is complete and accurate.** ADR-008 documents the selected option, all four alternatives considered, all 8 key decisions from the story, SOLID conformance, and consequences including known cross-story gaps (NT-005 dependency, `init.sql` one-time run, Linux UID note). This satisfies CLAUDE.md rule #12.
 
 - **No YAGNI violations.** Zero speculative additions. Every file in the diff is directly traced to a design specification or pipeline requirement. The out-of-scope list from design §6 (OTel, reverse proxy, TLS, migrations, etc.) is correctly absent.
 
