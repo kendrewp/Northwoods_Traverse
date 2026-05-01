@@ -1,0 +1,118 @@
+# docker-compose.yml -- Northwoods Traverse Local Development Environment
+#
+# Single-command local environment for the Northwoods Traverse platform (NT-004).
+# See docs/NT-000/NT-004/design_local_dev_env.md for architecture decisions.
+#
+# Usage:
+#   cp .env.example .env              # one-time: create your local credential file
+#   docker compose up -d              # start infra services (postgres, rabbitmq, n8n)
+#   docker compose --profile api up -d # start full stack including API stubs (requires NT-005)
+#   docker compose down               # stop; data volumes are preserved
+#   docker compose down -v            # stop and destroy all data volumes (resets databases)
+#
+# Design decisions:
+#   - No 'version:' key: Docker Compose v2 deprecates this field (D-13)
+#   - Custom bridge network 'traverse-net': enables DNS resolution by service name (D-6)
+#   - Named volumes: postgres-data, rabbitmq-data, n8n-data persist across 'down' (D-9)
+#   - API services are profile-gated (--profile api) until NT-005 Dockerfiles land (D-7)
+#   - Healthcheck-driven depends_on eliminates API-starts-before-DB race condition (D-8)
+
+# ---------------------------------------------------------------------------
+# Networks
+# ---------------------------------------------------------------------------
+# User-defined bridge network provides automatic DNS resolution by service name.
+# Containers communicate via these names: postgres, rabbitmq, n8n, workflow-api, etc.
+# The default bridge network requires --link (deprecated) for DNS resolution.
+networks:
+  traverse-net:
+    driver: bridge
+
+# ---------------------------------------------------------------------------
+# Volumes
+# ---------------------------------------------------------------------------
+# Named volumes survive 'docker compose down'. Use 'docker compose down -v' to reset.
+volumes:
+  postgres-data:
+  rabbitmq-data:
+  n8n-data:
+
+# ---------------------------------------------------------------------------
+# Services
+# ---------------------------------------------------------------------------
+services:
+
+  # -------------------------------------------------------------------------
+  # RabbitMQ -- message broker for MassTransit inter-service communication
+  # Design: section 4.3, decision D-3 (rabbitmq:3-management for mgmt UI)
+  # AMQP port: ${RABBITMQ_PORT:-5672}
+  # Management UI: http://localhost:${RABBITMQ_MGMT_PORT:-15672}
+  # Default credentials: traverse / traverse_dev (override in .env)
+  # -------------------------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: traverse-rabbitmq
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MGMT_PORT:-15672}:15672"
+    environment:
+      # These match the RABBITMQ_USER / RABBITMQ_PASSWORD variables in .env.example.
+      # MassTransit in Traverse.Infrastructure.Messaging connects to vhost "/" using these.
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-traverse}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-traverse_dev}
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    # Healthcheck: rabbitmq-diagnostics ping confirms the broker is accepting connections.
+    # start_period: 30s gives RabbitMQ time to fully initialise (can be slow on cold boot).
+    # retries: 10 with 10s interval = 130s total grace window (start_period + retries*interval).
+    # This mitigates R-3: RabbitMQ slow-start on weak laptops.
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # n8n -- workflow automation engine for Northwoods Traverse orchestration
+  # Design: section 4.4, decision D-4 (no-auth for local dev)
+  # Editor: http://localhost:${N8N_PORT:-5678}
+  # No authentication in local dev -- see README Security Note before deploying
+  # Workflows bind-mounted at ./n8n/workflows for version control (D-10)
+  # -------------------------------------------------------------------------
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: traverse-n8n
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    environment:
+      # N8N_BASIC_AUTH_ACTIVE=false: no login required for local dev (D-4).
+      # NEVER deploy with this setting outside a local environment.
+      N8N_BASIC_AUTH_ACTIVE: "false"
+      N8N_HOST: localhost
+      N8N_PORT: "5678"
+      # WEBHOOK_URL must match the host-side URL so webhook triggers function correctly.
+      WEBHOOK_URL: http://localhost:${N8N_PORT:-5678}/
+      # Timezone matches Northwoods customer base (Ontario, Canada); overridable via TZ env var.
+      GENERIC_TIMEZONE: America/Toronto
+    volumes:
+      # Named volume for n8n internal SQLite database and encrypted credentials store.
+      - n8n-data:/home/node/.n8n
+      # Bind mount: host ./n8n/workflows -> container workflow directory.
+      # Allows workflow JSON files to be version-controlled in the repo (D-10).
+      # Linux note: if n8n cannot write here, run: chown 1000:1000 n8n/workflows
+      # (n8n runs as uid 1000; macOS/Windows Docker Desktop handle UID mapping automatically)
+      - ./n8n/workflows:/home/node/.n8n/workflows
+    # n8n exposes /healthz for readiness probing.
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5678/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
