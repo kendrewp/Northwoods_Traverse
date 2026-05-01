@@ -42,6 +42,45 @@ volumes:
 services:
 
   # -------------------------------------------------------------------------
+  # PostgreSQL -- relational database server (one database per service)
+  # Design: section 4.2, decision D-2 (postgres:latest; note for production: pin to postgres:16+)
+  # Host port: ${POSTGRES_PORT:-5432}
+  # Admin user: ${POSTGRES_USER:-traverse} (owner of all nine service databases)
+  # init.sql: mounts docker/postgres/init.sql into /docker-entrypoint-initdb.d/ (D-11)
+  # The init script runs ONCE on first container start (empty postgres-data volume).
+  # On re-runs: postgres-data already has data; init.sql is skipped automatically.
+  # To reset: docker compose down -v && docker compose up (destroys all volumes)
+  # -------------------------------------------------------------------------
+  postgres:
+    image: postgres:latest
+    container_name: traverse-postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      # POSTGRES_DB=postgres: create the default 'postgres' database.
+      # Service databases (traverse_workflow, etc.) are created by init.sql.
+      POSTGRES_USER: ${POSTGRES_USER:-traverse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-traverse_dev}
+      POSTGRES_DB: postgres
+    volumes:
+      # Named volume for all nine service databases; survives docker compose down (D-9).
+      - postgres-data:/var/lib/postgresql/data
+      # Init script: runs once on first start (empty volume), creates nine service databases.
+      # :ro = read-only mount; the script is never written to by postgres.
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    # pg_isready returns 0 only after postgres is accepting TCP connections.
+    # start_period: 15s allows postgres to initialise before healthcheck counts failures.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-traverse}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
   # RabbitMQ -- message broker for MassTransit inter-service communication
   # Design: section 4.3, decision D-3 (rabbitmq:3-management for mgmt UI)
   # AMQP port: ${RABBITMQ_PORT:-5672}
