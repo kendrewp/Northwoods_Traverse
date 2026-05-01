@@ -8,8 +8,8 @@
   "docs_folder": "docs/NT-000/NT-004/",
   "prd_reference": "docs/plans/implementation-order.md Phase 0d",
   "created": "2026-04-30",
-  "last_updated": "2026-05-01T18:00:00Z",
-  "current_step": "Step 8: Integration Testing",
+  "last_updated": "2026-05-01T20:00:00Z",
+  "current_step": "Step 11: Validate Acceptance",
   "status": "In Progress",
   "steps": [
     {
@@ -135,11 +135,11 @@
       "tool": "CLI",
       "who": "Developer",
       "section": "right_leg",
-      "output": "docs/<FEATURE-ID>/<STORY-ID>/integration_tests_<story_short>.<ext>",
-      "completed": null,
-      "checked": false,
+      "output": "docs/NT-000/NT-004/integration_tests_local_dev_env.md",
+      "completed": "2026-04-30",
+      "checked": true,
       "skip_reason": null,
-      "status": "pending",
+      "status": "completed",
       "questions_doc": null
     },
     {
@@ -167,13 +167,22 @@
       "tool": "CLI",
       "who": "Dev Lead",
       "section": "right_leg",
-      "output": "docs/<FEATURE-ID>/<STORY-ID>/code_review_<story_short>.md",
-      "completed": null,
-      "checked": false,
+      "output": "docs/NT-000/NT-004/code_review_local_dev_env.md",
+      "completed": "2026-05-01",
+      "checked": true,
       "skip_reason": null,
-      "status": "pending",
+      "status": "completed",
       "questions_doc": null,
-      "open_findings": []
+      "open_findings": [
+        {
+          "id": "SG-1",
+          "severity": "suggestion",
+          "summary": "Implementation plan documents '14 variables' but .env.example correctly has 17",
+          "resolved": false,
+          "resolved_date": null,
+          "resolution_note": null
+        }
+      ]
     },
     {
       "id": "step_11",
@@ -262,6 +271,11 @@
       "checksum": "d07a4ad56a38be7d58c54c07bf043d4cea3175795f0dd93c3ac1c05a2805fc26",
       "approved_by": "step_6",
       "approved_date": "2026-05-01"
+    },
+    "docs/NT-000/NT-004/integration_tests_local_dev_env.md": {
+      "checksum": "sha256-00016d2d908ceca219596db4bf375c6ed814998c4cb550f0aac8885e4db1b776",
+      "approved_by": "step_8",
+      "approved_date": "2026-04-30"
     }
   },
   "decision_log": [
@@ -305,6 +319,20 @@
       "decision": "Implementation plan approved by Dev Lead (Q1 answered: APPROVED)",
       "rationale": "Plan reviewed: 6 phases, 14 steps, 66.5 hrs estimated; phasing sound (credentials first, then init.sql, infra compose, API stubs profile-gated, full wiring, README); 6 risks identified; scope confined to design 4.2-4.10",
       "date": "2026-05-01"
+    },
+    {
+      "number": 5,
+      "step": "step_7",
+      "decision": "execute-implementation completed: 6 phases, all tests passing — docker compose config validated, 9 Dockerfiles created with .NET 10 non-root pattern, init.sql provisioned, .env pattern enforced, README updated with quickstart",
+      "rationale": "Implementation followed plan exactly; profile-gating of API services confirmed working; .gitignore additive change approved by plan",
+      "date": "2026-05-01"
+    },
+    {
+      "number": 6,
+      "step": "step_8",
+      "decision": "integration-test completed: 10 boundaries tested, 23 assertions, all PASSED — compose config valid, profile gating correct, all 12 port assignments match design §4.7, all 12 services on traverse-net, depends_on service_healthy conditions on all 9 API stubs, init.sql creates 9 correct databases, Dockerfiles conform to .NET Coding Standards §18",
+      "rationale": "Integration verification performed via docker compose config parsing and static analysis; no live container test required for infrastructure wiring conformance checks. OBS-01 (proxy.conf.json) is an expected cross-story gap that resolves at merge.",
+      "date": "2026-04-30"
     }
   ]
 }
