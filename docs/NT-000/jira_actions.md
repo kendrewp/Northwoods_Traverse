@@ -303,3 +303,15 @@
 - Pipeline progress: 3 of 5 Phase 0 stories complete
 - Story status transition: In Progress → Complete
 - Story worktree: removed (force — untracked V-Model runtime files only)
+
+---
+
+### AUTO_WORKTREE_SWITCH — 2026-04-30
+- Switched from: /Users/kendrewpeacey/Projects/Northwoods_Traverse (main)
+- Switched to:   /Users/kendrewpeacey/Projects/Northwoods_Traverse-story-NT-004 (story/NT-004)
+- Reason:        AutoBranch — agent auto-navigated to correct worktree for NT-004 orchestration
+
+### PIPELINE_RESUMED — 2026-04-30
+- Story:    NT-004 (local_dev_env)
+- Resuming: Step 1 Design Feature (re-entry — questions_001.md answered: true, Q1 APPROVED)
+- Current tracker status: blocked_on_questions → transitioning to re-entry dispatch
