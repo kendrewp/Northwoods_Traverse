@@ -1,0 +1,350 @@
+{
+  "tracker_type": "story_tracker",
+  "schema_version": "1.0",
+  "feature_id": "NT-000",
+  "feature_name": "Phase 0 — Scaffolding",
+  "story_id": "NT-004",
+  "short_name": "local_dev_env",
+  "docs_folder": "docs/NT-000/NT-004/",
+  "prd_reference": "docs/plans/implementation-order.md Phase 0d",
+  "created": "2026-04-30",
+  "last_updated": "2026-05-01",
+  "current_step": "Step 11: Validate Acceptance",
+  "status": "In Progress",
+  "steps": [
+    {
+      "id": "step_1",
+      "name": "Design Feature",
+      "skill": "design-feature",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/<FEATURE-ID>/<STORY-ID>/design_<story_short>.md",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": {
+        "path": "skill_docs/design-feature_docs/questions_001.md",
+        "answered": true,
+        "created": "2026-04-30T14:35:00Z"
+      }
+    },
+    {
+      "id": "step_1a",
+      "name": "Calculate CU",
+      "skill": "calculate-cu",
+      "tool": "CLI",
+      "who": "design-feature (automatic)",
+      "section": "left_leg",
+      "output": "CU breakdown in design_<story_short>.md § Effort Estimate (CU-Derived); cu_estimate field populated",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": null
+    },
+    {
+      "id": "step_2",
+      "name": "Review Design",
+      "skill": "review-design",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Design Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single-developer project, all roles self. Requirements fully specified in implementation-order.md Phase 0d. No ambiguity to resolve before design.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_3",
+      "name": "Generate Gherkin",
+      "skill": "generate-gherkin",
+      "tool": "CLI",
+      "who": "Dev Lead / QA",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-004/gherkin_local_dev_env_*.feature",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": null
+    },
+    {
+      "id": "step_4",
+      "name": "Review Gherkin",
+      "skill": "review-gherkin",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Gherkin Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Infrastructure story (Docker Compose, init scripts, volumes) — no user-facing behaviour. No Gherkin-testable acceptance criteria.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_5",
+      "name": "Audit Documentation",
+      "skill": null,
+      "tool": "Both",
+      "who": "PM (audit-documents) + Dev Lead (audit-docs)",
+      "section": "left_leg",
+      "output": "Audit reports",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": null
+    },
+    {
+      "id": "step_6",
+      "name": "Plan Implementation",
+      "skill": "plan-implementation",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-004/implementation_plan_local_dev_env.md",
+      "completed": "2026-05-01",
+      "checked": true,
+      "skip_reason": null,
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_7",
+      "name": "Execute Implementation",
+      "skill": "execute-implementation",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "bottom",
+      "output": "Production-ready code, all tests passing",
+      "completed": "2026-05-01",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": null
+    },
+    {
+      "id": "step_8",
+      "name": "Integration Testing",
+      "skill": "integration-test",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-004/integration_tests_local_dev_env.md",
+      "completed": "2026-04-30",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": null
+    },
+    {
+      "id": "step_9",
+      "name": "E2E UI Testing",
+      "skill": "e2e-test",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": [
+        "docs/<FEATURE-ID>/<STORY-ID>/e2e_flow_map_<story_short>.md",
+        "docs/<FEATURE-ID>/<STORY-ID>/e2e_tests_<story_short>.<ext>",
+        "docs/<FEATURE-ID>/<STORY-ID>/e2e_report_<story_short>.md"
+      ],
+      "completed": null,
+      "checked": true,
+      "skip_reason": "No user flows to exercise via Playwright; this story produces no UI.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_10",
+      "name": "Code Review",
+      "skill": "code-review",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-004/code_review_local_dev_env.md",
+      "completed": "2026-05-01",
+      "checked": true,
+      "skip_reason": null,
+      "status": "completed",
+      "questions_doc": null,
+      "open_findings": [
+        {
+          "id": "SG-1",
+          "severity": "suggestion",
+          "summary": "Implementation plan documents '14 variables' but .env.example correctly has 17",
+          "resolved": false,
+          "resolved_date": null,
+          "resolution_note": null
+        }
+      ]
+    },
+    {
+      "id": "step_11",
+      "name": "Validate Acceptance",
+      "skill": "validate-acceptance",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": [
+        "docs/<FEATURE-ID>/<STORY-ID>/acceptance_tests_<story_short>.<ext>",
+        "docs/<FEATURE-ID>/<STORY-ID>/validation_checklist_<story_short>.md"
+      ],
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single-developer sub-phase; no separate acceptance authority. Code review (Step 10) is the quality gate.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_12",
+      "name": "Acceptance Sign-Off",
+      "skill": "acceptance-signoff",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "right_leg",
+      "output": "Story-level acceptance sign-off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single developer, scaffolding sub-phase, no PM/stakeholder sign-off required at this stage.",
+      "status": "pending",
+      "questions_doc": null
+    }
+  ],
+  "cu_estimate": {
+    "adjusted_cu": 33.25,
+    "hours_estimate": 66.5,
+    "calculated_date": "2026-04-30",
+    "base_cu": 9.5,
+    "calibration_factor": 1.4,
+    "risk_multiplier": 1.0,
+    "project_weight": 2.5,
+    "ambiguity_penalty": 0.0,
+    "architecture_estimate_cu": 31.5,
+    "design_gate_confidence_low_hrs": 33.25,
+    "design_gate_confidence_high_hrs": 99.75,
+    "warmup_active": true,
+    "actuals_count": 0
+  },
+  "artefact_checksums": {
+    "design_local_dev_env.md": {
+      "checksum": "sha256-2ea8a2543b58afb7230042c96f42e88c8edae53ee79598e2cef40b7ab9894a80",
+      "approved_by": "auto-refresh",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_local_dev_env_stack_startup.feature": {
+      "checksum": "sha256-6a59b0f0f91fbf71b56d2f02eea009d336de8b48f24ba564dfa0f76686c16e7c",
+      "approved_by": "Dev Lead",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_local_dev_env_database_provisioning.feature": {
+      "checksum": "sha256-8bb24ae684d1799fa9f4a55fb4406f15f49d4b57b989614da3d24c78b6bbef16",
+      "approved_by": "Dev Lead",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_local_dev_env_rabbitmq.feature": {
+      "checksum": "sha256-ef68e411aa3891dd27b1481533707dbd8ff96212fe3e44f20fbd533cc36083d2",
+      "approved_by": "Dev Lead",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_local_dev_env_n8n.feature": {
+      "checksum": "sha256-5cedabd0b418344987d9486f4005be784f2c2f1c1a01f380699eabfe246a6ea1",
+      "approved_by": "Dev Lead",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_local_dev_env_api_stubs.feature": {
+      "checksum": "sha256-51ef62cc8dc0c3c0bed75f583b68c9592c997e26e27bcf9ea7d7174ff33014ae",
+      "approved_by": "Dev Lead",
+      "approved_date": "2026-04-30"
+    },
+    "gherkin_local_dev_env_readme_quickstart.feature": {
+      "checksum": "sha256-ed6a218a2cac2a8a61299466e97f8262c83001fe6e73c7a52c08fbe86eea61a1",
+      "approved_by": "Dev Lead",
+      "approved_date": "2026-04-30"
+    },
+    "docs/NT-000/NT-004/implementation_plan_local_dev_env.md": {
+      "checksum": "d07a4ad56a38be7d58c54c07bf043d4cea3175795f0dd93c3ac1c05a2805fc26",
+      "approved_by": "step_6",
+      "approved_date": "2026-05-01"
+    },
+    "docs/NT-000/NT-004/integration_tests_local_dev_env.md": {
+      "checksum": "sha256-00016d2d908ceca219596db4bf375c6ed814998c4cb550f0aac8885e4db1b776",
+      "approved_by": "step_8",
+      "approved_date": "2026-04-30"
+    },
+    "docs/NT-000/NT-004/code_review_local_dev_env.md": {
+      "checksum": "5c49aff053bd5cf2e99213eefde1dca95ce6895716fe290a7739f63a3a62d117",
+      "approved_by": "step_10",
+      "approved_date": "2026-05-01"
+    }
+  },
+  "decision_log": [
+    {
+      "number": 0,
+      "step": "",
+      "decision": "Single root docker-compose.yml with per-service Dockerfile (architecture Decision 5)",
+      "rationale": "Single command; per-service image control; no new tooling for single-developer Phase 0",
+      "date": "2026-04-30",
+      "alternatives_considered": [
+        "Split compose files per group",
+        "Single container for all APIs",
+        "Tilt/Skaffold/devcontainers"
+      ]
+    },
+    {
+      "number": 0,
+      "step": "",
+      "decision": "Profile-gate API services until NT-005 lands (D-7)",
+      "rationale": "Profiles allow infra (postgres/rabbitmq/n8n) to come up immediately; API services activate when NT-005 merges. Clean handoff with no merge dance.",
+      "date": "2026-04-30",
+      "alternatives_considered": [
+        "Block NT-004 merge until NT-005 done",
+        "Land NT-004 with broken compose"
+      ]
+    },
+    {
+      "number": 0,
+      "step": "",
+      "decision": ".env / .env.example pattern for credentials (D-5)",
+      "rationale": "No real secrets in Phase 0; .env supports per-developer overrides without modifying compose file; Compose loads it automatically",
+      "date": "2026-04-30",
+      "alternatives_considered": [
+        "Compose secrets: block",
+        "Hardcoded values"
+      ]
+    },
+    {
+      "number": 4,
+      "step": "step_6",
+      "decision": "Implementation plan approved by Dev Lead (Q1 answered: APPROVED)",
+      "rationale": "Plan reviewed: 6 phases, 14 steps, 66.5 hrs estimated; phasing sound (credentials first, then init.sql, infra compose, API stubs profile-gated, full wiring, README); 6 risks identified; scope confined to design 4.2-4.10",
+      "date": "2026-05-01"
+    },
+    {
+      "number": 5,
+      "step": "step_7",
+      "decision": "execute-implementation completed: 6 phases, all tests passing — docker compose config validated, 9 Dockerfiles created with .NET 10 non-root pattern, init.sql provisioned, .env pattern enforced, README updated with quickstart",
+      "rationale": "Implementation followed plan exactly; profile-gating of API services confirmed working; .gitignore additive change approved by plan",
+      "date": "2026-05-01"
+    },
+    {
+      "number": 6,
+      "step": "step_8",
+      "decision": "integration-test completed: 10 boundaries tested, 23 assertions, all PASSED — compose config valid, profile gating correct, all 12 port assignments match design §4.7, all 12 services on traverse-net, depends_on service_healthy conditions on all 9 API stubs, init.sql creates 9 correct databases, Dockerfiles conform to .NET Coding Standards §18",
+      "rationale": "Integration verification performed via docker compose config parsing and static analysis; no live container test required for infrastructure wiring conformance checks. OBS-01 (proxy.conf.json) is an expected cross-story gap that resolves at merge.",
+      "date": "2026-04-30"
+    },
+    {
+      "number": 7,
+      "step": "step_10",
+      "decision": "Code review approved by Dev Lead — verdict APPROVED, 0 must_fix, 0 should_fix, 1 suggestion (SG-1: implementation plan doc says 14 variables, .env.example correctly has 17)",
+      "rationale": "All acceptance criteria met; suggestion SG-1 is a documentation discrepancy in the implementation plan (stale count) — the actual .env.example is correct with 17 variables matching design §4.9",
+      "date": "2026-05-01"
+    }
+  ]
+}

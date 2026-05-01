@@ -6,8 +6,8 @@
   "feature_short": "phase0",
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
-  "last_updated": "2026-04-30",
-  "current_phase": "In Progress",
+  "last_updated": "2026-05-01",
+  "current_phase": "In Progress — 3 of 5 stories complete (NT-003 merged)",
   "status": "In Progress",
   "feature_artefacts": {
     "artefact_checksums": {
@@ -60,27 +60,24 @@
       "story_id": "NT-003",
       "short_name": "angular_shell",
       "tracker_path": "docs/NT-000/NT-003/story_tracker_angular_shell.json",
-      "status": "In Progress",
+      "status": "Complete",
       "created": "2026-04-26",
-      "completed": null,
-      "merged_pr": null,
+      "completed": "2026-04-30",
+      "merged_pr": "https://github.com/kendrewp/Northwoods_Traverse/pull/4",
       "merged_commit": null,
-      "summary": null,
+      "summary": "Angular 19 standalone shell scaffolded: AppShell, routing, Material 3 theme, AuthService stub, guards, 79/79 tests passing. 1 open suggestion (SG-3: nav padding, deferred to Phase 1). Build and lint clean.",
       "cu_estimate": {
-        "adjusted_cu": 119.0,
-        "hours_estimate": 238.0,
-        "calculated_by": "design-feature",
-        "calculated_date": "2026-04-30",
-        "architecture_estimate_cu": 59.5,
-        "architecture_estimate_hrs": 119.0,
-        "variance_note": "Design gate elaboration: 37 AC (was 11), 12 components (was 8). Result within architecture-gate confidence bounds."
+        "adjusted_cu": 59.5,
+        "hours_estimate": 119.0,
+        "calculated_by": "design-architecture",
+        "calculated_date": "2026-04-26"
       }
     },
     {
       "story_id": "NT-004",
       "short_name": "docker_env",
       "tracker_path": "docs/NT-000/NT-004/story_tracker_docker_env.json",
-      "status": "Not Started",
+      "status": "In Progress",
       "created": "2026-04-26",
       "completed": null,
       "merged_pr": null,

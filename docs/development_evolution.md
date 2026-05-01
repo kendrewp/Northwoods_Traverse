@@ -522,3 +522,57 @@ Wrap the `inject(Router)` call in `runInInjectionContext(injector, () => inject(
 - All future interceptors, guards, and resolvers in this project must follow this pattern. Code review (Step 10) will check for violations.
 
 ---
+
+## ADR-008 — Docker Compose Local Development Environment (NT-004)
+
+**Date:** 2026-05-01
+**Status:** Decided
+**Deciders:** Dev Lead (self)
+**Story:** NT-004 — Docker Compose Local Dev Environment
+
+### Context
+
+Phase 0 leaves developers with a buildable .NET solution (NT-001), shared libraries (NT-002), and an Angular shell (NT-003), but no way to run the full stack locally. Each of the nine microservices requires a PostgreSQL database, a RabbitMQ event broker, and access to an n8n workflow engine. Without a local environment, cross-service integration testing is impossible and Phase 1 stories cannot validate end-to-end flows.
+
+### Decision
+
+**Single root `docker-compose.yml` with per-service Dockerfile.** One compose file at the repo root declares all 12 containers. Each API stub has its own multi-stage Dockerfile in `docker/{service}/`. A single `init.sql` creates nine empty databases via the postgres image's `/docker-entrypoint-initdb.d/` mechanism. Credentials flow through `.env` / `.env.example` (no compose secrets block). API stubs are profile-gated (`--profile api`) until NT-005 Dockerfiles are ready.
+
+### Options Considered
+
+| Option | Selected? | Rationale |
+|---|---|---|
+| Single root `docker-compose.yml` + per-service Dockerfile | **Yes** | Single command, per-service image control, mirrors .NET Coding Standards §18, no new tooling |
+| Split compose files per group (infra vs services) | No | Contradicts AC-1 single-command requirement; `docker compose -f a.yml -f b.yml up` adds friction |
+| All APIs in one container | No | Defeats microservice decomposition; shared crash boundary; prevents per-service image control |
+| Tilt / Skaffold / devcontainers | No | Overkill for single-developer Phase 0; introduces a new tool before any business value is delivered |
+
+### Key Implementation Decisions
+
+| ID | Decision | Rationale |
+|---|---|---|
+| D-5 | `.env` + `.env.example` (no compose secrets) | Local-only credentials; no real secrets in Phase 0; simpler developer workflow |
+| D-6 | User-defined bridge network `traverse-net` | Service-name DNS resolution; default bridge requires deprecated `--link` |
+| D-7 | Profile-gate API services (`--profile api`) until NT-005 merges | Compose file references Dockerfiles that NT-005 produces; infra runs immediately |
+| D-8 | `depends_on: condition: service_healthy` on all API stubs | Eliminates the race condition where APIs start before Postgres/RabbitMQ accept connections |
+| D-9 | Named volumes for postgres-data, rabbitmq-data, n8n-data | Explicit `down -v` to reset; survives `docker compose down` |
+| D-10 | Bind-mount `./n8n/workflows` | Workflow JSON becomes version-controlled (Phase 1 requirement) |
+| D-11 | Plain `CREATE DATABASE` without `IF NOT EXISTS` | Re-runs must fail fast and require `down -v` reset (documented in README) |
+| D-13 | Omit `version:` key | Docker Compose v2 emits a deprecation warning when present |
+
+### SOLID Conformance
+
+- **SRP:** Each phase did exactly one thing: credentials, DB init, infra messaging/workflow, API stubs, compose wiring, documentation.
+- **OCP:** Profile pattern means infra services require no modification when API stubs are added/removed.
+- **ISP:** Per-service Dockerfiles are independent — changing one has no effect on any other.
+- **DIP:** API stubs depend on `postgres` and `rabbitmq` by service name (DNS abstraction), not by IP.
+
+### Consequences
+
+- `docker compose up` (infra only) is immediately functional once NT-004 merges.
+- `docker compose --profile api up` is deferred until NT-005 merges (Dockerfiles reference projects that NT-005 produces).
+- `init.sql` runs once; re-adding a service database requires `docker compose down -v` (documented in README Troubleshooting).
+- Port conflicts are mitigated via `.env` overrides for all 13 ports (documented in README).
+- Linux developers may need `chown 1000:1000 n8n/workflows` for the n8n bind mount (documented in README).
+
+---
