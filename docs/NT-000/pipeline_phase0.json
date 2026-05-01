@@ -6,7 +6,7 @@
   "feature_short": "phase0",
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
-  "last_updated": "2026-04-30",
+  "last_updated": "2026-05-01",
   "current_phase": "In Progress — 3 of 5 stories complete (NT-003 merged)",
   "status": "In Progress",
   "feature_artefacts": {
@@ -77,7 +77,7 @@
       "story_id": "NT-004",
       "short_name": "docker_env",
       "tracker_path": "docs/NT-000/NT-004/story_tracker_docker_env.json",
-      "status": "Not Started",
+      "status": "In Progress",
       "created": "2026-04-26",
       "completed": null,
       "merged_pr": null,
