@@ -116,3 +116,321 @@ services:
     networks:
       - traverse-net
     restart: unless-stopped
+
+  # =========================================================================
+  # API STUB SERVICES (profile-gated: --profile api)
+  # =========================================================================
+  # These services are gated behind the 'api' Compose profile (D-7).
+  # They require Dockerfiles produced by NT-005 (the .csproj files that make
+  # the builds succeed). Until NT-005 merges, run without --profile api:
+  #   docker compose up -d              # infra only: postgres, rabbitmq, n8n
+  #   docker compose --profile api up   # full stack (post-NT-005 only)
+  #
+  # Each API service:
+  #   - Builds from docker/{service}/Dockerfile with repo root as context
+  #   - Listens internally on port 8080 (ASP.NET Core default)
+  #   - Is exposed on host via configurable port from .env
+  #   - Has depends_on with service_healthy conditions (D-8: eliminates
+  #     the API-starts-before-DB race condition)
+  #   - Has a healthcheck on /health/live (standard ASP.NET health endpoint)
+  #   - Joins traverse-net (DNS: postgres, rabbitmq, n8n)
+  #
+  # ConnectionStrings__Database format: EF Core / Npgsql connection string.
+  # RabbitMq__ prefix: Traverse.Infrastructure.Messaging IOptions<RabbitMqOptions>.
+
+  # -------------------------------------------------------------------------
+  # Workflow API (port 5001)
+  # -------------------------------------------------------------------------
+  workflow-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/workflow/Dockerfile
+    container_name: traverse-workflow
+    ports:
+      - "${WORKFLOW_PORT:-5001}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_workflow;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # KPI/SLA Policy API (port 5002)
+  # -------------------------------------------------------------------------
+  kpi-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/kpi/Dockerfile
+    container_name: traverse-kpi
+    ports:
+      - "${KPI_PORT:-5002}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_kpi;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Admin Configuration API (port 5003)
+  # -------------------------------------------------------------------------
+  admin-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/admin/Dockerfile
+    container_name: traverse-admin
+    ports:
+      - "${ADMIN_PORT:-5003}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_admin;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Notifications and Escalations API (port 5004)
+  # -------------------------------------------------------------------------
+  notifications-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/notifications/Dockerfile
+    container_name: traverse-notifications
+    ports:
+      - "${NOTIFICATIONS_PORT:-5004}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_notifications;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Reporting and Analytics API (port 5005)
+  # -------------------------------------------------------------------------
+  reporting-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/reporting/Dockerfile
+    container_name: traverse-reporting
+    ports:
+      - "${REPORTING_PORT:-5005}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_reporting;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # AI Copilot API (port 5006)
+  # -------------------------------------------------------------------------
+  aicopilot-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/aicopilot/Dockerfile
+    container_name: traverse-aicopilot
+    ports:
+      - "${AICOPILOT_PORT:-5006}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_aicopilot;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Compliance Framework API (port 5007)
+  # -------------------------------------------------------------------------
+  compliance-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/compliance/Dockerfile
+    container_name: traverse-compliance
+    ports:
+      - "${COMPLIANCE_PORT:-5007}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_compliance;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Universal Search API (port 5008)
+  # -------------------------------------------------------------------------
+  search-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/search/Dockerfile
+    container_name: traverse-search
+    ports:
+      - "${SEARCH_PORT:-5008}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_search;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Calendar and Field Directions API (port 5009)
+  # -------------------------------------------------------------------------
+  calendar-api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: docker/calendar/Dockerfile
+    container_name: traverse-calendar
+    ports:
+      - "${CALENDAR_PORT:-5009}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=traverse_calendar;Username=${POSTGRES_USER:-traverse};Password=${POSTGRES_PASSWORD:-traverse_dev}"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Username: ${RABBITMQ_USER:-traverse}
+      RabbitMq__Password: ${RABBITMQ_PASSWORD:-traverse_dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - traverse-net
+    restart: unless-stopped
