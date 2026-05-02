@@ -7,7 +7,7 @@
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
   "last_updated": "2026-05-01",
-  "current_phase": "In Progress — 3 of 5 stories complete (NT-003 merged)",
+  "current_phase": "In Progress — 4 of 5 stories complete (NT-004 merged)",
   "status": "In Progress",
   "feature_artefacts": {
     "artefact_checksums": {
@@ -75,14 +75,14 @@
     },
     {
       "story_id": "NT-004",
-      "short_name": "docker_env",
-      "tracker_path": "docs/NT-000/NT-004/story_tracker_docker_env.json",
-      "status": "In Progress",
+      "short_name": "local_dev_env",
+      "tracker_path": "docs/NT-000/NT-004/story_tracker_local_dev_env.json",
+      "status": "Complete",
       "created": "2026-04-26",
-      "completed": null,
-      "merged_pr": null,
+      "completed": "2026-05-01",
+      "merged_pr": "https://github.com/kendrewp/Northwoods_Traverse/pull/5",
       "merged_commit": null,
-      "summary": null,
+      "summary": "Docker Compose local dev environment: single docker-compose.yml with postgres, rabbitmq, n8n, and 9 profile-gated API service stubs; per-service Dockerfile (.NET 10 non-root); init.sql for 9 databases; .env/.env.example pattern; README quickstart. Code review APPROVED, 0 must_fix, 0 should_fix.",
       "cu_estimate": {
         "adjusted_cu": 31.5,
         "hours_estimate": 63.0,
