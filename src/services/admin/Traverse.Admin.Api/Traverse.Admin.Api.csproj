@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!--
+      Microsoft.NET.Sdk.Web activates ASP.NET Core's WebApplication builder
+      and implicitly includes the Microsoft.AspNetCore.App framework reference.
+      DO NOT add <FrameworkReference Include="Microsoft.AspNetCore.App" /> — that
+      would duplicate the framework reference and trigger NU1510 warnings.
+    -->
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- CS1591 = missing XML documentation comment. Suppressed for Phase 0 API
+         stubs — controllers and route handlers are added by Phase 1 stories
+         which are responsible for documenting their own endpoints. -->
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.Admin.Api</RootNamespace>
+    <AssemblyName>Traverse.Admin.Api</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      All six shared infrastructure libraries are referenced unconditionally.
+      Phase 0 is the wiring point — each Phase 1 story extends this project
+      without needing to discover or add project references.
+
+      Dependency graph (inward only — API projects depend on shared libs;
+      shared libs never depend on API projects):
+
+        Traverse.Admin.Api
+          ├── Traverse.Domain.Primitives          (domain types, DomainException)
+          ├── Traverse.Infrastructure.Auth         (JWT Bearer, ICurrentUser)
+          ├── Traverse.Infrastructure.Http         (CorrelationIdMiddleware, GlobalExceptionHandler)
+          ├── Traverse.Infrastructure.Messaging    (MassTransit/RabbitMQ, IEventBus)
+          ├── Traverse.Infrastructure.Observability (Serilog, OpenTelemetry, health checks)
+          └── Traverse.Infrastructure.Persistence  (TraverseDbContext base, AuditableEntity)
+
+      Traverse.Infrastructure.Http and Traverse.Infrastructure.Persistence
+      transitively include Traverse.Domain.Primitives; the direct reference
+      here is kept for explicitness (DIP: explicit dependencies visible in csproj).
+    -->
+    <ProjectReference Include="..\..\..\shared\Traverse.Domain.Primitives\Traverse.Domain.Primitives.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Auth\Traverse.Infrastructure.Auth.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Http\Traverse.Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Messaging\Traverse.Infrastructure.Messaging.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Observability\Traverse.Infrastructure.Observability.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Persistence\Traverse.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Microsoft.AspNetCore.OpenApi provides AddOpenApi() and MapOpenApi() for
+      built-in OpenAPI document generation (.NET 9/10). Not included transitively
+      by any shared ProjectReference — must be declared explicitly.
+      Version 10.0.3 pinned (verified against local NuGet cache 2026-05-04).
+    -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+  </ItemGroup>
+
+  <!--
+    All other runtime dependencies arrive transitively via the six ProjectReferences.
+    Phase 1 stories add service-specific packages directly to this csproj.
+  -->
+
+</Project>
