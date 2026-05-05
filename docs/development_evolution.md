@@ -576,3 +576,80 @@ Phase 0 leaves developers with a buildable .NET solution (NT-001), shared librar
 - Linux developers may need `chown 1000:1000 n8n/workflows` for the n8n bind mount (documented in README).
 
 ---
+
+## ADR-009 — NT-005 API Stub Project Structure and Dockerfile Template (NT-005)
+
+**Date:** 2026-05-04
+**Status:** Decided
+**Story:** NT-005 — Base Microservice Projects (API Stubs)
+
+### Context
+
+NT-005 creates nine ASP.NET Core Web API project stubs — one per PRD module — and replaces the NT-004 2-stage Dockerfiles with 4-stage production-ready images. Three architectural decisions arose during implementation that deviate slightly from the original implementation plan.
+
+### Decision 1 — ProjectReference relative path is 3 levels up, not 4
+
+**Decision:** The `.csproj` files use `../../../shared/` (3 levels up from `src/services/{service}/{ProjectName}/` to `src/`) not `../../../../shared/` (4 levels up to repo root) as specified in the design document §5.2 path note.
+
+**Rationale:** Counting directory levels from `src/services/workflow/Traverse.Workflow.Api/`:
+- `..` → `src/services/workflow/`
+- `../..` → `src/services/`
+- `../../..` → `src/`
+- `../../../shared/` → `src/shared/` ✓ (correct)
+- `../../../../shared/` → `{repo-root}/shared/` ✗ (missing src/ prefix — build error MSB9008)
+
+The design document path note contained an off-by-one error. The correct depth is 3 levels to reach `src/`, then into `shared/`. This was discovered during Phase 1 build verification (MSB9008: referenced project does not exist) and corrected before proceeding.
+
+**Alternatives considered:**
+- Keep 4-level path (`../../../../src/shared/`) — works but adds an unnecessary `src/` segment after navigating past it. The 3-level form is cleaner and directly correct.
+- Use absolute paths in .csproj — rejected as non-portable (breaks when repo is cloned to different paths).
+
+### Decision 2 — Microsoft.AspNetCore.OpenApi NuGet package required
+
+**Decision:** Added `Microsoft.AspNetCore.OpenApi 10.0.3` as an explicit `PackageReference` in each API project's `.csproj` file.
+
+**Rationale:** The design document §5.2 stated "No additional NuGet packages are required at Phase 0" and §5.3 included `builder.Services.AddOpenApi()` and `app.MapOpenApi()` calls. These two statements are contradictory: `AddOpenApi()` and `MapOpenApi()` are provided by the `Microsoft.AspNetCore.OpenApi` package which is **not** transitively supplied by any of the six shared infrastructure ProjectReferences. Without this package, the build fails with CS1061 (type/method not found). The package is required to fulfill the design specification's Program.cs template.
+
+**SOLID alignment:** SRP — each project declares its own dependencies explicitly rather than relying on hidden transitive chains. This makes the dependency graph visible and auditable per DIP.
+
+**Alternatives considered:**
+- Remove `AddOpenApi()/MapOpenApi()` from Program.cs — acceptable for Phase 0 (no Gherkin acceptance criteria require OpenAPI), but diverges from the design document template which all 9 Phase 1 stories will use as a baseline.
+- Add to a shared library — rejected as over-engineering; OpenAPI registration is per-service.
+
+**Package version:** 10.0.3 pinned (verified against local NuGet cache on 2026-05-04, matching target framework net10.0).
+
+### Decision 3 — 4-stage Dockerfile replaces NT-004 2-stage stub (full replacement)
+
+**Decision:** Each NT-004 Dockerfile (2 stages: `build` → `runtime`) is completely replaced by the NT-005 4-stage template (`restore` → `build` → `publish` → `runtime`). The HEALTHCHECK directive present in the NT-004 stubs is deliberately omitted from the NT-005 Dockerfiles.
+
+**Rationale for full replacement:** NT-004 Dockerfiles contained a structural defect: `COPY ["Traverse.sln", "global.json", "Directory.Build.props", "./"]` references `Directory.Build.props` which does not exist in the repository. Any `docker build` against the NT-004 stubs would fail. Full replacement with the design §5.5 template corrects this defect and delivers the correct multi-stage build per AC-3.
+
+**Rationale for omitting HEALTHCHECK from Dockerfile:** The NT-004 stubs included a `HEALTHCHECK CMD wget ...` directive in the Dockerfile. The `docker-compose.yml` (owned by NT-004) already defines `healthcheck` at the compose level for each service. Defining HEALTHCHECK in both locations is redundant and the compose-level definition takes precedence in a compose deployment. The compose-level healthcheck is the authoritative one; the Dockerfile-level HEALTHCHECK is appropriate for standalone `docker run` usage but adds noise in a compose context. The design §5.5 template does not include HEALTHCHECK. Compose-level healthcheck remains unchanged.
+
+**Alternatives considered:**
+- Patch NT-004 Dockerfiles (remove Directory.Build.props, add 2 additional stages) — technically viable but produces inconsistent stage naming and more complex diff. Full replacement per the design template is cleaner and matches the design document exactly.
+- Keep HEALTHCHECK in Dockerfile for standalone docker run support — deferred to Phase 1; Phase 0 services are always run via docker compose.
+
+### Key Implementation Decisions
+
+| ID | Decision | Rationale |
+|---|---|---|
+| D-001 | `../../../shared/` (3 levels, not 4) in all .csproj ProjectReferences | Off-by-one in design doc path note; 3 levels correct from `src/services/{svc}/{proj}/` to `src/shared/` |
+| D-002 | `Microsoft.AspNetCore.OpenApi 10.0.3` added to each API project | Required for `AddOpenApi()/MapOpenApi()` calls in Program.cs; not transitively supplied by shared libs |
+| D-003 | Full Dockerfile replacement (not patch) | NT-004 stubs defective (`Directory.Build.props` reference); complete replacement per design §5.5 is cleaner |
+| D-004 | HEALTHCHECK omitted from Dockerfiles | Compose-level `healthcheck` is authoritative; Dockerfile-level HEALTHCHECK is redundant in compose deployments |
+
+### SOLID Conformance
+
+- **SRP:** Each API project has a single concern (its bounded context); Program.cs has a single concern (wiring infrastructure for that context).
+- **OCP:** The shared infrastructure libraries are consumed via extension methods — API projects are open for extension (Phase 1 business logic) without modifying the shared libs.
+- **DIP:** API projects depend on shared library abstractions (extension method interfaces) rather than concrete implementations.
+- **ISP:** Each API project declares only the 6 infrastructure references it needs; AI-specific libraries are not imposed on non-AI services.
+
+### Consequences
+
+- `dotnet build Traverse.sln` builds all 17 projects (8 shared + 9 service stubs) with 0 errors and 0 warnings. AC-1 satisfied.
+- Phase 1 stories inherit the complete infrastructure wiring without needing to add project references or understand the DI wiring pattern.
+- Docker builds (AC-3/AC-4) pending Docker daemon availability; structural verification (4-stage pattern, no Directory.Build.props) passes.
+
+---
