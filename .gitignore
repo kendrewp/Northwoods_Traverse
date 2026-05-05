@@ -39,6 +39,10 @@ ScaffoldingReadMe.txt
 # dotenv environment variables file
 .env
 
+# n8n encrypted credential files (stored in the bind-mounted workflows directory)
+# n8n saves per-credential JSON files with sensitive tokens; these must not be committed.
+n8n/workflows/*.credentials.json
+
 # Others
 ~$*
 *~
@@ -55,3 +59,8 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Angular frontend workspace
+src/frontend/traverse-workspace/node_modules/
+src/frontend/traverse-workspace/dist/
+src/frontend/traverse-workspace/.angular/

@@ -1,0 +1,15 @@
+* text=auto eol=lf
+*.cs text eol=lf
+*.ts text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Stylesheet line endings — always LF to prevent CRLF diffs on Windows (SF-1 NT-001 code review carryover)
+*.scss text eol=lf
+*.css  text eol=lf

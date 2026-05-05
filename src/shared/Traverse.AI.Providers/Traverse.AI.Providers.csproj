@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.AI.Providers</RootNamespace>
+    <AssemblyName>Traverse.AI.Providers</AssemblyName>
+    <Description>Concrete AI provider adapters (Bedrock, OpenAI, Anthropic) for the Traverse platform.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Traverse.AI.Abstractions\Traverse.AI.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- AWS Bedrock: Converse API (completions/streaming) + InvokeModel (Titan embeddings) -->
+    <PackageReference Include="AWSSDK.BedrockRuntime" Version="3.7.*" />
+
+    <!-- OpenAI official SDK v2: ChatClient + EmbeddingClient -->
+    <PackageReference Include="OpenAI" Version="2.*" />
+
+    <!-- Anthropic.SDK: messages completions and streaming, no embeddings -->
+    <!-- Pinned to 3.3.0: code uses SystemMessage, ContentBlockDeltaEvent, TextDelta,
+         MessageStreamEvent which exist in Anthropic.SDK 3.x through 3.3.0. Later 4.x+
+         versions introduced breaking API changes that renamed/removed these types. -->
+    <PackageReference Include="Anthropic.SDK" Version="3.3.0" />
+
+    <!-- Required for BindConfiguration() extension in AIServiceCollectionExtensions -->
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.*" />
+
+    <!-- Required for ValidateDataAnnotations() extension in AIServiceCollectionExtensions -->
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.*" />
+
+    <!-- DI, options, and logging plumbing -->
+    <!-- Updated from 9.0.0 to 10.0.* to resolve transitive version conflict:
+         OpenAI 2.10.0 -> System.ClientModel 1.10.0 -> Microsoft.Extensions.* >= 10.0.3.
+         Pinning at 9.0.0 caused NU1605 (Warning As Error) on .NET 10 SDK. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.*" />
+  </ItemGroup>
+
+</Project>
