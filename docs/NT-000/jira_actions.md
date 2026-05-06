@@ -4,6 +4,15 @@
 
 ---
 
+### WORKTREE_CREATED — 2026-04-30
+- Worktree: ../Northwoods_Traverse-story-NT-004
+- Branch: story/NT-004
+- From: feature/NT-000
+- Purpose: Story lifecycle — NT-004 Local Dev Environment (Phase 0d)
+- Created by: orchestrate-feature
+
+---
+
 ### WORKTREE_CREATED — 2026-04-26
 - Worktree: ../Northwoods_Traverse-feature-NT-000
 - Branch: feature/NT-000
@@ -340,3 +349,31 @@
 - Story:    NT-004 (local_dev_env)
 - Resuming: Step 1 Design Feature (re-entry — questions_001.md answered: true, Q1 APPROVED)
 - Current tracker status: blocked_on_questions → transitioning to re-entry dispatch
+
+---
+
+### WORKTREE_REMOVED — 2026-05-01
+- Worktree: ../Northwoods_Traverse-story-NT-004
+- Branch: story/NT-004
+- Reason: Story NT-004 complete — PR #5 merged into feature/NT-000
+- Method: git worktree remove --force (untracked V-Model runtime files only: .v-model/, skills/)
+- Removed by: orchestrate-feature
+
+### STORY_COMPLETE — 2026-05-01
+- Story:           NT-004 (local_dev_env)
+- PR:              https://github.com/kendrewp/Northwoods_Traverse/pull/5 (MERGED)
+- Steps completed: Step 1 (Design), Step 1a (CU), Step 3 (Gherkin), Step 5 (Audit), Step 6 (Plan), Step 7 (Implementation), Step 8 (Integration Testing), Step 10 (Code Review)
+- Steps skipped:   Step 2 (Review Design), Step 4 (Review Gherkin), Step 9 (E2E), Step 11 (Validate Acceptance), Step 12 (Acceptance Sign-Off)
+- Open finding:    SG-1 (suggestion — implementation plan doc says 14 variables, .env.example correctly has 17; doc discrepancy only)
+- Pipeline progress: 4 of 5 Phase 0 stories complete
+- Story status transition: In Progress → Complete
+
+---
+
+### PR_CREATED — 2026-05-06
+- **PR:** #6
+- **Title:** NT-005: API Service Stubs — 9 ASP.NET Core Web API stub projects
+- **Branch:** story/NT-005 → feature/NT-000
+- **URL:** https://github.com/kendrewp/Northwoods_Traverse/pull/6
+- **Approval gate:** pr-approval questions_1.md answered: true (Yes — approved by Kendrew Peacey)
+- **Created by:** orchestrate-feature (AutoBranch: true)

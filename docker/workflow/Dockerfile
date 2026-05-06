@@ -1,59 +1,110 @@
-# docker/workflow/Dockerfile -- Traverse Workflow API
+# ============================================================================
+# Traverse.Workflow.Api — Multi-stage Dockerfile
 #
-# Multi-stage build following .NET Coding Standards section 18.
-# Stage 1 (build): SDK image restores and publishes the project.
-# Stage 2 (runtime): ASP.NET runtime image runs as non-root appuser.
+# Stage layout (per .NET Coding Standards §18):
+#   restore  : copy only .csproj files and restore NuGet packages
+#              (layer-cache friendly — changes to source code do not
+#               invalidate the restore layer)
+#   build    : copy full source; dotnet build in Release
+#   publish  : dotnet publish in Release; output to /app/publish
+#   runtime  : aspnet runtime image only; no SDK; non-root user; minimal image
 #
-# NOTE: This Dockerfile requires the Traverse.Workflow.Api project produced by NT-005.
-#       Building this image before NT-005 is merged will fail with "project not found".
-#       docker compose up (without --profile api) succeeds without building this image.
-#       Run 'docker compose --profile api up' only after NT-005 merges.
+# Build context: repository root (.)
+# All COPY paths are relative to the repository root.
 #
-# The build context is the repo root (.) so the full src/ tree is available for
-# dotnet restore, which may need shared library projects from src/shared/.
-
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-WORKDIR /src
-
-# Copy solution manifest and global SDK pin first (layer-cache friendly).
-# These files change rarely; restoring from cache unless they change saves time.
-COPY ["Traverse.sln", "global.json", "Directory.Build.props", "./"]
-
-# Copy the full source tree (needed because Traverse.Workflow.Api may reference
-# shared libraries under src/shared/, which must be present for dotnet restore).
-COPY ["src/", "src/"]
-
-# Restore only the specific project to minimise restore scope.
-RUN dotnet restore "src/services/workflow/Traverse.Workflow.Api/Traverse.Workflow.Api.csproj"
-
-# Publish the release build to /app/publish.
-# UseAppHost=false: do not produce a native executable wrapper (not needed in containers).
-RUN dotnet publish "src/services/workflow/Traverse.Workflow.Api/Traverse.Workflow.Api.csproj" \
-    -c Release \
-    -o /app/publish \
-    /p:UseAppHost=false
+# Usage:
+#   docker build -f docker/workflow/Dockerfile .
+#   docker compose --profile api up --build
+# ============================================================================
 
 # ---------------------------------------------------------------------------
-# Stage 2: runtime image (smaller than SDK; no build tools)
+# Stage 1: restore
+# Copy only project files first. NuGet restore is the slowest step — keeping
+# it in a dedicated layer means Docker reuses it on every source-only change.
+# ---------------------------------------------------------------------------
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS restore
+WORKDIR /src
+
+# Copy solution file and global.json — needed by dotnet restore to resolve
+# all project references in the solution graph.
+COPY global.json ./
+COPY Traverse.sln ./
+
+# Copy shared library .csproj files (dependencies of the API project)
+COPY src/shared/Traverse.Domain.Primitives/Traverse.Domain.Primitives.csproj \
+     src/shared/Traverse.Domain.Primitives/
+COPY src/shared/Traverse.Infrastructure.Auth/Traverse.Infrastructure.Auth.csproj \
+     src/shared/Traverse.Infrastructure.Auth/
+COPY src/shared/Traverse.Infrastructure.Http/Traverse.Infrastructure.Http.csproj \
+     src/shared/Traverse.Infrastructure.Http/
+COPY src/shared/Traverse.Infrastructure.Messaging/Traverse.Infrastructure.Messaging.csproj \
+     src/shared/Traverse.Infrastructure.Messaging/
+COPY src/shared/Traverse.Infrastructure.Observability/Traverse.Infrastructure.Observability.csproj \
+     src/shared/Traverse.Infrastructure.Observability/
+COPY src/shared/Traverse.Infrastructure.Persistence/Traverse.Infrastructure.Persistence.csproj \
+     src/shared/Traverse.Infrastructure.Persistence/
+
+# Copy the API project file
+COPY src/services/workflow/Traverse.Workflow.Api/Traverse.Workflow.Api.csproj \
+     src/services/workflow/Traverse.Workflow.Api/
+
+# Restore only this project and its transitive dependencies.
+RUN dotnet restore src/services/workflow/Traverse.Workflow.Api/Traverse.Workflow.Api.csproj
+
+# ---------------------------------------------------------------------------
+# Stage 2: build
+# Copy all source files and compile in Release configuration.
+# --no-restore reuses the packages downloaded in stage 1.
+# ---------------------------------------------------------------------------
+FROM restore AS build
+WORKDIR /src
+
+# Copy shared library source
+COPY src/shared/ src/shared/
+
+# Copy service project source
+COPY src/services/workflow/Traverse.Workflow.Api/ src/services/workflow/Traverse.Workflow.Api/
+
+RUN dotnet build src/services/workflow/Traverse.Workflow.Api/Traverse.Workflow.Api.csproj \
+    -c Release \
+    --no-restore
+
+# ---------------------------------------------------------------------------
+# Stage 3: publish
+# Produce self-contained publish output. /p:UseAppHost=false suppresses the
+# native executable wrapper — not needed inside a Linux container.
+# ---------------------------------------------------------------------------
+FROM build AS publish
+
+RUN dotnet publish src/services/workflow/Traverse.Workflow.Api/Traverse.Workflow.Api.csproj \
+    -c Release \
+    --no-build \
+    /p:UseAppHost=false \
+    -o /app/publish
+
+# ---------------------------------------------------------------------------
+# Stage 4: runtime
+# Final image: aspnet runtime only (no SDK). Approximately 200MB vs 800MB+ SDK.
+# Non-root user for security (CIS Benchmark for containers).
 # ---------------------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
-# Create a non-root user and transfer directory ownership.
-# Running as non-root is a container security best practice (.NET Coding Standards section 18).
-RUN useradd -m appuser && chown -R appuser /app
+# Create a non-root user and group; chown the working directory.
+# adduser is used for Alpine-compatible images; the aspnet base image supports it.
+RUN adduser --disabled-password --gecos "" appuser \
+    && chown -R appuser /app
 USER appuser
 
-COPY --from=build /app/publish .
+# Copy published output from the publish stage.
+COPY --from=publish /app/publish .
 
-# ASP.NET Core listens on HTTP port 8080 inside the container.
-# HTTPS termination is handled at the deployment layer (out of scope Phase 0).
+# Internal port the service listens on (overridden by ASPNETCORE_URLS in compose).
 EXPOSE 8080
+
+# ASPNETCORE_URLS tells Kestrel which address to bind to inside the container.
+# The docker-compose.yml environment section sets this to http://+:8080.
 ENV ASPNETCORE_URLS=http://+:8080
 
-# Health probe used by docker compose depends_on (condition: service_healthy).
-# wget is present in the aspnet base image; curl is not guaranteed.
-HEALTHCHECK --interval=30s --timeout=10s \
-    CMD wget -qO- http://localhost:8080/health/live || exit 1
-
+# Use the exec form to allow signal forwarding (SIGTERM for graceful shutdown).
 ENTRYPOINT ["dotnet", "Traverse.Workflow.Api.dll"]
