@@ -367,3 +367,13 @@
 - Open finding:    SG-1 (suggestion — implementation plan doc says 14 variables, .env.example correctly has 17; doc discrepancy only)
 - Pipeline progress: 4 of 5 Phase 0 stories complete
 - Story status transition: In Progress → Complete
+
+---
+
+### PR_CREATED — 2026-05-06
+- **PR:** #6
+- **Title:** NT-005: API Service Stubs — 9 ASP.NET Core Web API stub projects
+- **Branch:** story/NT-005 → feature/NT-000
+- **URL:** https://github.com/kendrewp/Northwoods_Traverse/pull/6
+- **Approval gate:** pr-approval questions_1.md answered: true (Yes — approved by Kendrew Peacey)
+- **Created by:** orchestrate-feature (AutoBranch: true)
