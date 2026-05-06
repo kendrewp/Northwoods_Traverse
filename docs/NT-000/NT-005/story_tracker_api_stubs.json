@@ -8,9 +8,9 @@
   "docs_folder": "docs/NT-000/NT-005/",
   "prd_reference": "docs/plans/implementation-order.md Phase 0e",
   "created": "2026-05-02",
-  "last_updated": "2026-05-05",
-  "current_step": "Step 8: Integration Testing",
-  "status": "In Progress",
+  "last_updated": "2026-05-06",
+  "current_step": "Step 11: Validate Acceptance (skipped) / Pipeline Complete",
+  "status": "Complete",
   "steps": [
     {
       "id": "step_1",
@@ -131,12 +131,14 @@
       "tool": "CLI",
       "who": "Developer",
       "section": "right_leg",
-      "output": "docs/<FEATURE-ID>/<STORY-ID>/integration_tests_<story_short>.<ext>",
-      "completed": null,
-      "checked": false,
+      "output": "docs/NT-000/NT-005/integration_tests_api_stubs.md",
+      "completed": "2026-05-06",
+      "checked": true,
       "skip_reason": null,
-      "status": "pending",
-      "questions_doc": null
+      "status": "complete",
+      "questions_doc": null,
+      "result": "PASSED",
+      "findings": ["CG-001: MassTransit auto-registers ready-tagged health check — contract gap in design doc §7, not a code defect"]
     },
     {
       "id": "step_9",
@@ -163,12 +165,14 @@
       "tool": "CLI",
       "who": "Dev Lead",
       "section": "right_leg",
-      "output": "docs/<FEATURE-ID>/<STORY-ID>/code_review_<story_short>.md",
-      "completed": null,
-      "checked": false,
+      "output": "docs/NT-000/NT-005/code_review_api_stubs.md",
+      "completed": "2026-05-06",
+      "checked": true,
       "skip_reason": null,
-      "status": "pending",
+      "status": "complete",
       "questions_doc": null,
+      "verdict": "APPROVED",
+      "review_cycle": 1,
       "open_findings": []
     },
     {
@@ -215,9 +219,9 @@
       "approved_date": "2026-05-02"
     },
     "design_api_stubs.md": {
-      "checksum": "sha256-1e597836718ed9bac516cf6e45a243211d7ed285810b86327d33b29e3dad7ea5",
-      "approved_by": "Dev Lead (self — AutoMode)",
-      "approved_date": "2026-05-04"
+      "checksum": "sha256-004da9cdb2c20dff024385f0781c03cc6795ef6947afbc66037b111732fe20dc",
+      "approved_by": "code-review (AutoMode — documentation corrections: §5.2 path note 3-level fix, §7 health/ready MassTransit auto-check documented)",
+      "approved_date": "2026-05-06"
     },
     "gherkin_api_stubs_solution_build.feature": {
       "checksum": "sha256-4591837feaf11ef46ac70aaf2e19f6d2526e3b38bb66a231af8343260d18aea1",
@@ -243,6 +247,11 @@
       "checksum": "sha256-24f1dd64b81b5ced0ed48980e7b288ca987b56bab9004deaa7e9e4ece6f603ba",
       "approved_by": "Dev Lead (self — AutoMode)",
       "approved_date": "2026-05-04"
+    },
+    "integration_tests_api_stubs.md": {
+      "checksum": "sha256-7f49eca6f5ff4f88b1d13ea826e0b0449ff6cef3333e4e86835f605fdfa8c0da",
+      "approved_by": "Developer (self — AutoMode)",
+      "approved_date": "2026-05-06"
     }
   },
   "decision_log": [
@@ -332,6 +341,27 @@
       "decision": "No AI lib references in any Phase 0 stub (YAGNI)",
       "rationale": "AI projects not used in Phase 0. Referencing Traverse.AI.Abstractions/Providers from non-AICopilot stubs inflates projects and pulls unnecessary transitive NuGet dependencies.",
       "date": "2026-05-04"
+    },
+    {
+      "number": 13,
+      "step": "step_7",
+      "decision": "ProjectReference relative path uses ../../../shared/ (3 levels) not ../../../../shared/ as planned",
+      "rationale": "Services at src/services/<svc>/Traverse.<Svc>.Api/ are 3 levels from src/shared/ — documented in ADR-009",
+      "date": "2026-05-05"
+    },
+    {
+      "number": 14,
+      "step": "step_7",
+      "decision": "Microsoft.AspNetCore.OpenApi 10.0.3 added explicitly — not transitively supplied by shared libs",
+      "rationale": "Package required for OpenAPI endpoint mapping in each API stub. Not included in shared libraries. Added to each API .csproj individually.",
+      "date": "2026-05-05"
+    },
+    {
+      "number": 15,
+      "step": "step_7",
+      "decision": "Dockerfile HEALTHCHECK instruction omitted — docker-compose.yml healthcheck is authoritative",
+      "rationale": "Docker-compose.yml already specifies healthcheck for all services. Duplicate HEALTHCHECK in Dockerfile creates maintenance inconsistency — docker-compose overrides it anyway.",
+      "date": "2026-05-05"
     }
   ]
 }

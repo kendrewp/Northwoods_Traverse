@@ -337,12 +337,12 @@ Create the file at `{SrcRelPath}/{ProjectName}.csproj`:
       transitively include Traverse.Domain.Primitives; the direct reference
       here is kept for explicitness (DIP: explicit dependencies visible in csproj).
     -->
-    <ProjectReference Include="..\..\..\..\shared\Traverse.Domain.Primitives\Traverse.Domain.Primitives.csproj" />
-    <ProjectReference Include="..\..\..\..\shared\Traverse.Infrastructure.Auth\Traverse.Infrastructure.Auth.csproj" />
-    <ProjectReference Include="..\..\..\..\shared\Traverse.Infrastructure.Http\Traverse.Infrastructure.Http.csproj" />
-    <ProjectReference Include="..\..\..\..\shared\Traverse.Infrastructure.Messaging\Traverse.Infrastructure.Messaging.csproj" />
-    <ProjectReference Include="..\..\..\..\shared\Traverse.Infrastructure.Observability\Traverse.Infrastructure.Observability.csproj" />
-    <ProjectReference Include="..\..\..\..\shared\Traverse.Infrastructure.Persistence\Traverse.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Domain.Primitives\Traverse.Domain.Primitives.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Auth\Traverse.Infrastructure.Auth.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Http\Traverse.Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Messaging\Traverse.Infrastructure.Messaging.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Observability\Traverse.Infrastructure.Observability.csproj" />
+    <ProjectReference Include="..\..\..\shared\Traverse.Infrastructure.Persistence\Traverse.Infrastructure.Persistence.csproj" />
   </ItemGroup>
 
   <!--
@@ -362,9 +362,12 @@ Create the file at `{SrcRelPath}/{ProjectName}.csproj`:
 </Project>
 ```
 
-> **Path note:** The relative path `..\..\..\..\shared\` navigates from
-> `src/services/{service}/{ProjectName}/` up four levels to `src/shared/`.
-> Verify the path resolves correctly by running `dotnet build` from the solution root.
+> **Path note:** The relative path `..\..\..\\shared\` navigates from
+> `src/services/{service}/{ProjectName}/` up **three** levels to `src/`, then into `shared/`.
+> (`..` → `src/services/{service}/` → `..` → `src/services/` → `..` → `src/` → `shared/`).
+> Four levels up would overshoot to the repository root, producing a broken reference (MSB9008).
+> This was confirmed by implementation (ADR-009 Decision 1). Verify the path resolves correctly
+> by running `dotnet build` from the solution root.
 
 ### 5.3 Program.cs Template
 
@@ -699,12 +702,16 @@ The liveness check runs only the `"self"` check (registered by `AddTraverseHealt
 | Path | `/health/ready` |
 | Auth | None (AllowAnonymous) |
 | Tags | Health checks tagged `"ready"` |
-| Success response | `200 OK` — body: `{"status":"Healthy","entries":{}}` |
-| Failure response | `503 Service Unavailable` — if any `"ready"`-tagged check fails |
+| Success response | `200 OK` — body: `{"status":"Healthy","entries":{"masstransit-bus":{"status":"Healthy",...}}}` (when RabbitMQ is reachable) |
+| Failure response | `503 Service Unavailable` — body includes `"masstransit-bus"` entry with `"Unhealthy"` status (when RabbitMQ is unreachable) |
 | Purpose | Kubernetes readiness probe |
 | Registered by | `app.MapTraverseHealthChecks()` in `Program.cs` |
 
-In Phase 0, no `"ready"`-tagged checks are registered. The readiness endpoint returns HTTP 200 with an empty entries object. Phase 1 stories add database and broker readiness checks by chaining `.AddNpgsql(...)` and `.AddRabbitMQ(...)` on the `IHealthChecksBuilder`.
+In Phase 0, MassTransit 8.3.0 automatically registers a `"masstransit-bus"` health check tagged `["ready","masstransit"]` when `AddMassTransit().UsingRabbitMq()` is called (via `AddTraverseMessaging()`). This means the readiness endpoint is **not** empty in Phase 0 — it tests broker connectivity. When RabbitMQ is available (e.g., via `docker compose --profile api up`), the endpoint returns HTTP 200 Healthy. When RabbitMQ is unreachable (e.g., running the API locally without Docker), it returns HTTP 503 Unhealthy with the masstransit-bus entry marked Unhealthy.
+
+This is architecturally correct readiness behaviour: a service is not ready to accept traffic if its message broker is down. Phase 1 stories add additional `"ready"`-tagged checks (`.AddNpgsql(...)`) on top of the automatically registered MassTransit check.
+
+> **Integration test finding CG-001:** This behaviour was confirmed by integration testing (step_8). The design initially stated "empty entries object" — this was incorrect and has been corrected here.
 
 ### GET /openapi/v1.json (development only)
 

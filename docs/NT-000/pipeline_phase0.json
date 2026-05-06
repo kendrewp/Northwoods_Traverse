@@ -6,7 +6,7 @@
   "feature_short": "phase0",
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
-  "last_updated": "2026-05-01",
+  "last_updated": "2026-05-05",
   "current_phase": "In Progress — 4 of 5 stories complete (NT-004 merged)",
   "status": "In Progress",
   "feature_artefacts": {
@@ -94,7 +94,7 @@
       "story_id": "NT-005",
       "short_name": "api_stubs",
       "tracker_path": "docs/NT-000/NT-005/story_tracker_api_stubs.json",
-      "status": "Not Started",
+      "status": "In Progress",
       "created": "2026-04-26",
       "completed": null,
       "merged_pr": null,
