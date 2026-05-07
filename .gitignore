@@ -60,6 +60,11 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
+# V-Model secrets
+.v-model/.env.slack
+.v-model/.env*
+.v-model/tokens/
+
 # Angular frontend workspace
 src/frontend/traverse-workspace/node_modules/
 src/frontend/traverse-workspace/dist/

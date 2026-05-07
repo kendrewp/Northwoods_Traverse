@@ -294,6 +294,207 @@ Snapshot on a fixed schedule regardless of admin activity.
 
 ---
 
+## 2026-05-06 17:00 - CU Actuals Logged: NT-000 Phase 0 (5 Stories)
+
+**Context:**
+NT-000 Phase 0 — Scaffolding completed with all 5 stories merged to `main` (PRs #1, #3, #4, #5, #6). Actuals recorded at feature rollup on 2026-05-06. This entry closes the calibration flywheel loop for Phase 0 and documents the variance against the architecture estimate.
+
+**Files Updated:**
+- `.v-model/project-baseline.json` — `last_updated` bumped to 2026-05-06; `historical_calibration_factor` remains `null` (warm-up, see below)
+- `.v-model/actuals/NT-001.json` through `NT-005.json` — written by `fetch-actuals` rollup on `feature/NT-000` (**⚠ not yet on `main`** — see Upstream Issue below)
+
+**Why This Update Was Required:**
+CU calibration flywheel. Logging estimates against completed stories seeds the calibration dataset. Once 6 stories with tracked actual hours exist, the learned factor replaces the default 1.4.
+
+**Alternatives Considered:**
+1. **Skip actuals logging for Phase 0** — Phase 0 is pure scaffolding with no real feature delivery; estimates are unreliable baselines. Rejected: even imperfect data is useful for trend analysis and establishes the logging discipline.
+2. **Manually enter estimated hours as actuals** — Could produce a `rollup.ratio` of 1.0 (estimate = actual) for all stories. Rejected: fabricated ratios would corrupt the calibration dataset and bias the learned factor toward the default.
+3. **Log with null ratios (selected)** — Record the estimates only; leave `rollup.ratio` null. Warm-up period continues. Calibration activates when 6 stories with genuine tracked hours are complete.
+
+**Selected Approach:** Log with null ratios — estimates only, no actual hours captured.
+
+**Reasoning:** Phase 0 session hours were not tracked in Jira or any time-tracking system. The `fetch-actuals` skill recorded CU estimates (derived from design elaboration) rather than actual elapsed time. Fabricating ratios would violate First Principles (data must be accurate to produce meaningful calibration). The warm-up notice keeps the team aware that calibration is not yet active.
+
+**CU Actuals Summary — Phase 0:**
+
+| Story | Name | CU Estimate | Hours Estimate | Ratio | Merged |
+|---|---|---|---|---|---|
+| NT-001 | Repo Structure | 21.0 CU | 42.0 hrs | null | 2026-04-27 |
+| NT-002 | Shared Libraries | 70.0 CU | 140.0 hrs | null | 2026-04-29 |
+| NT-003 | Angular Shell | 119.0 CU | 238.0 hrs | null | 2026-04-30 |
+| NT-004 | Local Dev Environment | 33.25 CU | 66.5 hrs | null | 2026-05-01 |
+| NT-005 | API Service Stubs | 52.5 CU | 105.0 hrs | null | 2026-05-06 |
+| **Total** | | **295.75 CU** | **591.5 hrs** | — | — |
+
+**Architecture Estimate:** 222.25 CU / **Variance: +73.5 CU (+33.1%)**
+
+Variance driven primarily by NT-003 (Angular Shell) expanding from 59.5 CU (architecture estimate) to 119.0 CU at design-time — acceptance criteria count grew from 11 to 37, component count from 8 to 12. NT-002 also expanded from 57.75 CU to 70.0 CU during design elaboration.
+
+**Calibration State:**
+
+> **Warm-up period active** — 0 of 6 valid ratios logged for `northwoods-traverse`. The default calibration factor (1.4) remains in use. Log 6 more stories with tracked actual hours to activate learned calibration.
+
+**⚠ Upstream Issue — `feature/NT-000` Not Merged to `main`:**
+
+`feature/NT-000` is 44 commits ahead of `main`. This branch contains the authoritative Phase 0 pipeline record: actuals files, pipeline tracker, story trackers, `jira_actions.md`, and the feature retrospective. None of these artefacts currently exist on `main`. The actuals for this entry were read via `git show feature/NT-000:...` as a workaround.
+
+**Required action:** Merge `feature/NT-000` → `main` (or create a PR) to land the Phase 0 tracking artefacts permanently. Until merged, the `.v-model/actuals/` directory does not exist on `main` and `calculate-cu` will run in permanent warm-up mode.
+
+**Impact:**
+- Phase 0 actuals recorded (estimates only, no real hours)
+- Calibration warm-up continues — 0 of 6 valid ratios
+- `project-baseline.json` `last_updated` updated to 2026-05-06
+- `historical_calibration_factor` remains `null`
+- Phase 0 architecture variance: +33.1% (design elaboration expanded scope)
+
+**Related:**
+- Feature: NT-000 Phase 0 — Scaffolding
+- Feature retrospective: `docs/NT-000/feature_retrospective_phase0.md` (on `feature/NT-000`)
+- `feature/NT-000` branch: 44 commits ahead of `main` — merge required
+
+---
+
+## ADR-006 — NT-003 Angular Frontend Shell: Key Architecture Decisions
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (self)
+**Story:** NT-003 — Angular Frontend Shell
+**Feature:** NT-000 — Phase 0 Scaffolding
+
+### Context
+
+NT-003 implemented the Angular 18 frontend shell for Northwoods Traverse: workspace scaffold, Material 3 theme, core providers, auth stub, AppShellComponent, 4 shared components, environment files, route table, and DashboardComponent placeholder. Several architectural decisions were made during implementation that have lasting impact on all future Angular development in the project.
+
+---
+
+### Decision 1 — AppShellComponent: Route Component vs Embedded in AppComponent
+
+**Decision:** AppShellComponent is loaded as a route component (the `''` path with `canActivate: authGuard`), not embedded directly in AppComponent's template.
+
+**Options considered:**
+
+| Option | Description | Decision |
+|---|---|---|
+| A — Route component (selected) | AppComponent renders only `<router-outlet>`. Shell is at route `''`. | Selected |
+| B — Embedded in AppComponent | AppComponent template contains `<app-shell>` which always renders. | Rejected |
+
+**Rationale for Option A:**
+Unauthenticated pages (login, unauthorized) must render without the nav frame (sidebar, toolbar, persona chip). If AppShellComponent were embedded in AppComponent, it would render for all routes and could not be bypassed. The route-component approach lets `/login` and `/unauthorized` render directly into AppComponent's `<router-outlet>` without any shell wrapper. This is a one-line change in `app.routes.ts` (move shell to child route) rather than a conditional show/hide hack in AppComponent.
+
+**Consequences:** AppComponent is permanently minimal (single `<router-outlet>` template, no logic). AppShellComponent carries all layout responsibility for authenticated users only. Phase 1+ features add child routes under the `''` shell parent.
+
+---
+
+### Decision 2 — Phase 0 Auth Stub: `isAuthenticated = signal(true)` Hardcoded
+
+**Decision:** `AuthService` returns hardcoded truthy signals (`isAuthenticated = signal(true)`, `roles = signal(['social-worker', 'admin'])`) so the development shell renders without a real IdP. All stub methods carry `// Phase 0 stub` comments.
+
+**Options considered:**
+
+| Option | Description | Decision |
+|---|---|---|
+| A — Hardcoded truthy signals (selected) | Auth always returns true/admin. Navigation and dashboard render immediately. | Selected |
+| B — Environment flag gate | Auth reads `environment.mockAuth` to decide whether to bypass. | Rejected |
+| C — No stub — just redirect to login | Every dev load hits the login placeholder until Phase 1 IdP. | Rejected |
+
+**Rationale for Option A:**
+Option B adds complexity with no value — the Phase 0 environment is always development. Option C requires every developer to click through the login placeholder on every serve, which is friction with no benefit before Phase 1 IdP integration. Option A is the documented Phase 0 pattern from the implementation plan: stub returns truthy values, every stub is clearly commented, and Phase 1 replaces the service body wholesale.
+
+**SOLID note (OCP):** `AuthService` exposes the same public signal interface (`isAuthenticated()`, `hasRole()`, `getCurrentRole()`, `getToken()`, `logout()`) that Phase 1 will satisfy with real IdP calls. Phase 1 replaces the implementation, not the interface — callers require zero changes.
+
+**Consequences:** All guards pass in Phase 0 development. Dashboard renders on first load. `getToken()` returns null, causing `authInterceptor` to skip adding the Authorization header for all API calls — correct because there is no backend in Phase 0.
+
+---
+
+### Decision 3 — correlationIdInterceptor: Per-Request UUID vs Session UUID
+
+**Decision:** `correlationIdInterceptor` generates a fresh `crypto.randomUUID()` per outbound HTTP request rather than a single session-scoped ID.
+
+**Options considered:**
+
+| Option | Description | Decision |
+|---|---|---|
+| A — Per-request UUID (selected) | Each request gets its own unique correlation ID. | Selected |
+| B — Session UUID | One ID per browser session, shared across all requests. | Rejected |
+| C — Inject from server response | Carry the ID returned by the first API call. | Rejected |
+
+**Rationale for Option A:**
+Correlation IDs are used for distributed tracing — they identify a single request's journey through the microservice mesh. A session-scoped ID would make all requests within a session indistinguishable in the backend logs, defeating the purpose of the `X-Correlation-Id` header. Option C adds latency and complexity before any service call can be made. Per-request UUIDs are the standard distributed tracing pattern.
+
+**Consequences:** Backend logs contain a unique `X-Correlation-Id` for every frontend-originated API call. Distributed traces are unambiguous. Phase 1+ can optionally propagate the same ID to child service calls for end-to-end tracing.
+
+---
+
+### Decision 4 — LoadingSpinnerComponent Overlay: color-mix() vs rgba()
+
+**Decision:** The spinner overlay background uses `color-mix(in srgb, var(--mat-sys-surface) 60%, transparent)` rather than a hardcoded `rgba()` value.
+
+**Options considered:**
+
+| Option | Description | Decision |
+|---|---|---|
+| A — `color-mix()` with `--mat-sys-surface` token (selected) | Overlay colour adapts to light/dark mode via Material Design token. | Selected |
+| B — `rgba(255, 255, 255, 0.6)` (rejected) | Hardcoded white semi-transparent overlay. | Rejected |
+| C — `rgba(var(--rgb-surface), 0.6)` | Custom CSS variable holding RGB triple. | Rejected |
+
+**Rationale for Option A:**
+AC-009 prohibits hardcoded hex/RGB colour values. `--mat-sys-surface` is the Material 3 system surface token — it resolves to the correct surface colour in both light mode and dark mode without any extra CSS. `color-mix(in srgb, token 60%, transparent)` is the standard method for producing a semi-transparent token-based colour in CSS. Option C requires maintaining a custom RGB triple variable in parallel with the Material token, which is unnecessary duplication.
+
+**Consequences:** Spinner overlay automatically adapts to light/dark mode changes. No hardcoded colour values anywhere in the component. `z-index: 10` keeps the overlay above card content but below Material dialogs (which use higher z-index values).
+
+---
+
+### Decision 5 — KpiStatusBadgeComponent: `color: #fff` WCAG Exception
+
+**Decision:** `KpiStatusBadgeComponent` uses `color: #fff` (hardcoded white) as the text colour on all 6 status backgrounds, documented as a deliberate WCAG exception.
+
+**Options considered:**
+
+| Option | Description | Decision |
+|---|---|---|
+| A — `color: #fff` hardcoded (selected) | White text on all status colours. One rule, 6 chips share it. | Selected |
+| B — `--mat-sys-on-{color}-container` tokens | Use Material token for each status variant. | Rejected |
+| C — Per-status computed contrast | JavaScript computes light/dark text per background. | Rejected |
+
+**Rationale for Option A:**
+The 6 status colours (green, yellow, red, fuchsia, emerald, slate) were chosen as semantic signal colours — they match widely recognised traffic-light and alert conventions. All 6 achieve sufficient contrast ratio against white (`#fff`) for the font size used (12px bold chip label). `--mat-sys-on-*-container` tokens do not exist for custom status colours (they are Material's own palette tokens, not available for project-specific colours). Option C adds JavaScript complexity for a presentational component that should be pure CSS. The WCAG exception is documented in the component file header.
+
+**Consequences:** KpiStatusBadgeComponent has one documented colour exception. Colour choices must be re-validated if the base status colours change. The component header documents the rationale so future developers do not remove the exception without re-validating contrast.
+
+---
+
+### Decision 6 — environment.ts: `as const` and 9 Service Keys
+
+**Decision:** `environment.ts` and `environment.prod.ts` use `as const` and define 9 named service URL keys (workflow, kpi, admin, notifications, reporting, aiCopilot, compliance, search, calendar) rather than a single `apiBaseUrl` string.
+
+**Options considered:**
+
+| Option | Description | Decision |
+|---|---|---|
+| A — Named per-service keys with `as const` (selected) | Each microservice has its own URL key. TypeScript catches typos at compile time. | Selected |
+| B — Single `apiBaseUrl` | All requests use one base URL via a gateway. | Rejected |
+| C — `services: Record<string, string>` | Dynamic map without type safety. | Rejected |
+
+**Rationale for Option A:**
+Northwoods Traverse is a microservices architecture. In development, each microservice runs on a different port (5001–5009). A single `apiBaseUrl` would require a reverse proxy even in development, adding setup friction. `as const` makes the environment object fully typed — `environment.services.workflow` is a `string` literal type, not just `string`, and typos cause compile errors rather than silent 404s at runtime.
+
+**Consequences:** Each Angular service that calls a backend microservice imports its specific environment key (e.g., `environment.services.kpi`). The proxy config maps `/api/{service}` paths to the corresponding port for development. Production URLs are `api.traverse.example.com/{service}/api` placeholders that Phase 1+ will replace with real production endpoints.
+
+---
+
+### SOLID Summary for NT-003
+
+| Principle | How It Was Applied |
+|---|---|
+| **SRP** | `AppShellComponent` manages layout + nav; `AuthService` manages auth state; interceptors each handle one concern (auth token, correlation ID, error normalisation). |
+| **OCP** | `AuthService` exposes a stable interface; Phase 1 replaces the body without changing callers. `APP_ROUTES` is extended by adding child routes — existing routes unchanged. |
+| **LSP** | All 4 shared components accept typed inputs and produce predictable DOM; any component that accepts `LoadingSpinnerComponent` can rely on the `isLoading` boolean contract. |
+| **ISP** | `authGuard` and `adminGuard` are narrow functions — they depend only on `AuthService.isAuthenticated()` and `AuthService.hasRole()`, not the full service. |
+| **DIP** | Guards depend on `AuthService` (injectable abstraction); interceptors are pure functions injecting `AuthService`, `Router` — no concrete infrastructure dependencies. |
+
+---
+
 ## ADR-005 — OutboxProcessorBase: Scope-Delegation over Per-Message Dispatch
 
 **Date:** 2026-04-29
@@ -577,79 +778,4 @@ Phase 0 leaves developers with a buildable .NET solution (NT-001), shared librar
 
 ---
 
-## ADR-009 — NT-005 API Stub Project Structure and Dockerfile Template (NT-005)
-
-**Date:** 2026-05-04
-**Status:** Decided
-**Story:** NT-005 — Base Microservice Projects (API Stubs)
-
-### Context
-
-NT-005 creates nine ASP.NET Core Web API project stubs — one per PRD module — and replaces the NT-004 2-stage Dockerfiles with 4-stage production-ready images. Three architectural decisions arose during implementation that deviate slightly from the original implementation plan.
-
-### Decision 1 — ProjectReference relative path is 3 levels up, not 4
-
-**Decision:** The `.csproj` files use `../../../shared/` (3 levels up from `src/services/{service}/{ProjectName}/` to `src/`) not `../../../../shared/` (4 levels up to repo root) as specified in the design document §5.2 path note.
-
-**Rationale:** Counting directory levels from `src/services/workflow/Traverse.Workflow.Api/`:
-- `..` → `src/services/workflow/`
-- `../..` → `src/services/`
-- `../../..` → `src/`
-- `../../../shared/` → `src/shared/` ✓ (correct)
-- `../../../../shared/` → `{repo-root}/shared/` ✗ (missing src/ prefix — build error MSB9008)
-
-The design document path note contained an off-by-one error. The correct depth is 3 levels to reach `src/`, then into `shared/`. This was discovered during Phase 1 build verification (MSB9008: referenced project does not exist) and corrected before proceeding.
-
-**Alternatives considered:**
-- Keep 4-level path (`../../../../src/shared/`) — works but adds an unnecessary `src/` segment after navigating past it. The 3-level form is cleaner and directly correct.
-- Use absolute paths in .csproj — rejected as non-portable (breaks when repo is cloned to different paths).
-
-### Decision 2 — Microsoft.AspNetCore.OpenApi NuGet package required
-
-**Decision:** Added `Microsoft.AspNetCore.OpenApi 10.0.3` as an explicit `PackageReference` in each API project's `.csproj` file.
-
-**Rationale:** The design document §5.2 stated "No additional NuGet packages are required at Phase 0" and §5.3 included `builder.Services.AddOpenApi()` and `app.MapOpenApi()` calls. These two statements are contradictory: `AddOpenApi()` and `MapOpenApi()` are provided by the `Microsoft.AspNetCore.OpenApi` package which is **not** transitively supplied by any of the six shared infrastructure ProjectReferences. Without this package, the build fails with CS1061 (type/method not found). The package is required to fulfill the design specification's Program.cs template.
-
-**SOLID alignment:** SRP — each project declares its own dependencies explicitly rather than relying on hidden transitive chains. This makes the dependency graph visible and auditable per DIP.
-
-**Alternatives considered:**
-- Remove `AddOpenApi()/MapOpenApi()` from Program.cs — acceptable for Phase 0 (no Gherkin acceptance criteria require OpenAPI), but diverges from the design document template which all 9 Phase 1 stories will use as a baseline.
-- Add to a shared library — rejected as over-engineering; OpenAPI registration is per-service.
-
-**Package version:** 10.0.3 pinned (verified against local NuGet cache on 2026-05-04, matching target framework net10.0).
-
-### Decision 3 — 4-stage Dockerfile replaces NT-004 2-stage stub (full replacement)
-
-**Decision:** Each NT-004 Dockerfile (2 stages: `build` → `runtime`) is completely replaced by the NT-005 4-stage template (`restore` → `build` → `publish` → `runtime`). The HEALTHCHECK directive present in the NT-004 stubs is deliberately omitted from the NT-005 Dockerfiles.
-
-**Rationale for full replacement:** NT-004 Dockerfiles contained a structural defect: `COPY ["Traverse.sln", "global.json", "Directory.Build.props", "./"]` references `Directory.Build.props` which does not exist in the repository. Any `docker build` against the NT-004 stubs would fail. Full replacement with the design §5.5 template corrects this defect and delivers the correct multi-stage build per AC-3.
-
-**Rationale for omitting HEALTHCHECK from Dockerfile:** The NT-004 stubs included a `HEALTHCHECK CMD wget ...` directive in the Dockerfile. The `docker-compose.yml` (owned by NT-004) already defines `healthcheck` at the compose level for each service. Defining HEALTHCHECK in both locations is redundant and the compose-level definition takes precedence in a compose deployment. The compose-level healthcheck is the authoritative one; the Dockerfile-level HEALTHCHECK is appropriate for standalone `docker run` usage but adds noise in a compose context. The design §5.5 template does not include HEALTHCHECK. Compose-level healthcheck remains unchanged.
-
-**Alternatives considered:**
-- Patch NT-004 Dockerfiles (remove Directory.Build.props, add 2 additional stages) — technically viable but produces inconsistent stage naming and more complex diff. Full replacement per the design template is cleaner and matches the design document exactly.
-- Keep HEALTHCHECK in Dockerfile for standalone docker run support — deferred to Phase 1; Phase 0 services are always run via docker compose.
-
-### Key Implementation Decisions
-
-| ID | Decision | Rationale |
-|---|---|---|
-| D-001 | `../../../shared/` (3 levels, not 4) in all .csproj ProjectReferences | Off-by-one in design doc path note; 3 levels correct from `src/services/{svc}/{proj}/` to `src/shared/` |
-| D-002 | `Microsoft.AspNetCore.OpenApi 10.0.3` added to each API project | Required for `AddOpenApi()/MapOpenApi()` calls in Program.cs; not transitively supplied by shared libs |
-| D-003 | Full Dockerfile replacement (not patch) | NT-004 stubs defective (`Directory.Build.props` reference); complete replacement per design §5.5 is cleaner |
-| D-004 | HEALTHCHECK omitted from Dockerfiles | Compose-level `healthcheck` is authoritative; Dockerfile-level HEALTHCHECK is redundant in compose deployments |
-
-### SOLID Conformance
-
-- **SRP:** Each API project has a single concern (its bounded context); Program.cs has a single concern (wiring infrastructure for that context).
-- **OCP:** The shared infrastructure libraries are consumed via extension methods — API projects are open for extension (Phase 1 business logic) without modifying the shared libs.
-- **DIP:** API projects depend on shared library abstractions (extension method interfaces) rather than concrete implementations.
-- **ISP:** Each API project declares only the 6 infrastructure references it needs; AI-specific libraries are not imposed on non-AI services.
-
-### Consequences
-
-- `dotnet build Traverse.sln` builds all 17 projects (8 shared + 9 service stubs) with 0 errors and 0 warnings. AC-1 satisfied.
-- Phase 1 stories inherit the complete infrastructure wiring without needing to add project references or understand the DI wiring pattern.
-- Docker builds (AC-3/AC-4) pending Docker daemon availability; structural verification (4-stage pattern, no Directory.Build.props) passes.
-
----
+<!-- Generated by skill: development-evolution v2.2.0 | 2026-05-06 17:00 -->

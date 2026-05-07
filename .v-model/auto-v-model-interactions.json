@@ -1,0 +1,2645 @@
+{
+  "metadata": {
+    "schema_version": "2.3.0",
+    "title": "V-Model Auto-Interaction Disposition Map",
+    "description": "Defines automation disposition for every human interaction point in the V-Model composable pipeline. Each entry specifies whether the interaction is eliminated, auto-answered by Claude via Socratic reasoning, or retained as a genuine human gate.",
+    "created": "2026-04-15",
+    "last_updated": "2026-04-23",
+    "total_interactions": 132
+  },
+  "summary": {
+    "by_disposition": {
+      "eliminate": 5,
+      "auto_answer": 90,
+      "retain": 37
+    },
+    "by_skill": [
+      {
+        "skill": "orchestrate-feature",
+        "total": 13,
+        "eliminate": 1,
+        "auto_answer": 10,
+        "retain": 2
+      },
+      {
+        "skill": "design-architecture",
+        "total": 7,
+        "eliminate": 1,
+        "auto_answer": 3,
+        "retain": 3
+      },
+      {
+        "skill": "validate-acceptance",
+        "total": 6,
+        "eliminate": 0,
+        "auto_answer": 3,
+        "retain": 3
+      },
+      {
+        "skill": "design-feature",
+        "total": 10,
+        "eliminate": 1,
+        "auto_answer": 8,
+        "retain": 1
+      },
+      {
+        "skill": "orchestrate-bugfix",
+        "total": 8,
+        "eliminate": 1,
+        "auto_answer": 7,
+        "retain": 0
+      },
+      {
+        "skill": "generate-gherkin",
+        "total": 6,
+        "eliminate": 0,
+        "auto_answer": 6,
+        "retain": 0
+      },
+      {
+        "skill": "capture-requirements",
+        "total": 3,
+        "eliminate": 0,
+        "auto_answer": 1,
+        "retain": 2
+      },
+      {
+        "skill": "execute-implementation",
+        "total": 4,
+        "eliminate": 0,
+        "auto_answer": 4,
+        "retain": 0
+      },
+      {
+        "skill": "e2e-test",
+        "total": 5,
+        "eliminate": 0,
+        "auto_answer": 5,
+        "retain": 0
+      },
+      {
+        "skill": "integration-test",
+        "total": 5,
+        "eliminate": 0,
+        "auto_answer": 5,
+        "retain": 0
+      },
+      {
+        "skill": "calculate-cu",
+        "total": 3,
+        "eliminate": 0,
+        "auto_answer": 3,
+        "retain": 0
+      },
+      {
+        "skill": "fix-bug",
+        "total": 6,
+        "eliminate": 0,
+        "auto_answer": 4,
+        "retain": 2
+      },
+      {
+        "skill": "resume-pipeline",
+        "total": 5,
+        "eliminate": 0,
+        "auto_answer": 4,
+        "retain": 1
+      },
+      {
+        "skill": "plan-implementation",
+        "total": 6,
+        "eliminate": 1,
+        "auto_answer": 4,
+        "retain": 1
+      },
+      {
+        "skill": "audit-docs",
+        "total": 6,
+        "eliminate": 0,
+        "auto_answer": 6,
+        "retain": 0
+      },
+      {
+        "skill": "spec-review",
+        "total": 2,
+        "eliminate": 0,
+        "auto_answer": 2,
+        "retain": 0
+      },
+      {
+        "skill": "create-questions",
+        "total": 2,
+        "eliminate": 0,
+        "auto_answer": 2,
+        "retain": 0
+      },
+      {
+        "skill": "bootstrap-worktree",
+        "total": 0,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 0
+      },
+      {
+        "skill": "acceptance-signoff",
+        "total": 3,
+        "eliminate": 0,
+        "auto_answer": 2,
+        "retain": 1
+      },
+      {
+        "skill": "audit-documents",
+        "total": 2,
+        "eliminate": 0,
+        "auto_answer": 1,
+        "retain": 1
+      },
+      {
+        "skill": "cowork-resume-pipeline",
+        "total": 4,
+        "eliminate": 0,
+        "auto_answer": 2,
+        "retain": 2
+      },
+      {
+        "skill": "cowork-validate-checksums",
+        "total": 1,
+        "eliminate": 0,
+        "auto_answer": 1,
+        "retain": 0
+      },
+      {
+        "skill": "create-story-folders",
+        "total": 1,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 1
+      },
+      {
+        "skill": "design-ui-spec",
+        "total": 2,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 2
+      },
+      {
+        "skill": "draft-prd",
+        "total": 4,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 4
+      },
+      {
+        "skill": "generate-prototype",
+        "total": 2,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 2
+      },
+      {
+        "skill": "manage-estimate",
+        "total": 1,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 1
+      },
+      {
+        "skill": "orchestrate-pipeline",
+        "total": 4,
+        "eliminate": 0,
+        "auto_answer": 2,
+        "retain": 2
+      },
+      {
+        "skill": "pipeline-status",
+        "total": 0,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 0
+      },
+      {
+        "skill": "review-design",
+        "total": 3,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 3
+      },
+      {
+        "skill": "review-gherkin",
+        "total": 1,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 1
+      },
+      {
+        "skill": "upgrade-project-artefacts",
+        "total": 0,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 0
+      },
+      {
+        "skill": "validate-prototype",
+        "total": 2,
+        "eliminate": 0,
+        "auto_answer": 0,
+        "retain": 2
+      },
+      {
+        "skill": "code-review",
+        "total": 5,
+        "eliminate": 0,
+        "auto_answer": 5,
+        "retain": 0
+      }
+    ]
+  },
+  "interactions": [
+    {
+      "id": "orchestrate-feature-01",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 1: Initialise \u2014 Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current git branch is the correct story branch before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and what branch should this story work be on?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected story branch THEN proceed silently; IF AutoBranch is true THEN switch to correct worktree automatically; ELSE log a warning noting the branch mismatch and proceed."
+      }
+    },
+    {
+      "id": "orchestrate-feature-02",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 1: Initialise \u2014 Verify Resume-Pipeline Has Run",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Verify that resume-pipeline has run and artefact checksums are valid before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the feature pipeline tracker show a completed and current resume-pipeline review with valid artefact checksums?",
+        "data_sources": [
+          "feature-pipeline-tracker-json",
+          "git-log-recent"
+        ],
+        "decision_logic": "IF tracker.resume_pipeline.completed exists AND checksums are valid THEN proceed; ELSE run resume-pipeline automatically before continuing."
+      }
+    },
+    {
+      "id": "orchestrate-feature-03",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 1: Initialise \u2014 Check for Existing Story Trackers",
+      "interaction_type": "Choice",
+      "disposition": "auto_answer",
+      "prompt_text": "Choose which story tracker to use when multiple stories exist for this feature.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "How many active stories exist for this feature, and is there a single unambiguous next story?",
+        "data_sources": [
+          "feature-pipeline-tracker-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF exactly one story is in progress or queued THEN auto-select it; IF multiple stories exist THEN select the highest-priority incomplete story based on tracker sequence order."
+      }
+    },
+    {
+      "id": "orchestrate-feature-04",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 1: Initialise \u2014 No Existing Trackers (Standalone Mode)",
+      "interaction_type": "Input Required",
+      "disposition": "retain",
+      "prompt_text": "Provide the eight required inputs: Feature ID, Story ID, names, short names, starting point, and skips.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "No pipeline context exists yet. The eight required inputs (Feature ID, Story ID, names, short names, starting point, skips) define the entire work item identity and cannot be inferred without a Jira ticket or prior tracker. This is the pipeline's entry point \u2014 it must come from a human.",
+        "who": "Developer",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "Developer"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "orchestrate-feature-05",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 1: Initialise \u2014 Create Story Branch (AutoBranch=false)",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch matches the expected story branch when AutoBranch is disabled.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "When AutoBranch is false, what is the current git branch and does it match the expected story branch?",
+        "data_sources": [
+          "git-branch-current",
+          "story-tracker-json"
+        ],
+        "decision_logic": "Check git branch. IF on correct story branch THEN proceed; ELSE log the mismatch to the story tracker notes and proceed, since the developer is managing branches manually."
+      }
+    },
+    {
+      "id": "orchestrate-feature-06",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 2: Story Tracker \u2014 Load or Create",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the generated story tracker before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the generated story tracker accurately reflect the known Feature ID, Story ID, feature short name, story short name, and step sequence from the feature pipeline tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "feature-pipeline-tracker-json"
+        ],
+        "decision_logic": "IF all fields in the tracker match source data THEN proceed without asking; IF any field is inconsistent THEN correct it automatically and log the correction."
+      }
+    },
+    {
+      "id": "orchestrate-feature-07",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 3: Guide Each Step \u2014 Ready to Proceed",
+      "interaction_type": "Choice",
+      "disposition": "eliminate",
+      "prompt_text": "Ask whether to proceed to the next pipeline skill.",
+      "status": "active",
+      "eliminate_config": {
+        "default_action": "Proceed to run the next pipeline skill in sequence without pausing."
+      }
+    },
+    {
+      "id": "orchestrate-feature-08",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 3: Guide Each Step \u2014 CoWork PM Review Gate",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Pause pipeline for PM sign-off at the CoWork PM review gate.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "PM sign-off requires the PM to read the artefact and make a business judgment confirming the story addresses their requirements. This is a genuine human gate \u2014 the PM cannot be substituted by the pipeline.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 24
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "orchestrate-feature-09",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 3: Guide Each Step \u2014 After the Step",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the completed step was successful before marking it done and advancing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Did the previous skill complete successfully? What evidence exists of completion (artefact created, tests passing, tracker updated)?",
+        "data_sources": [
+          "story-tracker-json",
+          "test-results",
+          "git-status"
+        ],
+        "decision_logic": "IF the skill's expected artefact exists AND tests are passing AND tracker shows step status=completed THEN mark step done and proceed; ELSE flag failure and invoke failure handling."
+      }
+    },
+    {
+      "id": "orchestrate-feature-10",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 4: Handle Verification Failures",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Describe what failed so the orchestrator can determine how to recover.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What exactly failed, and what is the root cause? Can I determine this from error output, test results, and recent git changes?",
+        "data_sources": [
+          "test-results",
+          "git-diff-head",
+          "git-log-recent",
+          "codebase-source-files"
+        ],
+        "decision_logic": "Read error output and test failures. Cross-reference with recent changes. Form a hypothesis about root cause. Attempt the fix autonomously if confidence is high; log findings to story tracker regardless.",
+        "fallback": "If root cause is unclear after two investigation cycles, defer to developer via slack-dm."
+      }
+    },
+    {
+      "id": "orchestrate-feature-11",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 5: Handle Specification Changes Mid-Pipeline",
+      "interaction_type": "Choice",
+      "disposition": "auto_answer",
+      "prompt_text": "Choose how to handle a specification change detected mid-pipeline.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Has the specification changed, and if so, which type of change is it: scope addition, scope removal, or clarification?",
+        "data_sources": [
+          "design-doc",
+          "story-tracker-json",
+          "git-diff-head",
+          "feature-pipeline-tracker-json"
+        ],
+        "decision_logic": "IF change is a clarification (no scope impact) THEN update design doc and proceed; IF scope addition or removal THEN log to decision_log, flag affected downstream steps as needing re-run, and continue."
+      }
+    },
+    {
+      "id": "orchestrate-feature-12",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 6: Handle Session Boundaries",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm session state should be saved before ending.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the current context approaching limits or has the user signalled they are stopping?",
+        "data_sources": [
+          "story-tracker-json"
+        ],
+        "decision_logic": "Save current step progress to story tracker. Mark in-progress steps as paused. Proceed to run handoff skill automatically."
+      }
+    },
+    {
+      "id": "orchestrate-feature-13",
+      "skill": "orchestrate-feature",
+      "phase": "Phase 7: Story Completion \u2014 Create PR",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm all steps are complete before creating the pull request.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all story steps complete, all tests passing, and no open blocker items in the tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "test-results",
+          "git-status"
+        ],
+        "decision_logic": "IF all steps completed AND test suite green AND no open blockers THEN create PR automatically from story branch to feature branch with a generated description; ELSE list outstanding items and wait."
+      }
+    },
+    {
+      "id": "design-architecture-01",
+      "skill": "design-architecture",
+      "phase": "Phase 1.1: Verify Required Inputs",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide the four required inputs: approved PRD path, Feature ID, feature short name, and story folder path.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is all required context available from the feature pipeline tracker: approved PRD path, Feature ID, feature short name, and story folder path?",
+        "data_sources": [
+          "feature-pipeline-tracker-json",
+          "requirements-doc"
+        ],
+        "decision_logic": "Read pipeline tracker. IF all four inputs are present THEN proceed; ELSE read any co-located PRD or requirements doc to fill gaps. If still incomplete, defer to developer via slack-dm."
+      }
+    },
+    {
+      "id": "design-architecture-02",
+      "skill": "design-architecture",
+      "phase": "Phase 1.4: Explore Codebase Context",
+      "interaction_type": "Choice",
+      "disposition": "eliminate",
+      "prompt_text": "Ask whether to proceed with codebase exploration.",
+      "status": "active",
+      "eliminate_config": {
+        "default_action": "Proceed with codebase exploration immediately, reading architecture-relevant source files, existing service boundaries, database schemas, and dependency graphs."
+      }
+    },
+    {
+      "id": "design-architecture-03",
+      "skill": "design-architecture",
+      "phase": "Phase 2: Define Architecture \u2014 Incremental Section Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve each architecture section before proceeding to the next.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does this architecture section internally consistent with the PRD requirements, existing codebase patterns, and the sections already written?",
+        "data_sources": [
+          "requirements-doc",
+          "architecture-doc",
+          "codebase-source-files",
+          "feature-pipeline-tracker-json"
+        ],
+        "decision_logic": "Review each section against the PRD acceptance criteria and the codebase. IF consistent THEN proceed to next section; ELSE revise until consistent, log changes."
+      }
+    },
+    {
+      "id": "design-architecture-04",
+      "skill": "design-architecture",
+      "phase": "Phase 3: Estimation Checkpoint",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Review architecture estimation before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Has the architecture estimation been computed? What are the adjusted CU and estimated hours?",
+        "data_sources": [
+          "architecture-doc",
+          "feature-pipeline-tracker-json",
+          "project-baseline-json"
+        ],
+        "decision_logic": "Read completed architecture doc for the estimation section. Extract adjusted CU and estimated hours. Proceed automatically without blocking. Emit a Slack notification to Notifications.SlackChannelId as a side effect.",
+        "slack_side_effect": {
+          "trigger": "always",
+          "template": "\ud83d\udcca {{feature_id}} | Architecture estimate ready for review\n   Feature: {{feature_name}}\n   Adjusted CU: {{adjusted_cu}} | Estimated hours: ~{{estimated_hours}}hrs\n   Full estimate: {{artefact_path}} \u00a7Estimation"
+        }
+      }
+    },
+    {
+      "id": "design-architecture-05",
+      "skill": "design-architecture",
+      "phase": "Phase 4.1: Dev Lead Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Dev Lead must approve the architecture document before stories begin.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Architecture sign-off requires technical authority. The Dev Lead must validate that component boundaries align with team capability, operational constraints, and existing platform contracts \u2014 context Claude cannot fully model.",
+        "who": "Dev Lead",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 48
+      },
+      "roles_required": [
+        "DevLead"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "design-architecture-06",
+      "skill": "design-architecture",
+      "phase": "Phase 4.2: PM Confirmation",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "PM must confirm the architecture addresses all stories in the PRD.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The PM must confirm the architecture addresses all stories in the PRD and that no requirements were dropped or misinterpreted. This is a scope integrity gate, not a technical one.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 24
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "design-architecture-07",
+      "skill": "design-architecture",
+      "phase": "Phase 4.3: Stakeholder Estimation Sign-Off",
+      "interaction_type": "Choice",
+      "disposition": "retain",
+      "prompt_text": "Stakeholder must make the go/no-go decision on estimation before proceeding.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The go/no-go decision on estimation involves deadline, budget, and organisational risk tolerance \u2014 executive decisions that cannot be inferred from code or documents.",
+        "who": "Stakeholder",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 72
+      },
+      "roles_required": [
+        "Stakeholder"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "validate-acceptance-00",
+      "skill": "validate-acceptance",
+      "phase": "Phase 0: Dispose Open Code-Review Findings",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Disposition each unresolved code-review finding: Resolved, Deferred, Accepted, or Rework.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Open code-review findings require developer judgment on each one. Cannot be auto-answered \u2014 the developer must decide per-finding whether it is Resolved, Deferred, Accepted, or Rework, and a Rework disposition triggers orchestrator rollback.",
+        "who": "Developer",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "Developer"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "validate-acceptance-01",
+      "skill": "validate-acceptance",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before running acceptance validation.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "validate-acceptance-02",
+      "skill": "validate-acceptance",
+      "phase": "Phase 0: Validation Scope (story vs feature level)",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Specify whether validation is running at story level or feature level.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is this validation running at story level or feature level? Can I determine this from AutoBranch config, the current branch, and the tracker?",
+        "data_sources": [
+          "vmodel-config-json",
+          "git-branch-current",
+          "story-tracker-json",
+          "feature-pipeline-tracker-json"
+        ],
+        "decision_logic": "IF on story branch THEN story-level; IF on feature branch THEN feature-level; IF AutoBranch is false THEN infer from current branch name."
+      }
+    },
+    {
+      "id": "validate-acceptance-03",
+      "skill": "validate-acceptance",
+      "phase": "Phase 2: Extract and Classify Acceptance Criteria",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the classification of acceptance criteria as automated vs human-validation.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Which acceptance criteria can be verified automatically via tests, and which require human observation of the running system?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files",
+          "test-results"
+        ],
+        "decision_logic": "Classify each AC: IF it maps to a Gherkin scenario with passing tests THEN automated; IF it requires visual inspection, UX judgment, or business rule confirmation THEN human-validation. Proceed with this classification."
+      }
+    },
+    {
+      "id": "validate-acceptance-04",
+      "skill": "validate-acceptance",
+      "phase": "Phase 4: Structured Human Validation Checklist",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Human validation checklist items require stakeholder review.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Human validation checklist items require a human to operate the running system and make qualitative judgments about UX correctness, visual rendering, and business rule satisfaction. The pipeline must not close until these are confirmed.",
+        "who": "PM or Stakeholder",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 48
+      },
+      "roles_required": [
+        "PM",
+        "Stakeholder"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": "validate-acceptance-05",
+      "skill": "validate-acceptance",
+      "phase": "Phase 5: Validation Report \u2014 Final Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "PM or Stakeholder must sign off on the final acceptance validation report.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Final acceptance sign-off is the V-Model's quality gate before story close. It confirms that business value has been delivered as intended. This judgment belongs to the story's stakeholder or PM.",
+        "who": "PM or Stakeholder",
+        "approval_mechanism": "checklist-sign-off",
+        "timeout_hours": 24
+      },
+      "roles_required": [
+        "PM",
+        "Stakeholder"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": "design-feature-01",
+      "skill": "design-feature",
+      "phase": "Phase 0: Validate Artefact Checksums",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm artefact checksums are valid before proceeding with design.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all artefact checksums valid? Have approved documents been modified outside the pipeline?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc"
+        ],
+        "decision_logic": "IF all checksums valid THEN proceed; ELSE run resume-pipeline automatically to revalidate artefacts before continuing."
+      }
+    },
+    {
+      "id": "design-feature-02",
+      "skill": "design-feature",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before proceeding with feature design.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "design-feature-03",
+      "skill": "design-feature",
+      "phase": "Phase 1: Gather Requirements",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide or locate the requirements source before beginning design.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the requirements source available from the pipeline tracker, PRD, or story description?",
+        "data_sources": [
+          "story-tracker-json",
+          "feature-pipeline-tracker-json",
+          "requirements-doc",
+          "jira-issue-status"
+        ],
+        "decision_logic": "Read tracker for design doc path or requirements doc path. IF found THEN load and proceed; ELSE read Jira issue description as requirements source.",
+        "fallback": "If no requirements source can be found, retain \u2014 ask developer to provide source material."
+      }
+    },
+    {
+      "id": "design-feature-04",
+      "skill": "design-feature",
+      "phase": "Phase 1: Resolve Ambiguities",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Resolve ambiguities or conflicts in the requirements before designing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are there ambiguities or conflicts in the requirements that I cannot resolve by reading the codebase and domain context?",
+        "data_sources": [
+          "requirements-doc",
+          "codebase-source-files",
+          "architecture-doc",
+          "development-evolution-log"
+        ],
+        "decision_logic": "Attempt to resolve each ambiguity by: (1) checking existing codebase implementation for the same domain; (2) reading architecture doc for applicable patterns; (3) applying the principle of least surprise. Log each resolution decision. IF an ambiguity fundamentally changes scope THEN defer to PM."
+      }
+    },
+    {
+      "id": "design-feature-05",
+      "skill": "design-feature",
+      "phase": "Fast-Path Detection",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve use of fast-path design flow for complete, unambiguous requirements.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the requirements document meet the fast-path criteria: complete, no unresolved ambiguities, and maps directly to existing architecture?",
+        "data_sources": [
+          "requirements-doc",
+          "architecture-doc"
+        ],
+        "decision_logic": "IF requirements complete AND no ambiguities AND consistent with architecture THEN use fast-path; ELSE use full design flow."
+      }
+    },
+    {
+      "id": "design-feature-06",
+      "skill": "design-feature",
+      "phase": "Fast-Path Design Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the fast-path design document before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the generated fast-path design doc faithfully cover all requirements with no gaps or inconsistencies?",
+        "data_sources": [
+          "design-doc",
+          "requirements-doc"
+        ],
+        "decision_logic": "Self-review against requirements checklist. IF all ACs traceable THEN proceed; ELSE iterate on the sections with gaps."
+      }
+    },
+    {
+      "id": "design-feature-07",
+      "skill": "design-feature",
+      "phase": "Phase 2: Explore Codebase Context",
+      "interaction_type": "Choice",
+      "disposition": "eliminate",
+      "prompt_text": "Ask whether to proceed with codebase exploration.",
+      "status": "active",
+      "eliminate_config": {
+        "default_action": "Proceed with codebase exploration immediately."
+      }
+    },
+    {
+      "id": "design-feature-08",
+      "skill": "design-feature",
+      "phase": "Phase 3: Propose Approaches",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the selected technical approach before beginning detailed design.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Which approach best balances minimal change, architectural fit, testability, and delivery risk?",
+        "data_sources": [
+          "codebase-source-files",
+          "architecture-doc",
+          "design-doc",
+          "development-evolution-log"
+        ],
+        "decision_logic": "Score each candidate approach on four criteria: (1) lines of change / blast radius; (2) alignment with existing architecture; (3) test coverage ease; (4) delivery risk. Select highest scorer. Log rationale in design doc."
+      }
+    },
+    {
+      "id": "design-feature-09",
+      "skill": "design-feature",
+      "phase": "Phase 4: Incremental Section Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve each design section before proceeding to the next.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is this design section internally consistent with the requirements, approach, and prior sections?",
+        "data_sources": [
+          "design-doc",
+          "requirements-doc",
+          "architecture-doc"
+        ],
+        "decision_logic": "Cross-check each section against requirements traceability. IF consistent and complete THEN proceed to next section; ELSE revise."
+      }
+    },
+    {
+      "id": "design-feature-10",
+      "skill": "design-feature",
+      "phase": "Phase 4: Design Completion \u2014 Final Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Dev Lead and PM must approve the completed design document before implementation begins.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The completed design document is the contract for all downstream V-Model work. Approval commits the team to building a specific solution. This requires the Dev Lead to confirm technical soundness and the PM to confirm product alignment before any implementation begins.",
+        "who": "Dev Lead + PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 24
+      },
+      "roles_required": [
+        "PM",
+        "DevLead"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "orchestrate-bugfix-01",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 1: Initialise \u2014 Gather Bug Information",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide Bug ID, title, short name, and defect level to initialise the bugfix pipeline.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the bug information available from a Jira issue, an existing bugfix tracker, or from context in this conversation?",
+        "data_sources": [
+          "bugfix-tracker-json",
+          "jira-issue-status",
+          "jira-actions-md"
+        ],
+        "decision_logic": "IF bugfix tracker already exists THEN read it; ELSE read Jira issue for Bug ID, title, short name, and defect level. IF Jira not accessible THEN derive from conversation context."
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-02",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 1: Initialise \u2014 Create Bugfix Branch (AutoBranch=false)",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch matches the expected bugfix branch when AutoBranch is disabled.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "bugfix-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-03",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 1: Initialise \u2014 Create Bugfix Tracker",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the generated bugfix tracker before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the generated bugfix tracker accurately reflect the Bug ID, title, short name, and defect level from the source?",
+        "data_sources": [
+          "bugfix-tracker-json",
+          "jira-issue-status"
+        ],
+        "decision_logic": "IF all fields consistent with Jira/source THEN proceed; ELSE correct fields and proceed."
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-04",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 2: Guide Each Step \u2014 Ready to Proceed",
+      "interaction_type": "Approval Gate",
+      "disposition": "eliminate",
+      "prompt_text": "Ask whether to proceed to the next bugfix pipeline skill.",
+      "status": "active",
+      "eliminate_config": {
+        "default_action": "Proceed to run the next bugfix pipeline skill in sequence."
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-05",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 2: Guide Each Step \u2014 After the Step",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the completed step was successful before marking it done and advancing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Did the previous skill complete successfully? Are the expected outputs present?",
+        "data_sources": [
+          "bugfix-tracker-json",
+          "test-results",
+          "git-status"
+        ],
+        "decision_logic": "IF expected artefact exists AND tests pass THEN mark step done and continue; ELSE flag failure."
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-06",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 3: Escalation \u2014 Specification Gap Detected",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Escalate detected specification gap to Dev Lead for triage.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Has the bug been classified as a specification gap? What is the classification rationale and recommended next action?",
+        "data_sources": [
+          "bugfix-tracker-json",
+          "design-doc",
+          "requirements-doc"
+        ],
+        "decision_logic": "Read bugfix tracker classification. IF classified as specification gap THEN route to spec-review pipeline path. Proceed automatically. Emit a Slack notification to Notifications.SlackChannelId as a side effect.",
+        "slack_side_effect": {
+          "trigger": "when_spec_gap_detected",
+          "template": "\u26a0\ufe0f {{story_id}} | Bug escalated to specification gap\n   Original: {{bug_title}}\n   Classification: Specification gap \u2014 {{classification_rationale}}\n   Next: spec-review required before fix can proceed"
+        }
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-07",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 4: Handle Session Boundaries",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm session state should be saved before ending.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the current context approaching limits or has the user signalled they are stopping?",
+        "data_sources": [
+          "bugfix-tracker-json"
+        ],
+        "decision_logic": "Save current step progress to bugfix tracker. Mark in-progress steps as paused. Proceed to run handoff skill automatically."
+      }
+    },
+    {
+      "id": "orchestrate-bugfix-08",
+      "skill": "orchestrate-bugfix",
+      "phase": "Phase 5: Bug Fix Completion \u2014 Create PR",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm all bugfix steps are complete before creating the pull request.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all bugfix steps complete and all tests passing?",
+        "data_sources": [
+          "bugfix-tracker-json",
+          "test-results",
+          "git-status"
+        ],
+        "decision_logic": "IF all steps completed AND test suite green THEN create PR automatically from bugfix branch to main with generated description; ELSE list outstanding items."
+      }
+    },
+    {
+      "id": "generate-gherkin-01",
+      "skill": "generate-gherkin",
+      "phase": "Phase 0: Validate Design Document Checksum",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the design document checksum is valid before generating Gherkin.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all artefact checksums valid? Have approved documents been modified outside the pipeline?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc"
+        ],
+        "decision_logic": "IF all checksums valid THEN proceed; ELSE run resume-pipeline automatically to revalidate artefacts before continuing."
+      }
+    },
+    {
+      "id": "generate-gherkin-02",
+      "skill": "generate-gherkin",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before generating Gherkin feature files.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "generate-gherkin-03",
+      "skill": "generate-gherkin",
+      "phase": "Phase 1: Gather Context \u2014 Chaining from Pipeline",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm design doc path and story context are available from the pipeline tracker.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are the design doc path, story short name, and language preferences available from the pipeline tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc"
+        ],
+        "decision_logic": "Read story tracker. IF design-feature step is completed and design doc path recorded THEN proceed with those values; ELSE locate design doc by convention (design_{story_short}.md)."
+      }
+    },
+    {
+      "id": "generate-gherkin-04",
+      "skill": "generate-gherkin",
+      "phase": "Phase 1: Gather Context \u2014 Standalone Mode",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide the requirements or design source, story short name, and domain language.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What is the requirements/design source, story short name, and domain language? Can these be derived from available artefacts?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc",
+          "requirements-doc"
+        ],
+        "decision_logic": "Attempt to read design doc from tracker. IF found THEN derive all inputs from it; ELSE scan working directory for design doc by filename convention."
+      }
+    },
+    {
+      "id": "generate-gherkin-05",
+      "skill": "generate-gherkin",
+      "phase": "Phase 2: Extract and Map Acceptance Criteria",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the mapping of acceptance criteria to automatable Gherkin scenarios.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Which acceptance criteria map cleanly to automatable Gherkin scenarios vs. requiring human observation?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files"
+        ],
+        "decision_logic": "For each AC: IF it describes a deterministic system behaviour testable via API/UI THEN Gherkin; IF it requires visual judgment, accessibility evaluation, or business rule confirmation THEN human-validation tag."
+      }
+    },
+    {
+      "id": "generate-gherkin-06",
+      "skill": "generate-gherkin",
+      "phase": "Phase 4: Gherkin Completeness Verification",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Verify that every acceptance criterion has a corresponding Gherkin scenario or human-validation tag.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does every acceptance criterion from the design doc have at least one corresponding Gherkin scenario or a human-validation tag? Are all scenarios syntactically valid?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files"
+        ],
+        "decision_logic": "Enumerate ACs and check coverage. IF 100% covered THEN conclude automatically; ELSE add missing scenarios."
+      }
+    },
+    {
+      "id": "capture-requirements-01",
+      "skill": "capture-requirements",
+      "phase": "Phase 1: Identify Sources",
+      "interaction_type": "Input Required",
+      "disposition": "retain",
+      "prompt_text": "Provide the requirements sources: PRD path, user stories, stakeholder descriptions, or meeting notes.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The requirements sources (PRD path, user stories, stakeholder descriptions, meeting notes) must come from a human. There is no prior artefact or tracker context at this entry point \u2014 this IS the entry point. Claude cannot invent requirements.",
+        "who": "Developer or PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "Developer",
+        "PM"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": "capture-requirements-02",
+      "skill": "capture-requirements",
+      "phase": "Phase 2: Analyse and Clarify Ambiguities",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Clarify ambiguities, conflicts, or gaps found during requirements analysis.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Can each ambiguity, conflict, or gap in the requirements be resolved by examining the business domain, existing system behaviour, or stated constraints?",
+        "data_sources": [
+          "requirements-doc",
+          "codebase-source-files",
+          "development-evolution-log",
+          "jira-issue-status"
+        ],
+        "decision_logic": "For each ambiguity: check existing codebase for precedent, check evolution log for past decisions, apply principle of least surprise. Log each resolution. IF ambiguity is fundamentally about business priority or legal compliance THEN defer to PM."
+      }
+    },
+    {
+      "id": "capture-requirements-03",
+      "skill": "capture-requirements",
+      "phase": "Phase 4: Review and Approve Requirements Document",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "PM or Stakeholder must approve the requirements document before design begins.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Requirements approval is the left-leg entry gate. The document defines what will be built. A stakeholder or PM must confirm that the captured requirements accurately represent their intent before design work begins.",
+        "who": "PM or Stakeholder",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 24
+      },
+      "roles_required": [
+        "PM",
+        "Stakeholder"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": "execute-implementation-01",
+      "skill": "execute-implementation",
+      "phase": "Phase 1: Validate Implementation Plan Checksum",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the implementation plan checksum is valid before executing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all artefact checksums valid? Have approved documents been modified outside the pipeline?",
+        "data_sources": [
+          "story-tracker-json",
+          "implementation-plan-doc"
+        ],
+        "decision_logic": "IF all checksums valid THEN proceed; ELSE run resume-pipeline automatically to revalidate artefacts before continuing."
+      }
+    },
+    {
+      "id": "execute-implementation-02",
+      "skill": "execute-implementation",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before executing the implementation plan.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "execute-implementation-03",
+      "skill": "execute-implementation",
+      "phase": "Phase 2: Get the Approved Plan",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Locate the approved implementation plan before beginning execution.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What is the approved implementation plan path? Is it recorded in the story tracker?",
+        "data_sources": [
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF story_tracker.steps[plan-implementation].artefact_path is set THEN load that file; ELSE scan for plan_*.md in the story folder by convention."
+      }
+    },
+    {
+      "id": "execute-implementation-04",
+      "skill": "execute-implementation",
+      "phase": "Phase 4: Phase Completion Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve phase completion before proceeding to the next implementation phase.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Did this phase complete successfully? Are all phase tests passing and all phase artefacts committed?",
+        "data_sources": [
+          "test-results",
+          "git-status",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF all phase unit tests pass AND all phase files committed THEN proceed to next phase automatically; ELSE surface specific failures and resolve before proceeding."
+      }
+    },
+    {
+      "id": "e2e-test-01",
+      "skill": "e2e-test",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before running E2E tests.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "e2e-test-02",
+      "skill": "e2e-test",
+      "phase": "Phase 1: Gather Context \u2014 Chaining from Pipeline",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm E2E test context is available from the pipeline tracker.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are the design doc, UI spec, deployed environment URL, browser targets, and Playwright setup available from the pipeline tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc"
+        ],
+        "decision_logic": "Read tracker. IF design-feature step recorded THEN derive UI spec from design doc; IF deployed environment not in tracker THEN use localhost dev server convention."
+      }
+    },
+    {
+      "id": "e2e-test-03",
+      "skill": "e2e-test",
+      "phase": "Phase 1: Gather Context \u2014 Standalone Mode",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Derive all six required E2E inputs from design doc and codebase.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are the design doc, UI spec, deployed environment URL, browser targets, and Playwright setup available from the pipeline tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc",
+          "codebase-source-files"
+        ],
+        "decision_logic": "Derive all 6 required inputs from design doc and codebase: UI spec from design, tech stack from package.json/project files, accessibility standard from design doc NFRs."
+      }
+    },
+    {
+      "id": "e2e-test-04",
+      "skill": "e2e-test",
+      "phase": "Phase 2: Map User Flows",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the mapped E2E user flows before writing test implementations.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the mapped flow coverage match the critical user journeys defined in the design document?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files"
+        ],
+        "decision_logic": "Cross-reference mapped flows against design AC list. IF all critical paths covered THEN proceed; ELSE add missing flows."
+      }
+    },
+    {
+      "id": "e2e-test-05",
+      "skill": "e2e-test",
+      "phase": "Phase 6: E2E Verification Report \u2014 Final Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the E2E verification report before concluding the test run.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Did all E2E tests pass, and are there any visual regression or accessibility failures?",
+        "data_sources": [
+          "e2e-report",
+          "test-results"
+        ],
+        "decision_logic": "IF all tests pass AND no accessibility violations THEN conclude automatically; IF test failures THEN log them and defer to developer via slack-dm before proceeding."
+      }
+    },
+    {
+      "id": "integration-test-01",
+      "skill": "integration-test",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before running integration tests.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "integration-test-02",
+      "skill": "integration-test",
+      "phase": "Phase 1: Gather Context \u2014 Chaining from Pipeline",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm design doc and implementation plan are available from the pipeline tracker.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are the design doc and implementation plan available from the pipeline tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc",
+          "implementation-plan-doc"
+        ],
+        "decision_logic": "Read tracker for both paths. Load docs. Proceed."
+      }
+    },
+    {
+      "id": "integration-test-03",
+      "skill": "integration-test",
+      "phase": "Phase 1: Gather Context \u2014 Standalone Mode",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Derive architecture description, code paths, and integration concerns from available artefacts.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are the design doc and implementation plan available from the pipeline tracker?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc",
+          "architecture-doc",
+          "codebase-source-files"
+        ],
+        "decision_logic": "Derive architecture description from architecture doc; derive code paths from story tracker and git changes; infer integration concerns from design doc interface contracts."
+      }
+    },
+    {
+      "id": "integration-test-04",
+      "skill": "integration-test",
+      "phase": "Phase 2: Identify Integration Boundaries",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the identified integration boundaries before writing test implementations.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Have I identified all service-to-service, module-to-module, and data layer boundaries defined in the architecture and design docs?",
+        "data_sources": [
+          "architecture-doc",
+          "design-doc",
+          "codebase-source-files"
+        ],
+        "decision_logic": "Cross-reference identified boundaries against architecture component diagram and design doc interface definitions. IF all documented boundaries covered THEN proceed; ELSE add missing ones."
+      }
+    },
+    {
+      "id": "integration-test-05",
+      "skill": "integration-test",
+      "phase": "Phase 5: Report Findings \u2014 Final Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the integration test report before concluding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Did all integration tests pass? Are there any contract violations or layer boundary failures?",
+        "data_sources": [
+          "integration-report",
+          "test-results"
+        ],
+        "decision_logic": "IF all integration tests pass THEN conclude automatically; IF failures THEN log, attempt auto-fix if code-level, defer to developer if contract/schema issue."
+      }
+    },
+    {
+      "id": "calculate-cu-01",
+      "skill": "calculate-cu",
+      "phase": "Step 1: project-baseline.json Missing",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide codebase name and project weight when project-baseline.json is missing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Can I derive the codebase name and project weight by scanning the repository?",
+        "data_sources": [
+          "project-baseline-json",
+          "codebase-source-files",
+          "git-log-recent"
+        ],
+        "decision_logic": "IF baseline.json exists THEN read it; ELSE scan repo: count LOC across all source files, infer project name from git remote URL or package.json, assign default weight of 1.0 (medium). Create baseline.json with these values."
+      }
+    },
+    {
+      "id": "calculate-cu-02",
+      "skill": "calculate-cu",
+      "phase": "Step 2: Collect Base CU Inputs",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide component count, integration boundaries, acceptance criteria count, and data changes.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Can I count components, integration boundaries, acceptance criteria, and data changes directly from the design document?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files",
+          "architecture-doc"
+        ],
+        "decision_logic": "Count: new components from design doc component list; integration boundaries from interface definitions; ACs from Gherkin scenario count or design AC section; data changes from schema/migration section. Infer NFR level from design doc non-functional requirements section."
+      }
+    },
+    {
+      "id": "calculate-cu-03",
+      "skill": "calculate-cu",
+      "phase": "Step 3: Collect Risk and Ambiguity Inputs",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide risk level and ambiguity penalty for the CU calculation.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What is the risk level (based on blast radius, test coverage, and system criticality) and ambiguity penalty (based on unresolved questions and design clarity)?",
+        "data_sources": [
+          "design-doc",
+          "questions-doc",
+          "codebase-test-files",
+          "development-evolution-log"
+        ],
+        "decision_logic": "Risk: HIGH if touches payment, auth, or data migration; MEDIUM if touches shared services; LOW otherwise. Ambiguity: count unresolved questions in questions-doc; HIGH if >3, MEDIUM if 1-3, LOW if 0."
+      }
+    },
+    {
+      "id": "fix-bug-01",
+      "skill": "fix-bug",
+      "phase": "Phase 1: Understand the Bug Report",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Provide or locate the bug report before beginning investigation.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the bug report available from a Jira issue, the bugfix tracker, or from conversation context?",
+        "data_sources": [
+          "bugfix-tracker-json",
+          "jira-issue-status",
+          "jira-actions-md"
+        ],
+        "decision_logic": "Read Jira issue for: expected behaviour, actual behaviour, reproduction steps, stack traces, environment. If partial info, supplement by running the reproduction steps and observing actual behaviour."
+      }
+    },
+    {
+      "id": "fix-bug-02",
+      "skill": "fix-bug",
+      "phase": "Phase 2: Reproduce \u2014 Confirm Failing Test",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm a failing test reproducing the bug has been written and verified before attempting the fix.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Can I write and run a failing test that consistently reproduces the bug before attempting any fix?",
+        "data_sources": [
+          "codebase-test-files",
+          "codebase-source-files",
+          "test-results"
+        ],
+        "decision_logic": "Write the smallest possible failing test based on the bug report. Run it. IF it fails consistently THEN proceed with this test as the regression guard; IF it passes THEN investigate environment or data dependency issues first."
+      }
+    },
+    {
+      "id": "fix-bug-03",
+      "skill": "fix-bug",
+      "phase": "Phase 4: Investigate \u2014 Run Experiments",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Describe the investigation approach and experiments needed to determine root cause.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What does the evidence tell me about the root cause? Which component, function, or data path is responsible?",
+        "data_sources": [
+          "codebase-source-files",
+          "git-log-recent",
+          "git-diff-head",
+          "test-results",
+          "development-evolution-log"
+        ],
+        "decision_logic": "Systematically narrow the cause: read the failing code path, check git log for recent changes to that path, check evolution log for past decisions. Form one hypothesis at a time, test it, eliminate or confirm."
+      }
+    },
+    {
+      "id": "fix-bug-04",
+      "skill": "fix-bug",
+      "phase": "Phase 5: Classify \u2014 Code Defect vs Spec Gap",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the classification of the bug as a code defect or specification gap.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is this a code defect (the implementation diverges from the design) or a specification gap (the design does not cover this case)?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files",
+          "requirements-doc",
+          "codebase-source-files"
+        ],
+        "decision_logic": "IF a design doc or Gherkin scenario exists and the code fails to implement it correctly THEN code defect; IF no design or Gherkin covers this case THEN specification gap \u2014 escalate to orchestrate-bugfix for spec gap handling."
+      }
+    },
+    {
+      "id": "fix-bug-05",
+      "skill": "fix-bug",
+      "phase": "Phase 7: Present Fix Plan",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Developer must approve the proposed fix plan before any code changes are made.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Before executing a code change, the developer must confirm the proposed fix is the right approach. Claude may have correct root cause analysis but the fix may have unintended consequences, touch sensitive code paths, or conflict with in-flight work that Claude cannot observe.",
+        "who": "Developer",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 4
+      },
+      "roles_required": [
+        "Developer"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "fix-bug-06",
+      "skill": "fix-bug",
+      "phase": "Phase 6: Manual Verification",
+      "interaction_type": "Confirmation",
+      "disposition": "retain",
+      "prompt_text": "Verify the fix manually in the running system before raising the PR.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Post-fix manual verification requires a human to run the affected scenario in the actual environment and confirm the bug is fixed in context. Automated tests confirm the fix compiles and passes in isolation; manual verification confirms it works in the running system.",
+        "who": "Developer",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 4
+      },
+      "roles_required": [
+        "Developer"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "resume-pipeline-01",
+      "skill": "resume-pipeline",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before running resume-pipeline.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "feature-pipeline-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "resume-pipeline-02",
+      "skill": "resume-pipeline",
+      "phase": "Step 1: Discover Artefacts \u2014 Inventory Acknowledgment",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Acknowledge the discovered artefact inventory before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Have I found all expected artefacts for this feature: PRD, architecture doc, design docs, Gherkin files, implementation plans?",
+        "data_sources": [
+          "feature-pipeline-tracker-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "List all artefacts found vs expected. Log any missing artefacts. Proceed automatically \u2014 acknowledgment is not blocking."
+      }
+    },
+    {
+      "id": "resume-pipeline-03",
+      "skill": "resume-pipeline",
+      "phase": "Step 4: Review Artefacts Against Codebase",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the staleness assessment before updating artefacts.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Do the existing artefacts accurately reflect the current codebase, or has significant drift occurred since they were approved?",
+        "data_sources": [
+          "design-doc",
+          "architecture-doc",
+          "codebase-source-files",
+          "git-diff-head"
+        ],
+        "decision_logic": "Compare artefact content against codebase. Flag files referenced in design that have changed significantly (>20% diff). Quantify staleness. Proceed to Step 5."
+      }
+    },
+    {
+      "id": "resume-pipeline-04",
+      "skill": "resume-pipeline",
+      "phase": "Step 5: Update Stale Artefacts",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Determine whether stale artefact changes are minor updates or require re-approval.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "For each stale artefact, is the change a minor update (clarification, rename) or a fundamental change requiring re-approval?",
+        "data_sources": [
+          "design-doc",
+          "architecture-doc",
+          "git-diff-head",
+          "development-evolution-log"
+        ],
+        "decision_logic": "Minor drift (code refactors not affecting interfaces): update artefact automatically and log. Significant drift (new component, changed API contract): flag for Dev Lead review via defer. Update checksums after all changes."
+      }
+    },
+    {
+      "id": "resume-pipeline-05",
+      "skill": "resume-pipeline",
+      "phase": "Step 7: PR Gate \u2014 Dev Lead + PM Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Dev Lead and PM must review and approve the resume-pipeline PR before story work begins.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The resume-pipeline PR consolidates all artefact updates before story work begins. Dev Lead must review technical drift; PM must confirm no scope has changed. This is the last checkpoint before implementation cost is incurred.",
+        "who": "Dev Lead + PM",
+        "approval_mechanism": "pr-review-approval",
+        "timeout_hours": 48
+      },
+      "roles_required": [
+        "PM",
+        "DevLead"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "plan-implementation-01",
+      "skill": "plan-implementation",
+      "phase": "Phase 0: Validate Design Document Checksum",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the design document checksum is valid before planning implementation.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all artefact checksums valid? Have approved documents been modified outside the pipeline?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc"
+        ],
+        "decision_logic": "IF all checksums valid THEN proceed; ELSE run resume-pipeline automatically to revalidate artefacts before continuing."
+      }
+    },
+    {
+      "id": "plan-implementation-02",
+      "skill": "plan-implementation",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before planning implementation.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "plan-implementation-03",
+      "skill": "plan-implementation",
+      "phase": "Phase 1: Get the Design Document",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Locate the approved design document before beginning implementation planning.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the design document path recorded in the story tracker?",
+        "data_sources": [
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF tracker.steps[design-feature].artefact_path is set THEN load that file; ELSE scan story folder for design_{story_short}.md."
+      }
+    },
+    {
+      "id": "plan-implementation-04",
+      "skill": "plan-implementation",
+      "phase": "Phase 1: Codebase Freshness Check \u2014 Significant Drift",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm whether codebase drift is significant enough to invalidate the design document.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the codebase drift significant enough to invalidate the design document?",
+        "data_sources": [
+          "design-doc",
+          "codebase-source-files",
+          "git-diff-head"
+        ],
+        "decision_logic": "IF drift is minor (style, naming, non-interface changes) THEN note it in the plan and proceed; IF drift affects component interfaces or data contracts THEN auto-trigger audit-docs before planning."
+      }
+    },
+    {
+      "id": "plan-implementation-05",
+      "skill": "plan-implementation",
+      "phase": "Phase 1: Optional Code Health Check",
+      "interaction_type": "Choice",
+      "disposition": "eliminate",
+      "prompt_text": "Ask whether to run an optional code health check before planning.",
+      "status": "active",
+      "eliminate_config": {
+        "default_action": "Run a code health check on all source files referenced in the design document before planning."
+      }
+    },
+    {
+      "id": "plan-implementation-06",
+      "skill": "plan-implementation",
+      "phase": "Phase 3: Await Plan Approval",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Dev Lead must approve the implementation plan before any code is written.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The implementation plan commits the team to a specific technical approach and phase sequence. Once code is written, reversing a bad plan is expensive. A human must verify the plan is complete, phases are correctly sequenced, and no edge cases were missed before work begins.",
+        "who": "Dev Lead",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": 24
+      },
+      "roles_required": [
+        "DevLead"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "audit-docs-01",
+      "skill": "audit-docs",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before running the documentation audit.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected branch for this work item THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "audit-docs-02",
+      "skill": "audit-docs",
+      "phase": "Pre-Phase 0: Validate Artefact Checksums",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm artefact checksums are valid before beginning the documentation audit.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Are all artefact checksums valid? Have approved documents been modified outside the pipeline?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc",
+          "architecture-doc"
+        ],
+        "decision_logic": "IF all checksums valid THEN proceed; ELSE run resume-pipeline automatically to revalidate artefacts before continuing."
+      }
+    },
+    {
+      "id": "audit-docs-03",
+      "skill": "audit-docs",
+      "phase": "Phase 0: Story Decomposition Audit",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the story decomposition assessment before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is this story appropriately scoped \u2014 not too large (implementable in one sprint), not too small (meaningful value increment)?",
+        "data_sources": [
+          "design-doc",
+          "gherkin-feature-files",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF AC count <= 8 AND estimated CU within sprint capacity THEN decomposition is fine; ELSE split story and flag to PM via defer."
+      }
+    },
+    {
+      "id": "audit-docs-04",
+      "skill": "audit-docs",
+      "phase": "Phase 0b: Architecture Conformance Audit",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Approve the architecture conformance assessment before proceeding.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does the story design align with the feature architecture \u2014 same component boundaries, same data contracts, no new dependencies not in architecture doc?",
+        "data_sources": [
+          "design-doc",
+          "architecture-doc"
+        ],
+        "decision_logic": "Compare design doc components and interfaces against architecture doc. IF aligned THEN proceed; ELSE flag discrepancies and revise design doc."
+      }
+    },
+    {
+      "id": "audit-docs-05",
+      "skill": "audit-docs",
+      "phase": "Phase 1: Documentation & Codebase Audit \u2014 Findings",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Review audit findings and approve the remediation plan before fixing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "After reading the codebase and all artefacts, are there any documentation gaps, stale references, or dummy/placeholder code that must be resolved before implementation?",
+        "data_sources": [
+          "design-doc",
+          "codebase-source-files",
+          "codebase-test-files",
+          "gherkin-feature-files"
+        ],
+        "decision_logic": "Run audit. IF findings exist THEN resolve each automatically (update stale refs, remove placeholders) and run re-audit. Repeat until zero findings."
+      }
+    },
+    {
+      "id": "audit-docs-06",
+      "skill": "audit-docs",
+      "phase": "Phase 2: Sign-Off",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the audit is complete with zero unresolved findings.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the audit complete with zero unresolved findings across all passes?",
+        "data_sources": [
+          "design-doc",
+          "codebase-source-files",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF all audit passes are clean THEN conclude automatically and record completion in story tracker; ELSE continue to next audit pass."
+      }
+    },
+    {
+      "id": "spec-review-01",
+      "skill": "spec-review",
+      "phase": "Phase 1: Gather the Specification",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Locate the specification to review before beginning the pre-design quality gate.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is the specification to review available from the story tracker, pipeline context, or a known document path?",
+        "data_sources": [
+          "story-tracker-json",
+          "requirements-doc",
+          "design-doc"
+        ],
+        "decision_logic": "Read story tracker for requirements doc path. IF found THEN load; ELSE scan for requirements_{feature_short}.md by convention."
+      }
+    },
+    {
+      "id": "spec-review-02",
+      "skill": "spec-review",
+      "phase": "Phase 3: Present Findings \u2014 Resolution Gate",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Determine whether the specification is ready for design or requires revision.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "After my review, is the specification READY FOR DESIGN or does it NEED REVISION? Can I determine this without human input?",
+        "data_sources": [
+          "requirements-doc",
+          "design-doc"
+        ],
+        "decision_logic": "IF verdict is READY (all criteria testable, no ambiguities, no conflicts) THEN proceed to next pipeline step automatically; IF NEEDS REVISION THEN log specific findings, defer to requirements author via slack-dm, and wait for updated spec."
+      }
+    },
+    {
+      "id": "create-questions-01",
+      "skill": "create-questions",
+      "phase": "Step 1: Identify the Context",
+      "interaction_type": "Input Required",
+      "disposition": "auto_answer",
+      "prompt_text": "Identify the pipeline context and the decision that needs to be made.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What is the current pipeline context \u2014 which skill triggered this, what artefact is being reviewed, and what decision needs to be made?",
+        "data_sources": [
+          "story-tracker-json",
+          "design-doc",
+          "questions-doc"
+        ],
+        "decision_logic": "Read story tracker for current phase. Read the artefact being designed/reviewed for open questions. Derive context from the most recently active pipeline step."
+      }
+    },
+    {
+      "id": "create-questions-02",
+      "skill": "create-questions",
+      "phase": "Step 4: Increment Counter",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the next sequential question number before writing the questions document.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What is the next sequential question number for this story?",
+        "data_sources": [
+          "questions-doc",
+          "story-tracker-json"
+        ],
+        "decision_logic": "Scan existing questions-*.md files in story folder. Count existing questions. Increment by 1."
+      }
+    },
+    {
+      "id": "acceptance-signoff-01",
+      "skill": "acceptance-signoff",
+      "phase": "Phase 5: Sign-Off Decision",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Record the stakeholder sign-off decision for this story: Approve, Approve with conditions, or Reject.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Final stakeholder sign-off closes the V-Model right leg. This is the canonical PM human gate \u2014 the validation that the delivered story meets stakeholder intent. Cannot be derived from data; requires a subjective stakeholder judgement recorded in the decision log.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "acceptance-signoff-02",
+      "skill": "acceptance-signoff",
+      "phase": "Phase 3: Human Validation Checklist",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Evaluate each human-validation criterion against the delivered system.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Does each human-validation checklist item pass given the current state of the test environment and the delivered artefacts?",
+        "data_sources": [
+          "validation-report-md",
+          "acceptance-test-results",
+          "test-environment-state"
+        ],
+        "decision_logic": "FOR each human-validation criterion: evaluate against the criterion's observable conditions (test output, UI state, generated artefacts); PASS if the conditions hold, FAIL otherwise; surface the full checklist result to the PM."
+      }
+    },
+    {
+      "id": "acceptance-signoff-03",
+      "skill": "acceptance-signoff",
+      "phase": "Phase 2b: Code Review Findings Summary",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Surface any deferred or accepted code-review findings for the PM's awareness before sign-off.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Which findings from step[10].open_findings[] are unresolved but being shipped (Deferred or Accepted), and what are their severities?",
+        "data_sources": [
+          "story-tracker-json"
+        ],
+        "decision_logic": "Read steps[10].open_findings[] from the story tracker. Filter for entries where resolved=true AND disposition IN {Deferred, Accepted}. Present as a read-only summary table; PM cannot change dispositions at this gate (that was the validate-acceptance Phase 0 responsibility)."
+      }
+    },
+    {
+      "id": "audit-documents-01",
+      "skill": "audit-documents",
+      "phase": "Phase 4: Decision Point",
+      "interaction_type": "Choice",
+      "disposition": "retain",
+      "prompt_text": "Decide whether to fix audit findings and re-run, or approve the current zero-findings state.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The audit loop only exits when the PM confirms the documentation set is clean. The decision to re-loop vs accept is subjective \u2014 the PM weighs the severity of remaining findings against the feature's time pressure. Auto-answering would either spin forever on trivial findings or prematurely accept a flawed doc set.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "audit-documents-02",
+      "skill": "audit-documents",
+      "phase": "Phases 1\u20135: Audit Loop",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Execute all five audit phases (Inventory, Completeness, Consistency, Decomposition, Open Questions).",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What findings exist across all five audit categories for the current documentation set?",
+        "data_sources": [
+          "prd-md",
+          "design-docs-md",
+          "architecture-md",
+          "gherkin-features",
+          "user-stories-list"
+        ],
+        "decision_logic": "Execute each audit phase's checks in sequence. Aggregate findings by severity. Return a structured findings report to the PM for the Phase 4 decision \u2014 do not block; the human decides whether to re-loop."
+      }
+    },
+    {
+      "id": "create-story-folders-01",
+      "skill": "create-story-folders",
+      "phase": "Phase 2: Extract & Confirm Story List",
+      "interaction_type": "Confirmation",
+      "disposition": "retain",
+      "prompt_text": "Confirm or adjust the story list extracted from the PRD before creating folders.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Story decomposition is an authoring decision \u2014 the PRD user-stories section may name stories that should be merged, split, or renamed based on team judgement. Auto-answering would create a wrong folder structure that's hard to undo without rewriting trackers.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "design-ui-spec-01",
+      "skill": "design-ui-spec",
+      "phase": "Phase 2: Analyse Prototype",
+      "interaction_type": "Confirmation",
+      "disposition": "retain",
+      "prompt_text": "Confirm the prototype analysis plan (screens, components, tokens) before generating the UI spec.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The analysis plan establishes what the spec will cover. If the plan misses a screen or misidentifies a component, the resulting spec will be wrong. PM confirmation catches scoping errors before time is spent generating the spec itself.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "design-ui-spec-02",
+      "skill": "design-ui-spec",
+      "phase": "Phase 4: Present & Iterate",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the UI specification or request revisions.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Sign-off on the spec \u2014 this gates the prototype-validation step on the right leg. Subjective judgement on completeness, clarity, and whether the spec faithfully reflects stakeholder intent.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "draft-prd-01",
+      "skill": "draft-prd",
+      "phase": "Phase 1: Problem Definition",
+      "interaction_type": "Confirmation",
+      "disposition": "retain",
+      "prompt_text": "Confirm the PM's synthesis of existing materials (meetings, Slack, feedback) \u2014 themes, gaps, and priority order.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "This is the foundational judgement layer of the PRD. The themes extracted from source materials shape everything downstream. Cannot be auto-answered because the weighting of conflicting inputs is a PM responsibility.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "draft-prd-02",
+      "skill": "draft-prd",
+      "phase": "Phase 2: Jira Duplicate Check",
+      "interaction_type": "Choice",
+      "disposition": "retain",
+      "prompt_text": "Decide how to handle potential duplicates or related work found in Jira.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Deduplication against live Jira requires judgement on whether overlapping tickets are truly duplicates, partial overlaps, or wholly distinct work. The decision affects whether to close existing tickets, link them, or proceed independently \u2014 all PM decisions.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "draft-prd-03",
+      "skill": "draft-prd",
+      "phase": "Phase 4: Resolve Open Questions",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve or debate the recommended answers to unresolved questions before PRD finalisation.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Unresolved-questions closure often requires stakeholder negotiation. The recommended answers may need modification based on business context the PM holds but the skill does not.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "draft-prd-04",
+      "skill": "draft-prd",
+      "phase": "Phase 5: Review & Approve",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Final PRD approval \u2014 all sections complete, no TBDs remaining.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "PRD approval is the canonical planning-lifecycle exit gate. Triggers the feature lifecycle. A subjective PM judgement on completeness and clarity; cannot be auto-derived without circularity.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "generate-prototype-01",
+      "skill": "generate-prototype",
+      "phase": "Phase 2: Plan & Confirm",
+      "interaction_type": "Confirmation",
+      "disposition": "retain",
+      "prompt_text": "Confirm the prototype plan (screens, navigation, HTML vs React) before generation.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The plan dictates what the prototype will cover. Prototype generation is expensive \u2014 confirming the scope before generation avoids throwing away work. Choice between HTML and React is a deliberate stakeholder-facing decision.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "generate-prototype-02",
+      "skill": "generate-prototype",
+      "phase": "Phase 4: Iterate on Feedback",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the prototype or request revisions (iteration loop).",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The iteration loop terminates when the PM judges the prototype faithfully conveys the intended user experience. Automation would either never terminate or terminate prematurely on a shallow proxy metric.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "manage-estimate-01",
+      "skill": "manage-estimate",
+      "phase": "Phase 3: Stakeholder Decision at Checkpoint",
+      "interaction_type": "Choice",
+      "disposition": "retain",
+      "prompt_text": "Record the stakeholder decision at this checkpoint: Proceed, Defer, or Cancel.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Each of the three estimation checkpoints (T-shirt, architecture-level CU, design-level CU) ends with an explicit stakeholder decision on the feature's viability at the current estimated cost. This is a business judgement, not a data-derivable call.",
+        "who": "Stakeholder",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "Stakeholder"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "orchestrate-pipeline-01",
+      "skill": "orchestrate-pipeline",
+      "phase": "Phase 1: Initialise Pipeline Tracker",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the pipeline tracker structure and pre-marked steps before execution begins.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The tracker defines which steps are active vs skipped for this feature. Pre-marked skips are PM judgements about feature scope that must be confirmed \u2014 auto-marking would lock in decisions the PM hasn't yet made.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "orchestrate-pipeline-02",
+      "skill": "orchestrate-pipeline",
+      "phase": "Phase 3: Route to Next Skill",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Route to the correct next skill based on the current tracker state.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Given the current_step field in the pipeline tracker and the status of all preceding steps, which skill should run next?",
+        "data_sources": [
+          "pipeline-tracker-json",
+          "story-trackers-json"
+        ],
+        "decision_logic": "Read pipeline-tracker.current_step. Match to the skill defined for that step. Validate that prerequisite steps are complete. Return the skill name or a reason for blocking."
+      }
+    },
+    {
+      "id": "orchestrate-pipeline-03",
+      "skill": "orchestrate-pipeline",
+      "phase": "After Each CoWork Step",
+      "interaction_type": "Confirmation",
+      "disposition": "retain",
+      "prompt_text": "Confirm the CoWork step completion and proceed to the next step.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Between CoWork steps, the PM reviews the completed artefact and decides whether to proceed immediately, pause, or loop back. Auto-advancing would skip the review beat that makes PM-in-the-loop meaningful.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "orchestrate-pipeline-04",
+      "skill": "orchestrate-pipeline",
+      "phase": "Phase 5: Pipeline Completion Check",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Verify all stories are complete before final feature sign-off.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Is every story in the pipeline tracker's stories array in status Complete with a merged PR?",
+        "data_sources": [
+          "pipeline-tracker-json",
+          "story-trackers-json"
+        ],
+        "decision_logic": "Iterate stories[]. PASS only if every entry has status=Complete, merged_pr is not null, and merged_commit is populated. FAIL lists the incomplete entries so the PM can decide whether to wait or revisit scope."
+      }
+    },
+    {
+      "id": "cowork-resume-pipeline-01",
+      "skill": "cowork-resume-pipeline",
+      "phase": "Step 3: Create Review Branch",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the creation of the review worktree \u2014 PM/Dev Lead must execute the git worktree add command.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Branch creation is a repository-level action that mixes Dev Lead and PM authority. The skill cannot autonomously create branches; the Dev Lead confirms the operation.",
+        "who": "Dev Lead",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM",
+        "DevLead"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "cowork-resume-pipeline-02",
+      "skill": "cowork-resume-pipeline",
+      "phase": "Step 2: Checksum Validation",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Validate stored artefact checksums against current file hashes; hard-block on mismatch.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Do the stored checksums in the pipeline tracker match the current SHA-256 of each approved artefact on disk?",
+        "data_sources": [
+          "pipeline-tracker-json",
+          "approved-artefact-files"
+        ],
+        "decision_logic": "FOR each entry in artefact_checksums: compute SHA-256 of the on-disk file; compare to stored value. If any mismatch, hard-block and list the drifted artefact(s) for the resume-pipeline review loop."
+      }
+    },
+    {
+      "id": "cowork-resume-pipeline-03",
+      "skill": "cowork-resume-pipeline",
+      "phase": "Steps 4\u20137: Artefact Review Loop",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Delegate to review skills and auto-flag stale artefacts.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Which approved artefacts have modification dates newer than their approval dates, indicating drift?",
+        "data_sources": [
+          "pipeline-tracker-json",
+          "artefact-file-mtimes"
+        ],
+        "decision_logic": "Compare artefact mtime to approval date recorded in pipeline tracker. Older approval date \u2192 stale. Delegate each stale artefact to its review skill (review-design, audit-documents, etc.) and aggregate results."
+      }
+    },
+    {
+      "id": "cowork-resume-pipeline-04",
+      "skill": "cowork-resume-pipeline",
+      "phase": "Step 8: Review PR Merge",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the review PR merge to the feature branch before proceeding.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "The review PR consolidates all artefact refreshes. Merging closes the resume-pipeline review; the PM confirms the feature planning set is coherent post-refresh.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM",
+        "DevLead"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "review-design-01",
+      "skill": "review-design",
+      "phase": "Phase 2: Acceptance Criteria Comparison",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve modified or missing acceptance criteria changes between the PRD and design.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "AC drift between PRD and design must be explicitly resolved \u2014 either the design is updated or the PRD is amended. The PM is the authority on which ACs are normative.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "review-design-02",
+      "skill": "review-design",
+      "phase": "Phase 3: Scope Alignment",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve scope additions or removals in the design relative to the PRD.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Scope changes between PRD and design affect estimates and stakeholder expectations. Every addition or removal requires PM sign-off to keep the feature delivery honest.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "review-design-03",
+      "skill": "review-design",
+      "phase": "Phase 5: Sign-Off",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the design document.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Design approval is the canonical gate before implementation planning. The PM's endorsement means the PRD has been faithfully translated into an implementable design.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "review-gherkin-01",
+      "skill": "review-gherkin",
+      "phase": "Phase 6: Sign-Off",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the Gherkin specifications \u2014 readability, traceability, domain language.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Gherkin is the executable contract between stakeholder needs and automated acceptance tests. PM approval guarantees the tests speak the right language and cover the right scenarios.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "cowork-validate-checksums-01",
+      "skill": "cowork-validate-checksums",
+      "phase": "Step 3: Compare & Report",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Compare stored checksums against computed SHA-256 hashes; hard-block on mismatch.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "For each artefact: does the stored checksum match the on-disk hash?",
+        "data_sources": [
+          "pipeline-tracker-json",
+          "story-tracker-json",
+          "approved-artefact-files"
+        ],
+        "decision_logic": "FOR each artefact in artefact_checksums: compute SHA-256; compare; any mismatch triggers a hard-block return with the specific drifted artefacts named. Called by every skill that reads an approved artefact."
+      }
+    },
+    {
+      "id": "validate-prototype-01",
+      "skill": "validate-prototype",
+      "phase": "Phase 6: Sign-Off (Path A)",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Approve the prototype \u2014 coverage, states, AC alignment, intent check.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Path A sign-off means the prototype will be considered the source of truth for UI behaviour. Subjective judgement on whether the prototype faithfully represents stakeholder intent.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "validate-prototype-02",
+      "skill": "validate-prototype",
+      "phase": "Phase 6: Gate Status (Paths B/C)",
+      "interaction_type": "Approval Gate",
+      "disposition": "retain",
+      "prompt_text": "Confirm Dev Lead review and stakeholder demo are complete before the gate passes.",
+      "status": "active",
+      "retain_config": {
+        "rationale": "Paths B/C require external confirmations (Dev Lead, stakeholder demo). The PM closes the gate by attesting the external reviews have happened and produced acceptance.",
+        "who": "PM",
+        "approval_mechanism": "explicit-chat-approval",
+        "timeout_hours": null
+      },
+      "roles_required": [
+        "PM"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": "code-review-01",
+      "skill": "code-review",
+      "phase": "V-Model Config Check / Validate Current Branch",
+      "interaction_type": "Confirmation",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm the current branch is correct before running code review.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "What branch am I currently on, and is it the expected story branch for this work item?",
+        "data_sources": [
+          "git-branch-current",
+          "vmodel-config-json",
+          "story-tracker-json"
+        ],
+        "decision_logic": "IF current_branch matches expected story branch THEN proceed silently; IF AutoBranch is true THEN switch automatically; ELSE log the mismatch and proceed."
+      }
+    },
+    {
+      "id": "code-review-02",
+      "skill": "code-review",
+      "phase": "Step 3: Verify Claims and Behavior (5-step verification gate)",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Confirm verification of every claim made by the diff or PR description before evaluating findings.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "For every claim the diff or PR description makes (tests pass, handles nulls, backward-compatible, improves performance), what command did I run fresh, what did the full output show, and does it actually support the claim?",
+        "data_sources": [
+          "git-diff",
+          "pr-description",
+          "test-run-output",
+          "build-output"
+        ],
+        "decision_logic": "Apply the 5-step gate from check-your-work for each claim: identify verification command, execute fresh, review all output, confirm support, state findings with evidence. Proceed only when every claim is either verified or raised as a must-fix."
+      }
+    },
+    {
+      "id": "code-review-03",
+      "skill": "code-review",
+      "phase": "Step 5: Assign Verdict (APPROVED / APPROVED_WITH_NOTES / REWORK_REQUIRED)",
+      "interaction_type": "Decision",
+      "disposition": "auto_answer",
+      "prompt_text": "Assign the review verdict based on the structured findings.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "Given the MF / SF / SG findings and their resolution status, which verdict fits: REWORK_REQUIRED (any unresolved MF), APPROVED_WITH_NOTES (no MF but SF or SG present), or APPROVED (no findings)?",
+        "data_sources": [
+          "code-review-findings",
+          "story-tracker-json",
+          "git-diff"
+        ],
+        "decision_logic": "IF any unresolved MF-* THEN REWORK_REQUIRED; ELSE IF any SF-* or SG-* THEN APPROVED_WITH_NOTES; ELSE APPROVED. Write the verdict into the code_review_{story_short}.md frontmatter and the tracker step output."
+      }
+    },
+    {
+      "id": "code-review-04",
+      "skill": "code-review",
+      "phase": "Re-review after Rework: Verify Prior Dispositions",
+      "interaction_type": "Approval Gate",
+      "disposition": "auto_answer",
+      "prompt_text": "Verify prior Resolved / Deferred / Accepted dispositions against the new diff before re-reviewing.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "For each prior finding carried in steps[10].open_findings[], does its recorded disposition still hold against the current diff? If 'fixed in {ref}', is the ref present and the fix observable? If 'accepted: ...' or 'deferred: ...', is it a judgment that should be preserved as-is?",
+        "data_sources": [
+          "code-review-findings",
+          "story-tracker-json",
+          "git-log-recent",
+          "git-diff"
+        ],
+        "decision_logic": "For resolved+fixed-in-ref: verify ref exists and fix is present; if not, flip resolved=false, append '; retracted in review cycle {N}: {reason}'. For resolved+accepted: keep. For unresolved+deferred: keep. Then continue the full review against the new diff, preserving IDs and never deleting prior findings."
+      }
+    },
+    {
+      "id": "code-review-05",
+      "skill": "code-review",
+      "phase": "Step 4b: AutoMode Self-Remediation",
+      "interaction_type": "Decision",
+      "disposition": "auto_answer",
+      "prompt_text": "Decide, per finding, whether to auto-fix in-skill or leave open for human judgment.",
+      "status": "active",
+      "auto_answer_config": {
+        "socratic_question": "For each finding (MF / SF / SG), is it a pure code change that I can fix without business judgment, and can I verify the fix via tests/build/trace? Or is it a judgment call (ambiguous requirement, UX trade-off, stakeholder input needed) that must stay open?",
+        "data_sources": [
+          "code-review-findings",
+          "git-diff",
+          "vmodel-config-json",
+          "test-run-output",
+          "story-tracker-json"
+        ],
+        "decision_logic": "Only run this step when AutoMode is true. For each finding: IF it is a pure code change AND a fix exists AND Step 3 verification passes after the fix THEN apply, mark resolved=true, note 'auto-fixed in review cycle {N}: {summary}'. IF the fix breaks an unrelated test THEN revert and mark resolved=false with 'auto-fix reverted: {reason}'. IF the finding is a judgment call THEN mark resolved=false with 'auto-fix declined: {reason}'. Commit all successful fixes in one commit per review cycle. Never delete findings; preserve stable IDs."
+      }
+    }
+  ]
+}
