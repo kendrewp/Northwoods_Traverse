@@ -1,0 +1,59 @@
+// src/styles.scss
+// Global styles entry point. Imports the Material 3 theme.
+// Establishes typography, layout primitives, and token aliases.
+
+@use './styles/theme' as *;
+@use '@angular/material' as mat;
+
+// ─── Typography ───────────────────────────────────────────────────────────────
+// Base font-size for body text: 13px. Labels and inputs: 14px.
+// Aligns with Traverse design language; overrides Material's 16px body default.
+
+html, body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+}
+
+// Form field inputs and labels at 14px
+input, textarea, select, mat-label {
+  font-size: 14px;
+}
+
+// ─── Layout Primitives ────────────────────────────────────────────────────────
+// These CSS custom properties define the shell grid contract.
+// AppShellComponent reads these; feature components do not need to re-declare them.
+
+:root {
+  --traverse-sidebar-width:        220px;
+  --traverse-sidebar-collapsed:     64px;  // Icon-only width (tablet breakpoint)
+  --traverse-topnav-height:         56px;
+  --traverse-content-padding:       24px;
+  --traverse-content-padding-sm:    16px;  // Mobile/tablet
+}
+
+// ─── Shell Grid ───────────────────────────────────────────────────────────────
+// The .traverse-shell-grid class is applied by AppShellComponent to the host element.
+// It defines the two-column (sidebar + content) layout via CSS Grid.
+
+.traverse-shell-grid {
+  display: grid;
+  grid-template-columns: var(--traverse-sidebar-width) 1fr;
+  grid-template-rows: var(--traverse-topnav-height) 1fr;
+  min-height: 100vh;
+
+  // Tablet breakpoint: sidebar collapses to icon-only width
+  @media (max-width: 1024px) {
+    grid-template-columns: var(--traverse-sidebar-collapsed) 1fr;
+  }
+
+  // Mobile breakpoint: sidebar hidden; hamburger controls visibility
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+}

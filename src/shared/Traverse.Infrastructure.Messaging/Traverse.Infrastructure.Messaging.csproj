@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Traverse.Infrastructure.Messaging</RootNamespace>
+    <AssemblyName>Traverse.Infrastructure.Messaging</AssemblyName>
+    <Description>Shared messaging infrastructure (MassTransit/RabbitMQ, outbox pattern base, event bus abstraction) for Traverse services. Provides the outbox scheduling skeleton that service stories extend with concrete DbContext access.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Domain.Primitives supplies OutboxMessage's only domain dependency —
+         none at Phase 0, but the project reference is established for future
+         cross-cutting domain types that message processors may need. -->
+    <ProjectReference Include="..\Traverse.Domain.Primitives\Traverse.Domain.Primitives.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- MassTransit 8.* targets net6.0+ — fully compatible with net10.0.
+         MassTransit.RabbitMQ provides the AMQP transport; both packages must
+         share the same major version. -->
+    <PackageReference Include="MassTransit" Version="8.*" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.*" />
+
+    <!-- DI and Hosting abstractions — aligned with the rest of the platform
+         on net10.0. BackgroundService lives in Hosting.Abstractions. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.*" />
+  </ItemGroup>
+
+</Project>

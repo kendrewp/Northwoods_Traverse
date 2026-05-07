@@ -1,0 +1,655 @@
+# Development Evolution — Northwoods Traverse
+
+This document records every significant architectural decision, design change, and bug fix with architectural implications.  All options considered are documented alongside the rationale for the selected approach.  Maintained per CLAUDE.md rule #12.
+
+---
+
+## ADR-001 — AI Provider Abstraction
+
+**Date:** 2026-04-25  
+**Status:** Decided  
+**Deciders:** PM (provider selection), Dev Lead (interface design)
+
+### Context
+
+The AI Copilot Suite (MOD-06) requires a chat completion engine and an embedding engine across ten features (Daily Briefing, Completion Assistant, Trigger Detection, Breach Forecast, Smart Case Summary, Workload Balancing, Program Health Narrative, Policy Q&A, Outreach Drafting, Anomaly Flagging).
+
+The PM selected AWS Bedrock as the primary provider but stated the architecture should remain open to OpenAI and direct Anthropic API as alternatives.  The platform must not have hard dependencies on any single provider SDK wired throughout the codebase.
+
+### Decision
+
+Introduce a two-project abstraction layer:
+
+| Project | Responsibility |
+|---|---|
+| `Traverse.AI.Abstractions` | `IAIProvider` interface, all model records, `AIProviderException`. Zero provider NuGet dependencies. |
+| `Traverse.AI.Providers` | Three concrete adapters (Bedrock, OpenAI, Anthropic), `AIOptions` for configuration, and `AIServiceCollectionExtensions` for DI registration. |
+
+The active provider is selected at startup via `AI:Provider` in configuration (`appsettings.json` + secrets).  No application code outside `Traverse.AI.Providers` imports provider-specific SDK types.
+
+### Options Considered
+
+#### Option A — Direct SDK usage at call sites (rejected)
+AWS SDK, OpenAI SDK, and Anthropic.SDK imported wherever AI is called.
+
+- **Pro:** No abstraction overhead.
+- **Con:** Violates DIP (high-level features depend on low-level SDKs).  Switching providers requires changes across every feature module.  Impossible to unit-test without hitting live APIs.
+
+#### Option B — Single `IAIProvider` interface + adapters (selected)
+Provider-agnostic interface in a zero-dependency project; three adapters in a separate providers project.
+
+- **Pro:** Features depend only on `IAIProvider` — switching providers is a config change.  Each adapter is independently unit-testable by injecting `IAmazonBedrockRuntime` / OpenAI SDK client mocks.  Single point of change for SDK version upgrades.
+- **Con:** Slight indirection for new contributors unfamiliar with the pattern.
+
+#### Option C — Strategy pattern per feature (rejected)
+Each feature selects its own provider via a strategy object.
+
+- **Pro:** Per-feature provider flexibility.
+- **Con:** Over-engineering for current requirements.  Adds cognitive load without a concrete use case.
+
+### Interface Design
+
+```
+IAIProvider
+├── CompleteAsync(AICompletionRequest) → AICompletionResponse
+├── StreamCompleteAsync(AICompletionRequest) → IAsyncEnumerable<string>
+├── EmbedAsync(AIEmbeddingRequest) → AIEmbeddingResponse
+├── SupportsEmbeddings: bool
+└── ProviderName: string
+```
+
+### Provider Support Matrix
+
+| Provider | Completions | Streaming | Embeddings | Auth |
+|---|---|---|---|---|
+| AWS Bedrock | Yes (Converse API) | Yes | Yes (Titan V2) | AWS credential chain |
+| OpenAI | Yes (ChatClient) | Yes | Yes (text-embedding-3-small) | API key in secrets |
+| Anthropic | Yes (Messages API) | Yes | **No** — not offered | API key in secrets |
+
+### Embedding Gap (Anthropic)
+
+Anthropic does not expose an embeddings endpoint.  `AnthropicAIProvider.EmbedAsync` throws `NotSupportedException`.  Callers that need both Claude-family models and embeddings should use `AIProviderType.Bedrock`, which hosts the same Claude models via Bedrock and also provides Titan embeddings.
+
+### SOLID Analysis
+
+- **SRP:** `Traverse.AI.Abstractions` owns only the contract; `Traverse.AI.Providers` owns only the implementations.
+- **OCP:** Adding a fourth provider (e.g. Azure OpenAI) requires implementing `IAIProvider` and adding a `case` to `AIServiceCollectionExtensions` — no existing code changes.
+- **LSP:** All three adapters honour the same contract; `SupportsEmbeddings` makes the capability difference explicit so callers are not surprised by `NotSupportedException`.
+- **ISP:** The interface is intentionally narrow (3 methods + 2 properties).  Features that need only completions are not forced to depend on the embedding API.
+- **DIP:** All feature modules depend on `IAIProvider` (abstraction), not on Bedrock/OpenAI/Anthropic SDK types (concretions).
+
+### Configuration
+
+Active provider and model IDs are set in `appsettings.json` under the `AI` section.  API keys (OpenAI, Anthropic) must be supplied via secrets — never checked into appsettings files.  AWS Bedrock uses the credential chain; no key in config.
+
+See `src/shared/Traverse.AI.Providers/appsettings.AI.example.json` for the full configuration schema.
+
+### Consequences
+
+- Every microservice that calls AI features adds a reference to `Traverse.AI.Abstractions` and calls `services.AddTraverseAI(configuration)` from `Traverse.AI.Providers`.
+- The active provider is a deployment-time decision, not a compile-time decision.
+- Switching from Bedrock to OpenAI in production requires only a config key change and a secret rotation — zero code changes.
+- Integration tests can register a mock `IAIProvider` without any provider SDK installed in the test environment.
+
+---
+
+## ADR-003 — Technology Stack Decisions (Gap-Fill Round)
+
+**Date:** 2026-04-26  
+**Status:** Decided  
+**Deciders:** Dev Lead
+
+### Context
+
+A gap-analysis pass across all 12 PRDs produced 19 unanswered questions.  This ADR records the decisions with architectural weight — those that impose external dependencies, drive interface design, or constrain implementation choices across multiple modules.  Lower-weight decisions (team ownership, dates, Jira epics) are recorded in `docs/questions.md` only.
+
+---
+
+### Observability: OpenTelemetry + Datadog
+
+All microservices emit traces, metrics, and structured logs via the OpenTelemetry SDK (`AddOpenTelemetry()` per the .NET Coding Standards) and export via OTLP to a Datadog agent.  Datadog is the APM/log-aggregation backend.
+
+**Rationale:** OpenTelemetry keeps instrumentation vendor-neutral; Datadog provides best-in-class distributed tracing across microservices with native RabbitMQ and PostgreSQL integrations.  Switching backends (to Application Insights, Grafana, etc.) requires only an OTLP exporter change — zero application code change.
+
+**Consequences:** Each microservice adds `AddOpenTelemetry().WithTracing(...).WithMetrics(...)` in `Program.cs`.  The Datadog agent runs as a Kubernetes sidecar.  MOD-03 telemetry events (`kpi_recalculated`, `threshold_crossed`, etc.) are emitted as OTel spans/counters.
+
+---
+
+### Search Index: Azure AI Search
+
+MOD-08 Universal Search uses **Azure AI Search** as the managed search backend.  Hybrid BM25 + vector retrieval + semantic ranker is required for natural-language queries; pgvector alone cannot provide the semantic ranking layer.
+
+**Alternatives rejected:** pgvector-only (no semantic ranker); Elasticsearch (operational overhead, licensing); in-house BM25 (maintenance cost with no semantic capability).
+
+**Interface:** Expose behind `ISearchService` (DIP) in a dedicated `Traverse.Search.Application` project.  The implementation in `Traverse.Search.Infrastructure` references the Azure AI Search SDK.  On-premises deployments may swap to a pgvector implementation via the same interface.
+
+**Consequences:** A `SearchService` microservice owns push-model indexing.  MassTransit consumers in that service subscribe to domain events (case created, case status changed, work item completed) and push index updates.  RBAC permission filtering uses Azure AI Search `$filter` expressions keyed to `tenantId` and `programScope`.
+
+---
+
+### PDF Export: QuestPDF + SkiaSharp
+
+MOD-05 report PDF rendering uses **QuestPDF** (MIT licence) for document layout and **SkiaSharp** for chart/graph image generation embedded as PNG.
+
+**Alternatives rejected:** PuppeteerSharp/Playwright (heavyweight Chromium dependency, browser security surface, slower — unnecessary for tabular data reports); iText7 (AGPL requires commercial licence); SSRS (heavyweight, Microsoft-only).
+
+**Consequences:** PDF rendering runs inside the Reporting microservice behind an `IPdfRenderer` interface.  Verify QuestPDF community licence limit at implementation time (currently free below $1M USD/year revenue).
+
+---
+
+### Breach Forecast Model: Heuristic (v1), Statistical (v2)
+
+MOD-06 breach forecasting uses a **configurable heuristic** for v1: flag a work item as at-risk when elapsed time exceeds a configurable percentage of the policy target (default: 80%).  Threshold is configurable per program in MOD-07 AI Governance.
+
+**Rationale:** Zero historical case data exists at launch.  ML and statistical models require training data.  The heuristic is interpretable, Admin-tunable, and deployable immediately.
+
+**Disable trigger:** When a program's flagged-case rate exceeds 2× its actual breach rate over a rolling 30-day window, Admin receives an alert and may disable the per-program forecast toggle.
+
+**v2 path:** After 6–12 months of production case history, evaluate a statistical model (logistic regression or gradient-boosted trees on case features).  The `IBreachForecastService` abstraction isolates the swap.
+
+---
+
+### Geocoding and Address Validation: Azure Maps + SmartyStreets
+
+MOD-09 field directions use **Azure Maps** for geocoding and routing, with **SmartyStreets** as a preprocessing step for USPS CASS address standardisation.
+
+**Rationale:** Social worker field visits involve client home addresses (PII).  Google Maps Geocoding API has no HIPAA BAA — it is not a viable option.  Azure Maps is FedRAMP Moderate / HIPAA-eligible, does not use request data for ad targeting, and has a .NET SDK.
+
+**Interface:** `ILocationService` abstraction in `Traverse.Calendar.Application`.  Turn-by-turn navigation opens in the device's native map app (Google Maps / Apple Maps) via deep link — the backend only provides geocoded coordinates.
+
+---
+
+### AI Context Builder: Authorization-Service Consumer Pattern
+
+MOD-06 AI context builders must consume `IAuthorizationService` (ASP.NET Core policy engine) rather than implementing their own field-level permission lists.  This makes divergence between API access rules and AI context access rules structurally impossible.
+
+**Testing:** A `ContextBuilderAuthorizationTests` fixture iterates every role × every context type and asserts the materialised context contains only fields that role's policy permits.  A privacy test failure (role sees data it shouldn't) is a P0 severity blocker — blocks merge.
+
+---
+
+### Directory Sync: SCIM 2.0 (v1.1)
+
+MOD-07 user provisioning targets **SCIM 2.0** as the sync protocol.  SSO is post-v1 (PM confirmed), so the SCIM endpoint is a v1.1 deliverable.  In v1, the endpoint returns `501 Not Implemented`.  The Admin data model reserves `scimTenantUrl` and `scimBearerToken` fields to avoid a schema migration at v1.1.
+
+---
+
+### Q&A Knowledge Sources: Admin-Uploaded PDFs with Versioned Embeddings
+
+MOD-06 Policy Q&A knowledge sources are **Admin-uploaded PDFs**, chunked on upload (500-token chunks, 100-token overlap, split on section headers), embedded via Bedrock Titan V2, and stored in the vector store (Azure AI Search or pgvector).  URL crawling is rejected as too brittle for regulatory content.  Each document is versioned so AI citations reference the specific policy version that was active at query time.
+
+---
+
+## ADR-004 — Target Framework: net10.0
+
+**Date:** 2026-04-27
+**Status:** Decided
+**Deciders:** Dev Lead / PM (self — single operator)
+**Triggered by:** NT-001 code review finding SG-2 — `global.json` pins .NET 10 SDK (10.0.103) while the Phase 0 architecture document targeted .NET 9.
+
+### Context
+
+The NT-001 scaffolding was built on the machine's installed SDK (10.0.103 — .NET 10 GA). The Phase 0 architecture document (`architecture_phase0.md`) was written before SDK availability was confirmed and referenced .NET 9 as the target framework. A contradiction existed between the runtime document, the installed SDK, and the `global.json` generated during scaffolding.
+
+All new projects created in NT-002 onwards must specify a `<TargetFramework>` property. This decision resolves the correct TFM to use.
+
+### Decision
+
+**All Northwoods Traverse microservice projects target `net10.0`.**
+
+`global.json` pins SDK `10.0.103` with `rollForward: latestFeature` (committed in NT-001). All `.csproj` files in NT-002 onwards set `<TargetFramework>net10.0</TargetFramework>`.
+
+### Options Considered
+
+#### Option A — net9.0 (rejected)
+
+Match the original architecture document target.
+
+- **Pro:** Matches documentation as written; .NET 9 is the current LTS-adjacent release.
+- **Con:** The installed SDK is .NET 10.  `global.json` pins 10.0.103.  Building `net9.0` TFMs with a .NET 10 SDK is possible but introduces a mismatch between the SDK pin and the runtime target that is confusing for contributors.  .NET 9 reaches End of Support in May 2026 — targeting it for a greenfield project starting April 2026 with a multi-year lifecycle is imprudent.  Would require downgrading `global.json` from a committed artefact.
+
+#### Option B — net10.0 (selected)
+
+Match the installed SDK and the committed `global.json`.
+
+- **Pro:** No SDK/TFM mismatch.  .NET 10 is the current major release (SDK 10.0.103 GA).  All new C# 14 language features are available.  Consistent with `global.json` already committed in NT-001.  No backtracking on committed artefacts.
+- **Con:** .NET 10 Standard-Term Support (STS) — 18-month support window, not LTS (3 years).  Next LTS is .NET 12 (scheduled Nov 2026).  Mitigation: upgrade path to .NET 12 is straightforward; the abstraction layer architecture (thin services, no platform lock-in) keeps the migration cost low.
+
+### SOLID Analysis
+
+No direct SOLID impact — this is a runtime target decision, not an interface or dependency design.  All project references, NuGet package compatibility checks, and `net10.0` TFM bindings are resolved at project creation in NT-002 through NT-005.
+
+### Consequences
+
+- All `.csproj` files: `<TargetFramework>net10.0</TargetFramework>`.
+- All Dockerfiles: `FROM mcr.microsoft.com/dotnet/aspnet:10.0` (runtime) and `FROM mcr.microsoft.com/dotnet/sdk:10.0` (build stage).
+- Architecture document `architecture_phase0.md` references .NET 9 in prose — this document supersedes that reference.  The architecture doc's checksum is not invalidated by this prose gap; the actual implementation governs.
+- Plan to evaluate .NET 12 LTS (expected Nov 2026) upgrade when available.
+
+---
+
+## ADR-002 — KPI Policy Snapshot Cadence (Event-Sourced Version Storage)
+
+**Date:** 2026-04-25  
+**Status:** Decided  
+**Deciders:** Dev Lead
+
+### Context
+
+MOD-07 (Admin Configuration Suite) stores KPI policies using event-sourcing — every admin edit is appended as an immutable event.  To reconstruct a policy at any version, the system replays events from the beginning of the log.
+
+MOD-03 (KPI / SLA Policy Engine) must resolve "what did policy X look like at version V?" for every KPI recalculation, because work items pin to the policy version active at their activation time (AC-1.3).  As the event log grows over months of admin edits, replaying from Event 1 for every recalculation degrades performance — directly threatening the ≤ 60 s recalculation SLA.
+
+Snapshots solve this: a materialised point-in-time state stored alongside the event log so the engine replays only events *after* the snapshot rather than everything.  The open question was cadence — how often to snapshot.
+
+### Decision
+
+**Take a snapshot on every publish event.**
+
+When an admin publishes a KPI policy version in MOD-07, the system immediately serialises the current policy aggregate state as a snapshot and associates it with that published version identifier.  No snapshots are taken for draft or unpublished states.
+
+### Options Considered
+
+#### Option A — Every N events (rejected)
+
+Snapshot after every N appended events (e.g., every 10).
+
+- **Pro:** Simple; bounds worst-case replay length to N events regardless of admin behaviour.
+- **Con:** Snapshots draft states that the KPI engine never queries.  The N boundary has no semantic meaning — a snapshot may land mid-draft, between two edits that are never individually published.  Choosing N is arbitrary and must be re-tuned as edit frequency changes.  Does not guarantee a snapshot at the exact published boundary the recalculation engine needs.
+
+#### Option B — On every publish (selected)
+
+Snapshot exactly when the admin publishes a new version.
+
+- **Pro:** Aligns with the semantic unit the KPI engine already uses.  Work items pin to published versions; every published version has a corresponding snapshot; recalculation loads snapshot + zero subsequent events (the next event after publish is always the first edit of the next draft cycle).  Snapshot overhead is absorbed into the publish operation, which is already expensive (it triggers version binding for in-flight work items and runs the KPI simulator).  Makes `GetPolicyAtVersionAsync` trivially efficient — load snapshot, done.
+- **Con:** An admin who publishes two corrections in rapid succession creates two snapshots close together in time.  This is negligible overhead because publish is an intentional, low-frequency admin action, not a high-throughput path.
+
+#### Option C — Time-based (e.g., hourly) (rejected)
+
+Snapshot on a fixed schedule regardless of admin activity.
+
+- **Pro:** Decoupled from admin behaviour; predictable storage growth.
+- **Con:** Snapshots idle periods with no admin edits.  May miss a burst of rapid publishes between schedule ticks, leaving the KPI engine with a stale snapshot and many events to replay.  Adds an always-running background job for no semantic benefit over Option B.
+
+### SOLID Analysis
+
+- **SRP:** The snapshot writer has one responsibility: materialise and persist aggregate state on publish.  It does not participate in recalculation or draft management.
+- **OCP:** Adding a new snapshotable aggregate (e.g., Business Calendar) requires implementing the same snapshot interface — no changes to the existing policy snapshot writer.
+- **LSP:** Any published policy version retrieved via `GetPolicyAtVersionAsync` returns a fully hydrated aggregate whether it was reconstructed from a snapshot or (in degenerate cases, e.g., pre-snapshot migration) from a full replay.
+- **ISP:** The KPI engine's repository interface exposes only `GetPolicyAtVersionAsync` — it does not know or care that snapshots exist behind that method.
+- **DIP:** The snapshot store is injected into the policy repository implementation; neither the domain aggregate nor the KPI engine depends on the concrete snapshot storage mechanism.
+
+### Implementation Notes
+
+- The snapshot is taken inside the same database transaction as the `PolicyPublished` domain event write.  If the transaction rolls back, the snapshot is not persisted — no orphaned snapshot.
+- The snapshot payload is the serialised policy aggregate at the moment of publish, including all versioned fields: scope, timing definition, threshold configuration, time basis, pause conditions, and effective start date.
+- `GetPolicyAtVersionAsync(policyId, versionId)` implementation: load the snapshot keyed to `(policyId, versionId)`; if found, return directly.  If not found (legacy data pre-snapshot), fall back to full event replay.  This fallback path can be removed after a one-time migration run.
+- Snapshot storage uses the same PostgreSQL schema as the aggregate event store to avoid cross-store consistency issues.
+
+### Consequences
+
+- KPI recalculation resolves historical policy versions in O(1) reads — no event replay on the hot path.
+- The `GetPolicyAtVersionAsync` contract is the design boundary: MOD-03 and MOD-07 are decoupled; snapshot internals are invisible to the KPI engine.
+- Publish becomes slightly more expensive (one additional write per publish).  Acceptable because publish is an infrequent, deliberate admin action — not a throughput-sensitive operation.
+- A one-time backfill migration will be needed for any KPI policies that existed before this decision was implemented.  Backfill can replay events offline and write snapshots without affecting live traffic.
+
+---
+
+## ADR-005 — OutboxProcessorBase: Scope-Delegation over Per-Message Dispatch
+
+**Date:** 2026-04-29
+**Status:** Decided
+**Deciders:** Dev Lead (identified during NT-002 code review, cycle 1)
+**Story:** NT-002 — Shared Backend Libraries
+
+### Context
+
+The approved design document (`design_shared_libs.md` AC-3, §4.5) specified the following Template Method pattern for `OutboxProcessorBase`:
+
+```csharp
+// Design spec
+protected abstract Task PublishMessageAsync(OutboxMessage message, IPublishEndpoint publisher, CancellationToken ct);
+```
+
+Under this design, the base class was responsible for: (1) creating the DI scope, (2) querying the database for unpublished messages, (3) calling the abstract method once per message, (4) marking each message as published, and (5) saving changes.  The subclass was responsible only for routing a single `OutboxMessage` to the correct MassTransit `IPublishEndpoint` call.
+
+During NT-002 implementation, the execute-implementation agent identified a structural limitation: `OutboxMessage.MessageType` contains a string type discriminator, but the base class cannot deserialise or route messages without knowledge of the concrete types — which belong to the service's domain, not the shared library.  Having the base class own the query-and-loop means it must also own the deserialisation logic or accept a second abstract method, creating a leaky abstraction.
+
+### Decision
+
+**Delegate the entire DI scope to the subclass via `ProcessScopeAsync`.**
+
+```csharp
+// Implemented API
+protected abstract Task ProcessScopeAsync(IServiceProvider scopedProvider, IPublishEndpoint publisher, CancellationToken ct);
+```
+
+The base class creates the scope, resolves `IPublishEndpoint`, and calls `ProcessScopeAsync`.  The subclass receives the scoped `IServiceProvider` and resolves its own typed `DbContext`, queries only its own outbox messages, deserialises them using its own domain types, and publishes each one.  The base class retains the iteration loop (5-second delay, cancellation) and the scope lifecycle.
+
+### Options Considered
+
+#### Option A — Per-message dispatch (spec, rejected)
+
+Base class owns the full DB query loop; subclass handles only type routing.
+
+- **Pro:** Minimal subclass responsibility; base class enforces the 100-message batch and ordering invariants.
+- **Con:** The base class must receive the concrete `DbContext` type from the subclass (via a second abstract method or generic type parameter) to query `DbSet<OutboxMessage>`.  Without this, the base has no way to query messages from the service's database.  Alternatively, require a `DbContext`-agnostic `IOutboxRepository` — but that is a third abstraction not present in the design.  The design's `OutboxProcessorBase` explicitly takes `IServiceProvider` not `DbContext`, making the per-message loop pattern non-implementable without additional scope-resolution boilerplate in the base class that duplicates what the subclass would do anyway.
+
+#### Option B — Full scope delegation (selected)
+
+Base class delegates the entire scope content to `ProcessScopeAsync`.
+
+- **Pro:** The subclass is the only party with knowledge of its concrete `DbContext` type and message type discriminator — placing the query and deserialisation there respects encapsulation.  Fewer abstractions.  Cleaner separation: base handles scheduling/lifecycle, subclass handles all data access.  No generic type parameters on the base class are needed.
+- **Con:** The base class no longer enforces the 100-message batch limit or ordering — these become the subclass's responsibility.  Subclasses could implement inconsistent batching.  Mitigated by XML doc on `ProcessScopeAsync` specifying the expected behaviour contract.
+
+#### Option C — Generic base class `OutboxProcessorBase<TContext>` (rejected)
+
+Parameterise on the DbContext type to allow the base to resolve it.
+
+- **Pro:** Base class retains control of the query loop.
+- **Con:** Exposes EF Core types in the shared library's public surface at the generic type level.  Forces all service teams to use the exact same `DbContext` naming pattern.  Over-constrains the subclass.  Not required by the current use cases.
+
+### SOLID Analysis
+
+- **OCP (improved):** The selected pattern is more open for extension — subclasses can implement custom batching, custom error handling per message type, or skip categories of messages — without any base class modification.
+- **SRP (preserved):** Base class: scheduling lifecycle.  Subclass: all data access for its own outbox.
+- **DIP (preserved):** Base class depends on `IServiceProvider` and `IPublishEndpoint` (abstractions).  No EF Core types leak into the base.
+
+### Consequences
+
+- `design_shared_libs.md` §4.5 describes the per-message dispatch pattern — this document supersedes that description.  The design doc is documentation debt (SF-002 in NT-002 code review, cycle 1); it will be updated when the feature docs PR is raised.
+- Each service implementing `OutboxProcessorBase` must: (a) resolve its concrete `DbContext` from `scopedProvider`, (b) query `OutboxMessage` records with `PublishedOnUtc == null` ordered by `CreatedOnUtc`, (c) deserialise and publish each record, (d) set `PublishedOnUtc` and save.  These responsibilities are documented in `OutboxProcessorBase`'s XML doc comment.
+- The 100-message batch limit and `CreatedOnUtc` ordering are recommended defaults documented in the XML comment but not enforced by the base.
+
+---
+
+## DES-001 — NT-003 Angular Workspace Creation: Merge Approach
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (self, AutoMode)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+NT-001 created stub files in `src/frontend/traverse-workspace/`: `angular.json` (with OnPush schematic default, standalone true, scss style, proxy.conf.json reference) and `tsconfig.json` (with strict TypeScript flags, path aliases `@core/*`, `@shared/*`, `@features/*`). The actual `ng new` scaffold — `package.json`, `src/`, `tsconfig.app.json`, `tsconfig.spec.json` — has not been run. NT-003 must produce a compilable Angular workspace. The question is whether to run `ng new` verbatim (overwriting the stubs) or to merge generated output into the existing stubs.
+
+### Decision
+
+Use a **merge approach**: run `ng new traverse --standalone --strict --routing --style=scss --skip-git` in a temporary location, then copy the generated boilerplate (`src/`, `package.json`, `tsconfig.app.json`, `tsconfig.spec.json`) into `src/frontend/traverse-workspace/` while preserving the NT-001 `angular.json` (project name "traverse", OnPush default, proxy reference) and `tsconfig.json` (path aliases).
+
+### Options Considered
+
+#### Option A — Full `ng new` overwrite (rejected)
+
+Run `ng new traverse ...` directly in `src/frontend/traverse-workspace/`, accepting all defaults.
+
+- **Pro:** Simplest command; canonical Angular CLI output.
+- **Con:** Overwrites the NT-001 stubs that encode approved architectural decisions (OnPush schematic default, path aliases, proxy config reference). Would require re-applying every decision after the fact, with risk of omission. The `_stub_notice` in `tsconfig.json` explicitly flags this risk.
+
+#### Option B — Manual scaffold merge (selected)
+
+Generate in a temp directory; merge into the worktree.
+
+- **Pro:** Preserves NT-001 stub settings exactly; produces correct result without post-generation fixup; honours the `_stub_notice` instruction.
+- **Con:** More steps in the implementation plan; slightly more error-prone if the merge is not done carefully.
+
+### SOLID Analysis
+
+No direct SOLID impact — this is a workspace creation workflow decision. The resulting structure is identical to a correctly configured `ng new` output.
+
+### Consequences
+
+- Implementation plan step must specify: (1) run `ng new traverse` in `/tmp/`, (2) copy `package.json`, `src/`, `tsconfig.app.json`, `tsconfig.spec.json` to worktree, (3) verify `angular.json` retains OnPush, proxy, and project name "traverse", (4) verify `tsconfig.json` retains path aliases.
+- AC-007 (verify `tsconfig.json` path aliases post-merge) added to acceptance criteria.
+
+---
+
+## DES-002 — NT-003 KPI Placeholder Tile Naming: Generic Slot Numbers
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead / PM (self, AutoMode)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+The app shell DashboardComponent (Phase 0 placeholder) must render 6 KPI tiles. The actual KPI metric names are defined by MOD-03 (Phase 1b — KPI/SLA Policy Engine). Two options exist for labelling the tiles in Phase 0.
+
+### Decision
+
+Use **generic slot labels** ("KPI Slot 1" through "KPI Slot 6") with subtitle "Available in Phase 1". Do not attempt to name the slots with anticipated metric names.
+
+### Options Considered
+
+#### Option A — Anticipated metric names (rejected)
+
+Label tiles with expected metric names from the KPI PRD (e.g., "Cases Due Today", "Cases At Risk", etc.).
+
+- **Pro:** Gives developers a preview of the final UI.
+- **Con:** Introduces coupling between Phase 0 and Phase 1b design decisions that have not been finalised. If MOD-03 changes the KPI taxonomy, Phase 0 tiles become incorrect. Violates YAGNI — the tile names are speculative at this stage.
+
+#### Option B — Generic slot labels (selected)
+
+Label tiles "KPI Slot 1–6".
+
+- **Pro:** Zero coupling to Phase 1b; no speculative design. Phase 1 replaces the slot labels with real metric names without touching Phase 0 infrastructure.
+- **Con:** Less visually descriptive during Phase 0.
+
+### SOLID Analysis
+
+Open/Closed Principle: generic labels allow MOD-01 (Phase 2) to extend the tile content without modifying the Phase 0 shell structure.
+
+### Consequences
+
+- DashboardComponent renders 6 tiles from a static `kpiSlots = signal([...])` array of 6 generic slot objects.
+- MOD-01 Phase 2 replaces the placeholder array with real KPI data from `OrderStore` / `KpiStore`.
+
+---
+
+## DES-003 — NT-003 Proxy pathRewrite: Strip Service Prefix
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (self, AutoMode)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+The Angular dev proxy routes `/api/{service}/*` calls to the correct backend. The nine backend API projects mount their routes at `/api/*` — not `/api/{service}/*`. A request from Angular to `/api/workflow/cases` would arrive at the Workflow API as `/api/workflow/cases` unless the proxy strips the service segment.
+
+### Decision
+
+Add `"pathRewrite": { "^/api/{service}": "" }` to each proxy entry, so the backend receives the request without the service prefix (e.g., `/api/cases` instead of `/api/workflow/cases`).
+
+### Consequences
+
+- All nine proxy.conf.json entries include the `pathRewrite` key.
+- Angular service calls are structured as `/api/{service}/{resource}` (e.g., `/api/workflow/cases`).
+- Backend controllers are structured as `[Route("api/[controller]")]` — they see `/api/cases` after the proxy strips `/api/workflow`.
+- This is the standard Angular proxy pathRewrite pattern and does not require changes to any backend project.
+
+---
+
+## ADR-007 — Angular inject() Must Not Be Called Inside RxJS Operator Callbacks
+
+**Date:** 2026-04-30
+**Status:** Decided
+**Deciders:** Dev Lead (discovered during NT-003 integration testing)
+**Story:** NT-003 — Angular Frontend Shell
+
+### Context
+
+During Step 8 integration testing of NT-003, a defect was found in `errorInterceptor`: the function called `inject(Router)` inside the `catchError()` callback, which executes asynchronously outside Angular's synchronous injection context. This throws NG0203 (`inject() must be called from an injection context`) at runtime on every 401 HTTP response, preventing the error from being mapped to an `ApiError` and silently blocking the `/login` redirect.
+
+The Phase 9 smoke test did not reveal the defect because no 401 response was triggered during manual testing. The integration test was the first exercise of that code path.
+
+### Options Considered
+
+**Option A (selected): Capture the token at function-body level, use via closure**
+
+```typescript
+export function errorInterceptor(req, next): Observable<HttpEvent<unknown>> {
+  const router = inject(Router);  // ← synchronous injection context: valid
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 401) router.navigate(['/login']);  // ← closure: valid
+      ...
+    })
+  );
+}
+```
+
+The injection context is valid during the synchronous body of the interceptor function. The captured `router` reference is held by closure and safe to use in any async callback.
+
+**Option B: Inject via constructor in a class-based interceptor**
+
+Convert to `@Injectable() class ErrorInterceptor implements HttpInterceptor`. Injection via constructor is always valid. Rejected: all other interceptors are functional (Angular 15+ standard); mixing patterns in the same file set creates inconsistency.
+
+**Option C: Use runInInjectionContext**
+
+Wrap the `inject(Router)` call in `runInInjectionContext(injector, () => inject(Router))`. Requires an `Injector` parameter to be passed through. Rejected: more complex than Option A with no benefit.
+
+### Decision
+
+**Option A — capture at function-body level.** This is the idiomatic Angular pattern for functional interceptors and applies universally:
+
+> Any DI token needed inside an RxJS operator callback in a functional interceptor, guard, or resolver must be captured via `inject()` at the function body level and accessed via closure inside the callback. Never call `inject()` inside `catchError`, `tap`, `map`, `switchMap`, or any other RxJS operator callback.
+
+### Consequences
+
+- `errorInterceptor` was corrected. `ng test` confirms 79/79 pass; `ng lint` and `ng build --configuration production` are clean.
+- The pattern is documented here and in the interceptor file's JSDoc to prevent recurrence.
+- All future interceptors, guards, and resolvers in this project must follow this pattern. Code review (Step 10) will check for violations.
+
+---
+
+## ADR-008 — Docker Compose Local Development Environment (NT-004)
+
+**Date:** 2026-05-01
+**Status:** Decided
+**Deciders:** Dev Lead (self)
+**Story:** NT-004 — Docker Compose Local Dev Environment
+
+### Context
+
+Phase 0 leaves developers with a buildable .NET solution (NT-001), shared libraries (NT-002), and an Angular shell (NT-003), but no way to run the full stack locally. Each of the nine microservices requires a PostgreSQL database, a RabbitMQ event broker, and access to an n8n workflow engine. Without a local environment, cross-service integration testing is impossible and Phase 1 stories cannot validate end-to-end flows.
+
+### Decision
+
+**Single root `docker-compose.yml` with per-service Dockerfile.** One compose file at the repo root declares all 12 containers. Each API stub has its own multi-stage Dockerfile in `docker/{service}/`. A single `init.sql` creates nine empty databases via the postgres image's `/docker-entrypoint-initdb.d/` mechanism. Credentials flow through `.env` / `.env.example` (no compose secrets block). API stubs are profile-gated (`--profile api`) until NT-005 Dockerfiles are ready.
+
+### Options Considered
+
+| Option | Selected? | Rationale |
+|---|---|---|
+| Single root `docker-compose.yml` + per-service Dockerfile | **Yes** | Single command, per-service image control, mirrors .NET Coding Standards §18, no new tooling |
+| Split compose files per group (infra vs services) | No | Contradicts AC-1 single-command requirement; `docker compose -f a.yml -f b.yml up` adds friction |
+| All APIs in one container | No | Defeats microservice decomposition; shared crash boundary; prevents per-service image control |
+| Tilt / Skaffold / devcontainers | No | Overkill for single-developer Phase 0; introduces a new tool before any business value is delivered |
+
+### Key Implementation Decisions
+
+| ID | Decision | Rationale |
+|---|---|---|
+| D-5 | `.env` + `.env.example` (no compose secrets) | Local-only credentials; no real secrets in Phase 0; simpler developer workflow |
+| D-6 | User-defined bridge network `traverse-net` | Service-name DNS resolution; default bridge requires deprecated `--link` |
+| D-7 | Profile-gate API services (`--profile api`) until NT-005 merges | Compose file references Dockerfiles that NT-005 produces; infra runs immediately |
+| D-8 | `depends_on: condition: service_healthy` on all API stubs | Eliminates the race condition where APIs start before Postgres/RabbitMQ accept connections |
+| D-9 | Named volumes for postgres-data, rabbitmq-data, n8n-data | Explicit `down -v` to reset; survives `docker compose down` |
+| D-10 | Bind-mount `./n8n/workflows` | Workflow JSON becomes version-controlled (Phase 1 requirement) |
+| D-11 | Plain `CREATE DATABASE` without `IF NOT EXISTS` | Re-runs must fail fast and require `down -v` reset (documented in README) |
+| D-13 | Omit `version:` key | Docker Compose v2 emits a deprecation warning when present |
+
+### SOLID Conformance
+
+- **SRP:** Each phase did exactly one thing: credentials, DB init, infra messaging/workflow, API stubs, compose wiring, documentation.
+- **OCP:** Profile pattern means infra services require no modification when API stubs are added/removed.
+- **ISP:** Per-service Dockerfiles are independent — changing one has no effect on any other.
+- **DIP:** API stubs depend on `postgres` and `rabbitmq` by service name (DNS abstraction), not by IP.
+
+### Consequences
+
+- `docker compose up` (infra only) is immediately functional once NT-004 merges.
+- `docker compose --profile api up` is deferred until NT-005 merges (Dockerfiles reference projects that NT-005 produces).
+- `init.sql` runs once; re-adding a service database requires `docker compose down -v` (documented in README Troubleshooting).
+- Port conflicts are mitigated via `.env` overrides for all 13 ports (documented in README).
+- Linux developers may need `chown 1000:1000 n8n/workflows` for the n8n bind mount (documented in README).
+
+---
+
+## ADR-009 — NT-005 API Stub Project Structure and Dockerfile Template (NT-005)
+
+**Date:** 2026-05-04
+**Status:** Decided
+**Story:** NT-005 — Base Microservice Projects (API Stubs)
+
+### Context
+
+NT-005 creates nine ASP.NET Core Web API project stubs — one per PRD module — and replaces the NT-004 2-stage Dockerfiles with 4-stage production-ready images. Three architectural decisions arose during implementation that deviate slightly from the original implementation plan.
+
+### Decision 1 — ProjectReference relative path is 3 levels up, not 4
+
+**Decision:** The `.csproj` files use `../../../shared/` (3 levels up from `src/services/{service}/{ProjectName}/` to `src/`) not `../../../../shared/` (4 levels up to repo root) as specified in the design document §5.2 path note.
+
+**Rationale:** Counting directory levels from `src/services/workflow/Traverse.Workflow.Api/`:
+- `..` → `src/services/workflow/`
+- `../..` → `src/services/`
+- `../../..` → `src/`
+- `../../../shared/` → `src/shared/` ✓ (correct)
+- `../../../../shared/` → `{repo-root}/shared/` ✗ (missing src/ prefix — build error MSB9008)
+
+The design document path note contained an off-by-one error. The correct depth is 3 levels to reach `src/`, then into `shared/`. This was discovered during Phase 1 build verification (MSB9008: referenced project does not exist) and corrected before proceeding.
+
+**Alternatives considered:**
+- Keep 4-level path (`../../../../src/shared/`) — works but adds an unnecessary `src/` segment after navigating past it. The 3-level form is cleaner and directly correct.
+- Use absolute paths in .csproj — rejected as non-portable (breaks when repo is cloned to different paths).
+
+### Decision 2 — Microsoft.AspNetCore.OpenApi NuGet package required
+
+**Decision:** Added `Microsoft.AspNetCore.OpenApi 10.0.3` as an explicit `PackageReference` in each API project's `.csproj` file.
+
+**Rationale:** The design document §5.2 stated "No additional NuGet packages are required at Phase 0" and §5.3 included `builder.Services.AddOpenApi()` and `app.MapOpenApi()` calls. These two statements are contradictory: `AddOpenApi()` and `MapOpenApi()` are provided by the `Microsoft.AspNetCore.OpenApi` package which is **not** transitively supplied by any of the six shared infrastructure ProjectReferences. Without this package, the build fails with CS1061 (type/method not found). The package is required to fulfill the design specification's Program.cs template.
+
+**SOLID alignment:** SRP — each project declares its own dependencies explicitly rather than relying on hidden transitive chains. This makes the dependency graph visible and auditable per DIP.
+
+**Alternatives considered:**
+- Remove `AddOpenApi()/MapOpenApi()` from Program.cs — acceptable for Phase 0 (no Gherkin acceptance criteria require OpenAPI), but diverges from the design document template which all 9 Phase 1 stories will use as a baseline.
+- Add to a shared library — rejected as over-engineering; OpenAPI registration is per-service.
+
+**Package version:** 10.0.3 pinned (verified against local NuGet cache on 2026-05-04, matching target framework net10.0).
+
+### Decision 3 — 4-stage Dockerfile replaces NT-004 2-stage stub (full replacement)
+
+**Decision:** Each NT-004 Dockerfile (2 stages: `build` → `runtime`) is completely replaced by the NT-005 4-stage template (`restore` → `build` → `publish` → `runtime`). The HEALTHCHECK directive present in the NT-004 stubs is deliberately omitted from the NT-005 Dockerfiles.
+
+**Rationale for full replacement:** NT-004 Dockerfiles contained a structural defect: `COPY ["Traverse.sln", "global.json", "Directory.Build.props", "./"]` references `Directory.Build.props` which does not exist in the repository. Any `docker build` against the NT-004 stubs would fail. Full replacement with the design §5.5 template corrects this defect and delivers the correct multi-stage build per AC-3.
+
+**Rationale for omitting HEALTHCHECK from Dockerfile:** The NT-004 stubs included a `HEALTHCHECK CMD wget ...` directive in the Dockerfile. The `docker-compose.yml` (owned by NT-004) already defines `healthcheck` at the compose level for each service. Defining HEALTHCHECK in both locations is redundant and the compose-level definition takes precedence in a compose deployment. The compose-level healthcheck is the authoritative one; the Dockerfile-level HEALTHCHECK is appropriate for standalone `docker run` usage but adds noise in a compose context. The design §5.5 template does not include HEALTHCHECK. Compose-level healthcheck remains unchanged.
+
+**Alternatives considered:**
+- Patch NT-004 Dockerfiles (remove Directory.Build.props, add 2 additional stages) — technically viable but produces inconsistent stage naming and more complex diff. Full replacement per the design template is cleaner and matches the design document exactly.
+- Keep HEALTHCHECK in Dockerfile for standalone docker run support — deferred to Phase 1; Phase 0 services are always run via docker compose.
+
+### Key Implementation Decisions
+
+| ID | Decision | Rationale |
+|---|---|---|
+| D-001 | `../../../shared/` (3 levels, not 4) in all .csproj ProjectReferences | Off-by-one in design doc path note; 3 levels correct from `src/services/{svc}/{proj}/` to `src/shared/` |
+| D-002 | `Microsoft.AspNetCore.OpenApi 10.0.3` added to each API project | Required for `AddOpenApi()/MapOpenApi()` calls in Program.cs; not transitively supplied by shared libs |
+| D-003 | Full Dockerfile replacement (not patch) | NT-004 stubs defective (`Directory.Build.props` reference); complete replacement per design §5.5 is cleaner |
+| D-004 | HEALTHCHECK omitted from Dockerfiles | Compose-level `healthcheck` is authoritative; Dockerfile-level HEALTHCHECK is redundant in compose deployments |
+
+### SOLID Conformance
+
+- **SRP:** Each API project has a single concern (its bounded context); Program.cs has a single concern (wiring infrastructure for that context).
+- **OCP:** The shared infrastructure libraries are consumed via extension methods — API projects are open for extension (Phase 1 business logic) without modifying the shared libs.
+- **DIP:** API projects depend on shared library abstractions (extension method interfaces) rather than concrete implementations.
+- **ISP:** Each API project declares only the 6 infrastructure references it needs; AI-specific libraries are not imposed on non-AI services.
+
+### Consequences
+
+- `dotnet build Traverse.sln` builds all 17 projects (8 shared + 9 service stubs) with 0 errors and 0 warnings. AC-1 satisfied.
+- Phase 1 stories inherit the complete infrastructure wiring without needing to add project references or understand the DI wiring pattern.
+- Docker builds (AC-3/AC-4) pending Docker daemon availability; structural verification (4-stage pattern, no Directory.Build.props) passes.
+
+---

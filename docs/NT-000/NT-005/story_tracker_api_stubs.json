@@ -1,0 +1,367 @@
+{
+  "tracker_type": "story_tracker",
+  "schema_version": "1.1",
+  "feature_id": "NT-000",
+  "feature_name": "Phase 0 — Scaffolding",
+  "story_id": "NT-005",
+  "short_name": "api_stubs",
+  "docs_folder": "docs/NT-000/NT-005/",
+  "prd_reference": "docs/plans/implementation-order.md Phase 0e",
+  "created": "2026-05-02",
+  "last_updated": "2026-05-06",
+  "current_step": "Step 11: Validate Acceptance (skipped) / Pipeline Complete",
+  "status": "Complete",
+  "steps": [
+    {
+      "id": "step_1",
+      "name": "Design Feature",
+      "skill": "design-feature",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-005/design_api_stubs.md",
+      "completed": "2026-05-04",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_1a",
+      "name": "Calculate CU",
+      "skill": "calculate-cu",
+      "tool": "CLI",
+      "who": "design-feature (automatic)",
+      "section": "left_leg",
+      "output": "CU breakdown in design_api_stubs.md § Effort Estimate (CU-Derived); cu_estimate field populated",
+      "completed": "2026-05-04",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_2",
+      "name": "Review Design",
+      "skill": "review-design",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Design Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single-developer, all-roles-self. Requirements fully specified in implementation-order.md Phase 0e. No ambiguity to resolve before design.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_3",
+      "name": "Generate Gherkin",
+      "skill": "generate-gherkin",
+      "tool": "CLI",
+      "who": "Dev Lead / QA",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-005/gherkin_api_stubs_solution_build.feature, docs/NT-000/NT-005/gherkin_api_stubs_health_endpoints.feature, docs/NT-000/NT-005/gherkin_api_stubs_dockerfiles.feature, docs/NT-000/NT-005/gherkin_api_stubs_compose.feature",
+      "completed": "2026-05-04",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_4",
+      "name": "Review Gherkin",
+      "skill": "review-gherkin",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "left_leg",
+      "output": "PM Gherkin Review Sign-Off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Story delivers empty API project scaffolding — not user-facing behaviour. No Gherkin-testable acceptance criteria.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_5",
+      "name": "Audit Documentation",
+      "skill": "audit-docs",
+      "tool": "Both",
+      "who": "PM (audit-documents) + Dev Lead (audit-docs)",
+      "section": "left_leg",
+      "output": "Audit reports",
+      "completed": "2026-05-04",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_6",
+      "name": "Plan Implementation",
+      "skill": "plan-implementation",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "left_leg",
+      "output": "docs/NT-000/NT-005/implementation_plan_api_stubs.md",
+      "completed": "2026-05-04",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null
+    },
+    {
+      "id": "step_7",
+      "name": "Execute Implementation",
+      "skill": "execute-implementation",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "bottom",
+      "output": "Production-ready code, all tests passing",
+      "completed": "2026-05-05",
+      "checked": true,
+      "skip_reason": null,
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_8",
+      "name": "Integration Testing",
+      "skill": "integration-test",
+      "tool": "CLI",
+      "who": "Developer",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-005/integration_tests_api_stubs.md",
+      "completed": "2026-05-06",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "result": "PASSED",
+      "findings": ["CG-001: MassTransit auto-registers ready-tagged health check — contract gap in design doc §7, not a code defect"]
+    },
+    {
+      "id": "step_9",
+      "name": "E2E UI Testing",
+      "skill": "e2e-test",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": [
+        "docs/<FEATURE-ID>/<STORY-ID>/e2e_flow_map_<story_short>.md",
+        "docs/<FEATURE-ID>/<STORY-ID>/e2e_tests_<story_short>.<ext>",
+        "docs/<FEATURE-ID>/<STORY-ID>/e2e_report_<story_short>.md"
+      ],
+      "completed": null,
+      "checked": true,
+      "skip_reason": "No user flows to exercise via Playwright; this story produces no UI.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_10",
+      "name": "Code Review",
+      "skill": "code-review",
+      "tool": "CLI",
+      "who": "Dev Lead",
+      "section": "right_leg",
+      "output": "docs/NT-000/NT-005/code_review_api_stubs.md",
+      "completed": "2026-05-06",
+      "checked": true,
+      "skip_reason": null,
+      "status": "complete",
+      "questions_doc": null,
+      "verdict": "APPROVED",
+      "review_cycle": 1,
+      "open_findings": []
+    },
+    {
+      "id": "step_11",
+      "name": "Validate Acceptance",
+      "skill": "validate-acceptance",
+      "tool": "CLI",
+      "who": "Developer / QA",
+      "section": "right_leg",
+      "output": [
+        "docs/<FEATURE-ID>/<STORY-ID>/acceptance_tests_<story_short>.<ext>",
+        "docs/<FEATURE-ID>/<STORY-ID>/validation_checklist_<story_short>.md"
+      ],
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single-developer sub-phase; no separate acceptance authority. Code review (Step 10) is the quality gate.",
+      "status": "pending",
+      "questions_doc": null
+    },
+    {
+      "id": "step_12",
+      "name": "Acceptance Sign-Off",
+      "skill": "acceptance-signoff",
+      "tool": "CoWork",
+      "who": "PM",
+      "section": "right_leg",
+      "output": "Story-level acceptance sign-off",
+      "completed": null,
+      "checked": true,
+      "skip_reason": "Single developer, scaffolding sub-phase, no PM/stakeholder sign-off required at this stage.",
+      "status": "pending",
+      "questions_doc": null
+    }
+  ],
+  "cu_estimate": {
+    "adjusted_cu": 52.5,
+    "hours_estimate": 105.0,
+    "calculated_date": "2026-05-04"
+  },
+  "artefact_checksums": {
+    "architecture_phase0.md": {
+      "checksum": "sha256-5a122ac18c515fca56e4138941958286d540de20ce16dba145323aecaf28ae87",
+      "approved_by": "auto-refresh",
+      "approved_date": "2026-05-02"
+    },
+    "design_api_stubs.md": {
+      "checksum": "sha256-004da9cdb2c20dff024385f0781c03cc6795ef6947afbc66037b111732fe20dc",
+      "approved_by": "code-review (AutoMode — documentation corrections: §5.2 path note 3-level fix, §7 health/ready MassTransit auto-check documented)",
+      "approved_date": "2026-05-06"
+    },
+    "gherkin_api_stubs_solution_build.feature": {
+      "checksum": "sha256-4591837feaf11ef46ac70aaf2e19f6d2526e3b38bb66a231af8343260d18aea1",
+      "approved_by": "Dev Lead (self — AutoMode)",
+      "approved_date": "2026-05-04"
+    },
+    "gherkin_api_stubs_health_endpoints.feature": {
+      "checksum": "sha256-c08b973bb7afd148d3533af1b1c556204868223441a8493e6cd452775c16c4d5",
+      "approved_by": "Dev Lead (self — AutoMode)",
+      "approved_date": "2026-05-04"
+    },
+    "gherkin_api_stubs_dockerfiles.feature": {
+      "checksum": "sha256-3724f65f4cc64c3bddadb35a30763e9f5d0cbdfc70d397720fdf9743e8c46eda",
+      "approved_by": "Dev Lead (self — AutoMode)",
+      "approved_date": "2026-05-04"
+    },
+    "gherkin_api_stubs_compose.feature": {
+      "checksum": "sha256-b170a0450611364af9fe8b7c04103d9db142bb40369cb56e80fc39a7bcb9e667",
+      "approved_by": "Dev Lead (self — AutoMode)",
+      "approved_date": "2026-05-04"
+    },
+    "implementation_plan_api_stubs.md": {
+      "checksum": "sha256-24f1dd64b81b5ced0ed48980e7b288ca987b56bab9004deaa7e9e4ece6f603ba",
+      "approved_by": "Dev Lead (self — AutoMode)",
+      "approved_date": "2026-05-04"
+    },
+    "integration_tests_api_stubs.md": {
+      "checksum": "sha256-7f49eca6f5ff4f88b1d13ea826e0b0449ff6cef3333e4e86835f605fdfa8c0da",
+      "approved_by": "Developer (self — AutoMode)",
+      "approved_date": "2026-05-06"
+    }
+  },
+  "decision_log": [
+    {
+      "number": 0,
+      "step": "",
+      "decision": "No additional NuGet packages needed at the API project level — all runtime dependencies (Serilog, OTel, JWT Bearer, MassTransit, EF Core, FluentValidation) come via the six shared ProjectReferences transitively.",
+      "rationale": "Avoids version conflicts and duplication. Each shared library already pins the correct package versions. Phase 1 stories add only service-specific packages.",
+      "date": "2026-05-04",
+      "alternatives_considered": "Adding packages explicitly to each API .csproj — rejected because it creates version duplication risk and makes package governance harder."
+    },
+    {
+      "number": 0,
+      "step": "",
+      "decision": "NT-005 creates only Dockerfiles — it does not modify docker-compose.yml.",
+      "rationale": "The nine API service entries in docker-compose.yml were already fully specified by NT-004. NT-005 creates the files those entries reference (the Dockerfiles). This is the minimal-change approach.",
+      "date": "2026-05-04",
+      "alternatives_considered": "Having NT-005 add the compose entries too — rejected because NT-004 already owns that file and the entries are already correct."
+    },
+    {
+      "number": 0,
+      "step": "",
+      "decision": "Traverse.AI.Abstractions and Traverse.AI.Providers are NOT referenced from any API stub except AICopilot, and even AICopilot defers this reference to Phase 1.",
+      "rationale": "Avoids pulling OpenAI/Anthropic/AWS SDK NuGet transitive dependencies into 8 services that will never use AI capabilities. Minimal-dependency principle (YAGNI).",
+      "date": "2026-05-04",
+      "alternatives_considered": "Referencing AI projects from AICopilot.Api in Phase 0 — rejected because the AI projects are not used in Phase 0; the reference adds nothing and inflates the project."
+    },
+    {
+      "number": 4,
+      "step": "step_1",
+      "decision": "No additional NuGet packages at API project level — all runtime deps arrive via 6 shared ProjectReference entries transitively. Explicit duplication rejected (version conflict risk).",
+      "rationale": "Adding packages explicitly to each API .csproj creates version duplication risk and makes package governance harder. Phase 1 stories add service-specific packages.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 5,
+      "step": "step_1",
+      "decision": "NT-005 creates only Dockerfiles — does not modify docker-compose.yml. Nine service entries were fully specified by NT-004.",
+      "rationale": "Minimal-change approach: NT-004 already owns docker-compose.yml with all nine API service entries. NT-005 creates only the Dockerfile paths referenced by those entries.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 6,
+      "step": "step_1",
+      "decision": "Traverse.AI.Abstractions and Traverse.AI.Providers not referenced from any Phase 0 API stub — avoids AI SDK transitive deps in 8 services that won't use AI. AICopilot defers to Phase 1.",
+      "rationale": "YAGNI: AI projects not used in Phase 0. Referencing them inflates the project and pulls OpenAI/Anthropic/AWS SDK transitive NuGet deps into services that will never use AI capabilities.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 7,
+      "step": "step_5",
+      "decision": "audit-docs finding: NT-005 implementation replaces the 9 stub Dockerfiles created by NT-004 with the 4-stage template from design §5.5. NT-004 created 2-stage Dockerfiles (build + runtime) as profile-gated stubs; NT-005 owns the final Dockerfiles per the design doc and AC-3/Gherkin requiring 4 stages. No design doc change needed.",
+      "rationale": "The NT-005 design doc §1 and §5.5 are authoritative for the Dockerfile specification. NT-004 created pre-release stubs to enable docker compose config validation; NT-005 replaces them with production-ready 4-stage images. This is within NT-005's existing scope. The NT-004 stubs also contained a defect (reference to non-existent Directory.Build.props) which is automatically corrected by the replacement.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 8,
+      "step": "step_6",
+      "decision": "Phase 3 is full replacement of NT-004 Dockerfiles (overwrite, not patch) — stubs have structural defect",
+      "rationale": "NT-004 Dockerfiles contain a Directory.Build.props reference defect. Full replacement with the 4-stage template from NT-005 design doc §5.5 corrects the defect and delivers the required multi-stage build.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 9,
+      "step": "step_6",
+      "decision": "Phase 4 defers docker build to smoke-test phase; Phase 3 verification is structural (grep-based)",
+      "rationale": "Separating structural verification (grep-based) from runtime smoke-testing (docker build + compose up) allows earlier failure detection and cleaner phase boundaries.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 10,
+      "step": "step_6",
+      "decision": "Per-project partial builds in Phase 2 for early failure detection",
+      "rationale": "Building each API project individually before full solution build catches errors at the source project level, reducing debug time when build failures occur.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 11,
+      "step": "step_6",
+      "decision": "docker-compose.yml excluded from NT-005 scope — NT-004 owns it, 9 service entries already exist",
+      "rationale": "Minimal-change principle: docker-compose.yml was fully specified by NT-004. NT-005 creates only the Dockerfile paths those entries reference.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 12,
+      "step": "step_6",
+      "decision": "No AI lib references in any Phase 0 stub (YAGNI)",
+      "rationale": "AI projects not used in Phase 0. Referencing Traverse.AI.Abstractions/Providers from non-AICopilot stubs inflates projects and pulls unnecessary transitive NuGet dependencies.",
+      "date": "2026-05-04"
+    },
+    {
+      "number": 13,
+      "step": "step_7",
+      "decision": "ProjectReference relative path uses ../../../shared/ (3 levels) not ../../../../shared/ as planned",
+      "rationale": "Services at src/services/<svc>/Traverse.<Svc>.Api/ are 3 levels from src/shared/ — documented in ADR-009",
+      "date": "2026-05-05"
+    },
+    {
+      "number": 14,
+      "step": "step_7",
+      "decision": "Microsoft.AspNetCore.OpenApi 10.0.3 added explicitly — not transitively supplied by shared libs",
+      "rationale": "Package required for OpenAPI endpoint mapping in each API stub. Not included in shared libraries. Added to each API .csproj individually.",
+      "date": "2026-05-05"
+    },
+    {
+      "number": 15,
+      "step": "step_7",
+      "decision": "Dockerfile HEALTHCHECK instruction omitted — docker-compose.yml healthcheck is authoritative",
+      "rationale": "Docker-compose.yml already specifies healthcheck for all services. Duplicate HEALTHCHECK in Dockerfile creates maintenance inconsistency — docker-compose overrides it anyway.",
+      "date": "2026-05-05"
+    }
+  ]
+}
