@@ -39,9 +39,10 @@
       "review_type": "feature_start",
       "reviewed_date": "2026-05-07",
       "reviewed_by": "Kendrew Peacey (Dev Lead, self — single operator)",
-      "status": "blocked_on_questions",
-      "pr_url": null,
-      "questions_doc": "skill_docs/resume-pipeline_docs/questions_2.md",
+      "status": "complete",
+      "pr_url": "https://github.com/kendrewp/Northwoods_Traverse/pull/8",
+      "pr_merge_commit": "03a739456f60b4787d5e9ae3f1f48ed55cc2bc95",
+      "merged_date": "2026-05-07",
       "artefacts_reviewed": [
         {
           "artefact": "PRD",
