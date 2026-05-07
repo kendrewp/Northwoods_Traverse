@@ -31,11 +31,9 @@
 
 ---
 
-### MANUAL_PR_REQUIRED — 2026-05-07
-- AutoBranch is enabled but gh CLI authentication (kendrewcamis) lacks collaborator rights on kendrewp/Northwoods_Traverse
-- Action required: Create PR manually on GitHub
-  - Head: review/NT-007
-  - Base: feature/NT-007
-  - Title: resume-pipeline: NT-007 feature start review — PRD checksummed
-  - Body: PRD validated against Phase 0 codebase (valid, no changes). Pipeline tracker initialised with PRD checksum. jira_actions.md created.
-- Branch already pushed: review/NT-007 → origin
+### PR_CREATED — 2026-05-07
+- PR: #8
+- Title: resume-pipeline: NT-007 feature start review — PRD checksummed
+- Branch: review/NT-007 → feature/NT-007
+- URL: https://github.com/kendrewp/Northwoods_Traverse/pull/8
+- Created by: resume-pipeline (CLI)
