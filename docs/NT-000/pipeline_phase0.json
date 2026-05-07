@@ -6,9 +6,9 @@
   "feature_short": "phase0",
   "docs_folder": "docs/NT-000/",
   "created": "2026-04-26",
-  "last_updated": "2026-05-05",
-  "current_phase": "In Progress — 4 of 5 stories complete (NT-004 merged)",
-  "status": "In Progress",
+  "last_updated": "2026-05-06",
+  "current_phase": "Complete — all 5 stories complete",
+  "status": "Complete",
   "feature_artefacts": {
     "artefact_checksums": {
       "architecture_phase0.md": {
@@ -94,12 +94,12 @@
       "story_id": "NT-005",
       "short_name": "api_stubs",
       "tracker_path": "docs/NT-000/NT-005/story_tracker_api_stubs.json",
-      "status": "In Progress",
+      "status": "Complete",
       "created": "2026-04-26",
-      "completed": null,
+      "completed": "2026-05-06",
       "merged_pr": null,
       "merged_commit": null,
-      "summary": null,
+      "summary": "9 .NET 10 API stub projects scaffolded (Workflow, Case, Program, Intake, Document, Notification, Reporting, AICopilot, IAM); 4-stage multi-stage Dockerfiles replacing NT-004 stubs; full SharedLibs ProjectReference wiring (6 shared libs, 3-level relative path); health/ready endpoints; dotnet build clean. Integration test PASSED (CG-001: MassTransit auto-registers ready health check — contract gap documented, not a code defect). Code review APPROVED, 0 must_fix, 0 should_fix.",
       "cu_estimate": {
         "adjusted_cu": 52.5,
         "hours_estimate": 105.0,
