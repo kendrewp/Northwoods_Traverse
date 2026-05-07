@@ -39,8 +39,9 @@
       "review_type": "feature_start",
       "reviewed_date": "2026-05-07",
       "reviewed_by": "Kendrew Peacey (Dev Lead, self — single operator)",
-      "status": "pending_pr_approval",
+      "status": "blocked_on_questions",
       "pr_url": null,
+      "questions_doc": "skill_docs/resume-pipeline_docs/questions_2.md",
       "artefacts_reviewed": [
         {
           "artefact": "PRD",
