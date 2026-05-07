@@ -1,0 +1,58 @@
+{
+  "tracker_type": "pipeline_tracker",
+  "schema_version": "1.0",
+  "feature_id": "NT-007",
+  "feature_name": "Traverse Admin Configuration Suite",
+  "feature_short": "admin_config_suite",
+  "docs_folder": "docs/NT-007/",
+  "created": "2026-05-07",
+  "last_updated": "2026-05-07",
+  "current_phase": "In Progress",
+  "status": "In Progress",
+  "feature_artefacts": {
+    "prd": {
+      "path": "docs/PRD - Traverse Admin Configuration Suite.md",
+      "checksum": "sha256-961c4dc682fe152ff87947dfeb41016cbdf74b63a10dc4c25475a2f3920b6d72",
+      "reviewed_by": "resume-pipeline (CLI)",
+      "reviewed_date": "2026-05-07",
+      "verdict": "valid",
+      "notes": "PRD reviewed against Phase 0 codebase. All dependency stubs present (Admin.Api, Workflow.Api, KPI.Api, Notifications.Api, AICopilot.Api, Compliance.Api). adminGuard implemented in Angular. No stale content — PRD is forward-looking (Phase 1+)."
+    }
+  },
+  "stories": [
+    {
+      "story_id": "NT-070",
+      "short_name": "admin_access_governance",
+      "tracker_path": "docs/NT-007/NT-070/story_tracker_admin_access_governance.json",
+      "status": "In Progress",
+      "created": "2026-05-07",
+      "completed": null,
+      "merged_pr": null,
+      "merged_commit": null,
+      "summary": null
+    }
+  ],
+  "backlog": [],
+  "resume_pipeline_reviews": [
+    {
+      "review_id": "rpr-001",
+      "review_type": "feature_start",
+      "reviewed_date": "2026-05-07",
+      "reviewed_by": "Kendrew Peacey (Dev Lead, self — single operator)",
+      "status": "blocked_on_questions",
+      "pr_url": null,
+      "questions_doc": "skill_docs/resume-pipeline_docs/questions_2.md",
+      "artefacts_reviewed": [
+        {
+          "artefact": "PRD",
+          "path": "docs/PRD - Traverse Admin Configuration Suite.md",
+          "checksum": "sha256-961c4dc682fe152ff87947dfeb41016cbdf74b63a10dc4c25475a2f3920b6d72",
+          "verdict": "valid",
+          "changes_made": false
+        }
+      ],
+      "summary": "Feature start review. PRD is valid against Phase 0 codebase. No artefact updates required. All 6 dependency API stubs present. adminGuard wired in Angular frontend."
+    }
+  ],
+  "decision_log": []
+}
